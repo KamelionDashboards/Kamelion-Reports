@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thomas Mills High School — May 2026 Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --glass:     rgba(255,255,255,0.045);
+      --glass-md:  rgba(255,255,255,0.08);
+      --glass-hi:  rgba(255,255,255,0.12);
+      --border:    rgba(255,255,255,0.09);
+      --border-hi: rgba(255,255,255,0.16);
+      --violet:      #a78bfa; --violet-soft: rgba(167,139,250,0.10); --violet-glow: rgba(167,139,250,0.22);
+      --teal:        #5eead4; --teal-soft:   rgba(94,234,212,0.10);  --teal-glow:   rgba(94,234,212,0.22);
+      --gold:        #fcd34d; --gold-soft:   rgba(252,211,77,0.10);  --gold-glow:   rgba(252,211,77,0.22);
+      --rose:        #fda4af; --rose-soft:   rgba(253,164,175,0.10); --rose-glow:   rgba(253,164,175,0.22);
+      --sky:         #93c5fd; --sky-soft:    rgba(147,197,253,0.10);
+      --amber:       #fb923c; --amber-soft:  rgba(251,146,60,0.10);  --amber-glow:  rgba(251,146,60,0.22);
+      --emerald:     #34d399; --emerald-soft:rgba(52,211,153,0.10);  --emerald-glow:rgba(52,211,153,0.22);
+      --t1: rgba(255,255,255,0.95); --t2: rgba(255,255,255,0.75); --t3: rgba(255,255,255,0.52); --t4: rgba(255,255,255,0.36);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; color: var(--t1); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; overflow-x: hidden; }
+
+    .bg { position: fixed; inset: 0; z-index: 0; background: #060a18; overflow: hidden; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+    .b1 { width:700px; height:700px; background: radial-gradient(circle, rgba(15,118,110,0.48) 0%, transparent 70%); top:-220px; left:-160px; }
+    .b2 { width:580px; height:580px; background: radial-gradient(circle, rgba(91,33,182,0.46) 0%, transparent 70%); bottom:-120px; right:-120px; }
+    .b3 { width:440px; height:440px; background: radial-gradient(circle, rgba(239,68,68,0.18) 0%, transparent 70%); top:40%; right:8%; }
+    .b4 { width:300px; height:300px; background: radial-gradient(circle, rgba(6,95,70,0.28) 0%, transparent 70%); top:20%; left:50%; }
+
+    /* ── STICKY NAV ── */
+    .snav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(6,10,24,0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+    .snav-inner { max-width: 1400px; margin: 0 auto; padding: 0 36px; display: flex; align-items: center; height: 52px; }
+    .snav-brand { font-size: 0.72rem; font-weight: 800; color: var(--teal); white-space: nowrap; margin-right: 28px; flex-shrink: 0; }
+    .snav-brand span { color: var(--t3); font-weight: 500; margin-left: 6px; }
+    .snav-links { display: flex; align-items: center; gap: 2px; overflow-x: auto; scrollbar-width: none; flex: 1; }
+    .snav-links::-webkit-scrollbar { display: none; }
+    .snav-link { font-size: 0.7rem; font-weight: 600; color: var(--t3); text-decoration: none; padding: 6px 14px; border-radius: 8px; white-space: nowrap; transition: color 0.2s, background 0.2s; border: 1px solid transparent; }
+    .snav-link:hover { color: var(--t2); background: rgba(255,255,255,0.05); }
+    .snav-link.active { color: var(--teal); background: rgba(94,234,212,0.08); border-color: rgba(94,234,212,0.18); }
+
+    .wrap { position: relative; z-index: 1; padding: 88px 36px 80px; max-width: 1400px; margin: 0 auto; }
+
+    .glass { background: var(--glass); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--border); border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.06); }
+    .glass-md { background: var(--glass-md); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid var(--border-hi); border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.08); }
+
+    /* ── HEADER ── */
+    .header { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding-bottom: 40px; margin-bottom: 4px; border-bottom: 1px solid var(--border); }
+    @media (max-width: 700px) { .header { grid-template-columns: 1fr; } }
+    .header-left .eye { font-size: 0.62rem; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+    .header-left h1 { font-size: 2.4rem; font-weight: 900; letter-spacing: -1.2px; line-height: 1.05; }
+    .header-left h1 span { background: linear-gradient(120deg, var(--teal) 0%, var(--sky) 55%, var(--violet) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header-left .sub { margin-top: 10px; font-size: 0.88rem; color: var(--t2); line-height: 1.6; max-width: 540px; }
+    .header-right { text-align: right; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+    .header-badge { font-size: 0.66rem; font-weight: 700; color: var(--t2); background: var(--glass-md); border: 1px solid var(--border-hi); padding: 6px 16px; border-radius: 99px; }
+
+    /* ── BANNERS ── */
+    .alert-banner { display: flex; align-items: flex-start; gap: 14px; background: rgba(253,164,175,0.07); border: 1px solid rgba(253,164,175,0.22); border-radius: 14px; padding: 16px 20px; margin-bottom: 10px; }
+    .alert-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex-shrink: 0; margin-top: 4px; box-shadow: 0 0 8px rgba(253,164,175,0.6); }
+    .alert-text { font-size: 0.8rem; color: var(--t2); line-height: 1.55; }
+    .alert-text strong { color: var(--rose); font-weight: 700; }
+
+    /* ── SECTION / CARD LABELS ── */
+    .slabel { font-size: 0.6rem; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase; color: var(--t3); margin: 36px 0 14px; }
+    .clabel { font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--t3); margin-bottom: 18px; }
+
+    /* ── GRID ── */
+    .grid { display: grid; gap: 14px; }
+    .g4 { grid-template-columns: repeat(4,1fr); }
+    .g3 { grid-template-columns: repeat(3,1fr); }
+    .g2 { grid-template-columns: 1fr 1fr; }
+    @media (max-width: 1100px) { .g4 { grid-template-columns: repeat(2,1fr); } .g3 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 700px)  { .g4,.g3,.g2 { grid-template-columns: 1fr; } }
+    .pad { padding: 24px; }
+
+    /* ── SCORE ── */
+    .score-grid { display: grid; grid-template-columns: 200px 1fr; gap: 36px; align-items: center; }
+    @media (max-width: 800px) { .score-grid { grid-template-columns: 1fr; } }
+    .score-sub { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+    @media (max-width: 700px) { .score-sub { grid-template-columns: repeat(2,1fr); } }
+    .sub-score { border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+    .sub-num { font-size: 1.9rem; font-weight: 900; letter-spacing: -1px; line-height: 1; }
+    .sub-lbl { font-size: 0.72rem; font-weight: 700; color: var(--t1); margin-top: 4px; }
+    .sub-desc { font-size: 0.67rem; color: var(--t3); line-height: 1.45; }
+
+    /* ── COMPARISON CARDS ── */
+    .cmp-card { padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+    .cmp-metric { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--t3); }
+    .cmp-row { display: flex; align-items: flex-end; gap: 10px; }
+    .cmp-prev { font-size: 1.3rem; font-weight: 700; color: var(--t4); letter-spacing: -0.5px; line-height: 1; }
+    .cmp-arrow { font-size: 0.75rem; color: var(--t3); padding-bottom: 2px; }
+    .cmp-now { font-size: 2.2rem; font-weight: 900; letter-spacing: -1.5px; line-height: 1; }
+    .cmp-delta { display: inline-flex; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: 800; padding: 3px 10px; border-radius: 99px; margin-top: 4px; width: fit-content; }
+    .delta-up      { background: var(--emerald-soft); color: var(--emerald); border: 1px solid rgba(52,211,153,0.22); }
+    .delta-down    { background: var(--rose-soft);    color: var(--rose);    border: 1px solid rgba(253,164,175,0.22); }
+    .delta-warn    { background: var(--amber-soft);   color: var(--amber);   border: 1px solid rgba(251,146,60,0.22); }
+    .delta-neutral { background: var(--glass-md);     color: var(--t3);      border: 1px solid var(--border-hi); }
+    .cmp-sub { font-size: 0.67rem; color: var(--t3); line-height: 1.45; }
+
+    /* ── RAG ── */
+    .rag-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; }
+    .rag-red   { background: rgba(239,68,68,0.08);  border: 1px solid rgba(239,68,68,0.20); }
+    .rag-amber { background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.20); }
+    .rag-green { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.20); }
+    .rag-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .rag-dot-red   { background: #ef4444; box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+    .rag-dot-amber { background: #fb923c; box-shadow: 0 0 6px rgba(251,146,60,0.5); }
+    .rag-dot-green { background: #34d399; box-shadow: 0 0 6px rgba(52,211,153,0.5); }
+    .rag-label { font-size: 0.78rem; font-weight: 600; flex: 1; }
+    .rag-count { font-size: 1.6rem; font-weight: 900; letter-spacing: -0.5px; }
+    .rag-red   .rag-label { color: #fca5a5; } .rag-red   .rag-count { color: #ef4444; }
+    .rag-amber .rag-label { color: #fdba74; } .rag-amber .rag-count { color: #fb923c; }
+    .rag-green .rag-label { color: #6ee7b7; } .rag-green .rag-count { color: #34d399; }
+    .rag-note { font-size: 0.62rem; color: var(--t3); }
+    .rag-delta { font-size: 0.62rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; flex-shrink: 0; }
+
+    /* ── SOS ── */
+    .sos-rows { display: flex; flex-direction: column; gap: 10px; }
+    .sos-row { display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: 10px; }
+    .sos-row.new      { background: rgba(253,164,175,0.07); border: 1px solid rgba(253,164,175,0.16); }
+    .sos-row.existing { background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+    .sos-icon { font-size: 0.82rem; flex-shrink: 0; }
+    .sos-name { font-size: 0.78rem; font-weight: 600; color: var(--t2); flex: 1; line-height: 1.35; }
+    .sos-badge { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+    .sos-users { font-size: 0.62rem; font-weight: 700; color: var(--rose); background: var(--rose-soft); padding: 2px 8px; border-radius: 99px; border: 1px solid rgba(253,164,175,0.22); }
+    .sos-new-tag { font-size: 0.56rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); }
+
+    /* ── MOOD PILLS ── */
+    .mood-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .mood-pill { display: flex; align-items: center; gap: 6px; background: var(--glass-md); border: 1px solid var(--border-hi); border-radius: 99px; padding: 6px 14px; font-size: 0.74rem; font-weight: 600; color: var(--t2); }
+    .mood-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .mood-count { font-weight: 800; color: var(--t1); }
+
+    /* ── FEATURE BARS ── */
+    .feat-rows { display: flex; flex-direction: column; gap: 16px; }
+    .feat-row  { display: flex; align-items: center; gap: 12px; }
+    .feat-name { font-size: 0.76rem; font-weight: 600; color: var(--t2); width: 120px; flex-shrink: 0; }
+    .feat-name.good { color: var(--teal); }
+    .feat-name.warn { color: var(--rose); }
+    .feat-track { flex: 1; background: rgba(255,255,255,0.06); border-radius: 99px; height: 6px; overflow: hidden; }
+    .feat-fill  { height: 100%; border-radius: 99px; }
+    .feat-num  { font-size: 0.75rem; font-weight: 700; color: var(--t1); width: 36px; text-align: right; flex-shrink: 0; }
+    .feat-note { font-size: 0.62rem; color: var(--t3); width: 80px; text-align: right; flex-shrink: 0; }
+
+    /* ── CALLOUT ── */
+    .callout { margin-top: 18px; border-radius: 12px; padding: 14px 16px; border-left: 2px solid transparent; }
+    .c-gold    { background: var(--gold-soft);    border-left-color: var(--gold); }
+    .c-rose    { background: var(--rose-soft);    border-left-color: var(--rose); }
+    .c-teal    { background: var(--teal-soft);    border-left-color: var(--teal); }
+    .c-violet  { background: var(--violet-soft);  border-left-color: var(--violet); }
+    .c-amber   { background: var(--amber-soft);   border-left-color: var(--amber); }
+    .c-emerald { background: var(--emerald-soft); border-left-color: var(--emerald); }
+    .callout-ttl { font-size: 0.58rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+    .c-gold    .callout-ttl { color: var(--gold); }
+    .c-rose    .callout-ttl { color: var(--rose); }
+    .c-teal    .callout-ttl { color: var(--teal); }
+    .c-violet  .callout-ttl { color: var(--violet); }
+    .c-amber   .callout-ttl { color: var(--amber); }
+    .c-emerald .callout-ttl { color: var(--emerald); }
+    .callout p { font-size: 0.78rem; color: var(--t2); line-height: 1.6; }
+
+    /* ── STAT TILES ── */
+    .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+    @media (max-width: 700px) { .stat-row { grid-template-columns: 1fr; } }
+    .stat-tile { padding: 18px 20px; display: flex; flex-direction: column; gap: 5px; }
+    .st-val { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; color: var(--t1); }
+    .st-lbl { font-size: 0.72rem; font-weight: 500; color: var(--t2); }
+    .st-note { font-size: 0.65rem; color: var(--t3); margin-top: 2px; }
+
+    /* ── PATTERN / ACTION CARDS ── */
+    .pcard { padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+    .pcard-ttl  { font-size: 0.88rem; font-weight: 700; color: var(--t1); line-height: 1.3; }
+    .pcard-desc { font-size: 0.77rem; color: var(--t2); line-height: 1.65; }
+    .pcard-stat { display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 3px 11px; border-radius: 99px; margin-top: 2px; width: fit-content; }
+    .acard { padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+    .a-badge { font-size: 0.58rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; padding: 4px 12px; border-radius: 99px; width: fit-content; }
+    .a-act     { background: var(--rose-soft);    color: var(--rose);    border: 1px solid rgba(253,164,175,0.22); }
+    .a-monitor { background: var(--gold-soft);    color: var(--gold);    border: 1px solid rgba(252,211,77,0.22); }
+    .a-watch   { background: var(--emerald-soft); color: var(--emerald); border: 1px solid rgba(52,211,153,0.22); }
+    .a-ttl { font-size: 0.88rem; font-weight: 700; color: var(--t1); line-height: 1.3; }
+    .a-why { font-size: 0.77rem; color: var(--t2); line-height: 1.65; }
+    .a-do { font-size: 0.74rem; font-weight: 600; color: var(--teal); border-top: 1px solid var(--border); padding-top: 10px; }
+    .a-do::before { content: '→  '; opacity: 0.7; }
+
+    /* ── ALL-TIME BANNER ── */
+    .alltime-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 4px; }
+    @media (max-width: 900px) { .alltime-strip { grid-template-columns: repeat(2,1fr); } }
+    .at-tile { padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); }
+    .at-num { font-size: 1.6rem; font-weight: 900; letter-spacing: -1px; }
+    .at-lbl { font-size: 0.7rem; font-weight: 600; color: var(--t3); }
+    .at-tag { font-size: 0.62rem; font-weight: 700; color: var(--t4); margin-top: 2px; }
+
+    .chart-wrap { position: relative; width: 100%; }
+    .footer { text-align: center; margin-top: 48px; font-size: 0.65rem; color: var(--t4); letter-spacing: 0.8px; border-top: 1px solid var(--border); padding-top: 24px; }
+  </style>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-brand">Thomas Mills HS <span>· May 2026</span></div>
+    <div class="snav-links">
+      <a class="snav-link" href="#sec-score">Score</a>
+      <a class="snav-link" href="#sec-comparison">Comparison</a>
+      <a class="snav-link" href="#sec-wellbeing">Wellbeing</a>
+      <a class="snav-link" href="#sec-engagement">Engagement</a>
+      <a class="snav-link" href="#sec-insights">Insights</a>
+      <a class="snav-link" href="#sec-actions">Actions</a>
+    </div>
+  </div>
+</nav>
+
+<div class="bg">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- ══ HEADER ══ -->
+  <header class="header">
+    <div class="header-left">
+      <div class="eye">Kamelion · Monthly Update</div>
+      <h1><span>Thomas Mills High School — May 2026</span></h1>
+      <div class="sub">May has brought a significant shift in the data. The platform's monitoring system is surfacing more student signals than any previous month — including 7 flagged students and 3 new SOS topics. The strong all-time foundation remains, but this month requires pastoral attention.</div>
+    </div>
+    <div class="header-right">
+      <span class="header-badge">May 2026 Report</span>
+      <span class="header-badge" style="color:var(--rose);">7 Flagged Students</span>
+      <span class="header-badge" style="color:var(--violet);">vs. Previous Month</span>
+      <div style="font-size:0.72rem;color:var(--t3);font-weight:500;">600 licences · 50 activated all-time</div>
+    </div>
+  </header>
+
+  <!-- ══ ALERT ══ -->
+  <div id="sec-score" class="slabel" style="margin-top:0;">Pastoral Signals — May 2026</div>
+  <div class="alert-banner">
+    <div class="alert-dot"></div>
+    <div class="alert-text">
+      <strong>7 students are currently flagged — 3 at Amber status, requiring pastoral check-ins this week.</strong> This is up from 3 flagged last month and 0 all-time prior to this period. The monitoring system is working, but these students need a conversation.<br>
+      <span style="margin-top:5px;display:block;"><strong>3 SOS topics raised this month:</strong> Family stress at home (1 student, 2 events), Struggling to sleep (1 student), and Anxious or overthinking (1 student — new this month). Anxiety is a new signal and may reflect exam season pressure.</span>
+    </div>
+  </div>
+
+  <!-- ══ SCORE ══ -->
+  <div class="slabel">Engagement Quality Score — May 2026</div>
+  <div class="glass pad" style="margin-bottom:4px;">
+    <div class="score-grid">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="position:relative;width:200px;height:114px;">
+          <canvas id="scoreGauge" width="200" height="114"></canvas>
+          <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);text-align:center;line-height:1;">
+            <div style="font-size:3rem;font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--teal),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">70</div>
+            <div style="font-size:0.58rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);margin-top:2px;">out of 100</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+          <span style="font-size:0.72rem;font-weight:700;background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,146,60,0.22);padding:4px 16px;border-radius:99px;">Watchpoint Month</span>
+          <span style="font-size:0.65rem;color:var(--rose);font-weight:700;">↓ from 85 (all-time)</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:1.1rem;font-weight:800;color:var(--t1);margin-bottom:6px;">A month that needs attention — the strong foundation still holds</div>
+        <div style="font-size:0.82rem;color:var(--t2);line-height:1.65;margin-bottom:20px;">Your all-time stats remain impressive — 79.7% challenge completion, 100% goal record, 8.8 mood check-ins per student. But May has introduced new signals: goal-setting has dropped sharply, flagged students have increased, and mood sentiment is more mixed. These are things to act on, not ignore.</div>
+        <div class="score-sub">
+          <div class="sub-score" style="background:var(--teal-soft);border:1px solid rgba(94,234,212,0.2);">
+            <div class="sub-num" style="color:var(--teal);">80</div>
+            <div class="sub-lbl">All-Time Challenge Rate</div>
+            <div class="sub-desc">79.7% all-time completion — strong foundation still intact</div>
+          </div>
+          <div class="sub-score" style="background:var(--emerald-soft);border:1px solid rgba(52,211,153,0.2);">
+            <div class="sub-num" style="color:var(--emerald);">75</div>
+            <div class="sub-lbl">Community Engagement</div>
+            <div class="sub-desc">111 interactions from 4 students — community still active</div>
+          </div>
+          <div class="sub-score" style="background:var(--amber-soft);border:1px solid rgba(251,146,60,0.2);">
+            <div class="sub-num" style="color:var(--amber);">55</div>
+            <div class="sub-lbl">Wellbeing Monitoring</div>
+            <div class="sub-desc">7 flagged, 3 Amber, 37% negative moods this month</div>
+          </div>
+          <div class="sub-score" style="background:var(--rose-soft);border:1px solid rgba(253,164,175,0.2);">
+            <div class="sub-num" style="color:var(--rose);">40</div>
+            <div class="sub-lbl">Goal Activity</div>
+            <div class="sub-desc">Goals dropped from 51 to 4 created, 0 completed this month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ALL-TIME FOUNDATION ══ -->
+  <div class="slabel">All-Time Foundation — What Hasn't Changed</div>
+  <div class="alltime-strip" style="margin-bottom:4px;">
+    <div class="at-tile">
+      <div class="at-num" style="color:var(--teal);">79.7%</div>
+      <div class="at-lbl">Challenge Completion Rate</div>
+      <div class="at-tag">106 of 133 all-time · still strong</div>
+    </div>
+    <div class="at-tile">
+      <div class="at-num" style="color:var(--gold);">100%</div>
+      <div class="at-lbl">All-Time Goal Completion</div>
+      <div class="at-tag">51 of 51 goals ever set</div>
+    </div>
+    <div class="at-tile">
+      <div class="at-num" style="color:var(--violet);">8.8</div>
+      <div class="at-lbl">Mood Check-ins Per Student</div>
+      <div class="at-tag">442 total all-time · 50 students</div>
+    </div>
+    <div class="at-tile">
+      <div class="at-num" style="color:var(--sky);">3.6</div>
+      <div class="at-lbl">Community Comments Per Post</div>
+      <div class="at-tag">29 posts · 106 comments all-time</div>
+    </div>
+  </div>
+
+  <!-- ══ MONTH ON MONTH ══ -->
+  <div id="sec-comparison" class="slabel">Month-on-Month Comparison — Previous vs May 2026</div>
+  <div class="grid g4" style="margin-bottom:14px;">
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Flagged Students</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">3</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--rose);">7</div>
+      </div>
+      <span class="cmp-delta delta-warn">↑ 133% · 3 Amber</span>
+      <div class="cmp-sub">Biggest concern this month. 3 Amber-status students need a pastoral check-in before end of week.</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Goals Created</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">~49</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--amber);">4</div>
+      </div>
+      <span class="cmp-delta delta-down">↓ 91.8%</span>
+      <div class="cmp-sub">A dramatic drop from last month. The structured goal-setting activity that drove 51 goals is no longer happening.</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Goals Completed</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">51</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--rose);">0</div>
+      </div>
+      <span class="cmp-delta delta-down">↓ 100%</span>
+      <div class="cmp-sub">No goals completed this month. The 4 goals created are likely still in progress, but this needs monitoring.</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Mood Check-ins</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">10</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--sky);">14</div>
+      </div>
+      <span class="cmp-delta delta-up">↑ 40%</span>
+      <div class="cmp-sub">More students checking in this month — positive. But 37% of moods logged were negative (Sad or Unhappy).</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">SOS Topics</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">4</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--amber);">3</div>
+      </div>
+      <span class="cmp-delta delta-neutral">↓ slightly · new topic</span>
+      <div class="cmp-sub">Fewer topics overall but anxiety is new — likely exam-related. Family stress and sleep continue from last month.</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Community Posts</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">3</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--emerald);">6</div>
+      </div>
+      <span class="cmp-delta delta-up">↑ 100%</span>
+      <div class="cmp-sub">Posts doubled — students are sharing more. Comments dipped slightly but community activity remains healthy.</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Amber Status</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">2</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--amber);">3</div>
+      </div>
+      <span class="cmp-delta delta-warn">↑ 50% · act now</span>
+      <div class="cmp-sub">A third student has moved to Amber. All 3 require a pastoral conversation — this week, not next.</div>
+    </div>
+
+    <div class="glass cmp-card">
+      <div class="cmp-metric">Challenges Started</div>
+      <div class="cmp-row">
+        <div class="cmp-prev">1</div>
+        <div class="cmp-arrow">→</div>
+        <div class="cmp-now" style="color:var(--teal);">2</div>
+      </div>
+      <span class="cmp-delta delta-up">↑ 100%</span>
+      <div class="cmp-sub">Modest improvement. Challenge activity remains low compared to all-time levels — still significant headroom.</div>
+    </div>
+
+  </div>
+
+  <!-- ══ WELLBEING ══ -->
+  <div id="sec-wellbeing" class="slabel">Student Wellbeing Signals — May 2026</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">RAG Status — Students Flagged for Support</div>
+      <div class="rag-row rag-red">
+        <div class="rag-dot rag-dot-red"></div>
+        <div class="rag-label">Red Status — Urgent</div>
+        <div class="rag-count">0</div>
+        <div class="rag-delta" style="background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(52,211,153,0.22);">No urgent cases</div>
+      </div>
+      <div class="rag-row rag-amber">
+        <div class="rag-dot rag-dot-amber"></div>
+        <div class="rag-label">Amber Status — Pastoral Check-in Required</div>
+        <div class="rag-count">3</div>
+        <div class="rag-delta" style="background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,146,60,0.22);">↑ from 2</div>
+      </div>
+      <div class="rag-row rag-green">
+        <div class="rag-dot rag-dot-green"></div>
+        <div class="rag-label">Green Status — Monitored</div>
+        <div class="rag-count">7</div>
+        <div class="rag-delta" style="background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(52,211,153,0.22);">↑ from 3</div>
+      </div>
+      <div class="callout c-amber" style="margin-top:16px;">
+        <div class="callout-ttl">Amber Students Need a Conversation This Week</div>
+        <p>3 students are at Amber status — meaning Kamelion has detected a pattern of signals that warrant pastoral attention. This isn't a crisis, but it is a prompt. A brief, informal check-in with each student this week is the right response. Don't wait for Red.</p>
+      </div>
+
+      <div class="clabel" style="margin-top:24px;">Mood Breakdown — May 2026</div>
+      <div class="mood-row">
+        <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count" style="margin-left:4px;">2</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count" style="margin-left:4px;">2</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#e2e8f0;"></div>Normal <span class="mood-count" style="margin-left:4px;">7</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#fb923c;"></div>Unhappy <span class="mood-count" style="margin-left:4px;">2</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#fda4af;"></div>Sad <span class="mood-count" style="margin-left:4px;">3</span></div>
+      </div>
+      <div class="chart-wrap" style="height:155px;"><canvas id="moodChart"></canvas></div>
+      <div class="callout c-rose" style="margin-top:14px;">
+        <div class="callout-ttl">37% of Moods Were Negative This Month</div>
+        <p>5 of 14 logged moods were Sad or Unhappy — the highest negative proportion of any month so far. Combined with the SOS signals and Amber status students, this suggests a cohort under meaningful pressure right now, likely exam-related.</p>
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">SOS Topics — May 2026</div>
+      <div class="sos-rows">
+        <div class="sos-row existing">
+          <div class="sos-icon">🏠</div>
+          <div class="sos-name">Family stress or tension at home</div>
+          <div class="sos-badge">
+            <div class="sos-users">1 student · 2 events</div>
+            <div class="sos-new-tag">ongoing from prev month</div>
+          </div>
+        </div>
+        <div class="sos-row existing">
+          <div class="sos-icon">😴</div>
+          <div class="sos-name">Struggling to sleep or switch off</div>
+          <div class="sos-badge">
+            <div class="sos-users">1 student</div>
+            <div class="sos-new-tag">ongoing from prev month</div>
+          </div>
+        </div>
+        <div class="sos-row new">
+          <div class="sos-icon">😰</div>
+          <div class="sos-name">Anxious, overthinking or panicky</div>
+          <div class="sos-badge">
+            <div class="sos-users">1 student</div>
+            <div class="sos-new-tag">↑ new this month</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout c-rose" style="margin-top:16px;">
+        <div class="callout-ttl">Anxiety Is a New Signal — Likely Exam Season</div>
+        <p>Anxiety and overthinking is appearing for the first time this month. Alongside the sleep concern (which can both cause and worsen anxiety), these two signals together suggest at least one student is experiencing significant exam-related pressure. This warrants a pastoral conversation before the end of term.</p>
+      </div>
+
+      <div class="clabel" style="margin-top:24px;">Wellbeing Score Change — May</div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <div style="flex:1;background:var(--glass-md);border:1px solid var(--border-hi);border-radius:12px;padding:14px 16px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--t4);">0</div>
+          <div style="font-size:0.7rem;color:var(--t2);font-weight:600;">Improved</div>
+        </div>
+        <div style="flex:1;background:var(--glass-md);border:1px solid var(--border-hi);border-radius:12px;padding:14px 16px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--t4);">0</div>
+          <div style="font-size:0.7rem;color:var(--t2);font-weight:600;">Decreased</div>
+        </div>
+        <div style="flex:1;background:var(--emerald-soft);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:14px 16px;text-align:center;">
+          <div style="font-size:1.8rem;font-weight:900;color:var(--emerald);">1</div>
+          <div style="font-size:0.7rem;color:var(--t2);font-weight:600;">Stable</div>
+        </div>
+      </div>
+      <div class="callout c-teal" style="margin-top:16px;">
+        <div class="callout-ttl">Stability Is Still a Positive Signal</div>
+        <p>1 student's wellbeing score is holding steady — not declining. Given the signals elsewhere this month, stability is worth acknowledging. The goal is to see more students moving into "Improved" territory over the coming weeks.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ ENGAGEMENT ══ -->
+  <div id="sec-engagement" class="slabel">How Your Students Are Engaging — May 2026</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">Feature Usage — May vs Previous Month</div>
+      <div class="feat-rows">
+        <div class="feat-row">
+          <div class="feat-name good">Community ★</div>
+          <div class="feat-track"><div class="feat-fill" style="width:100%;background:var(--teal);"></div></div>
+          <div class="feat-num">111</div>
+          <div class="feat-note">4 students</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-name">Mood Check-ins</div>
+          <div class="feat-track"><div class="feat-fill" style="width:14%;background:var(--violet);"></div></div>
+          <div class="feat-num">14</div>
+          <div class="feat-note">↑ from 10</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-name">Journal</div>
+          <div class="feat-track"><div class="feat-fill" style="width:4%;background:var(--sky);"></div></div>
+          <div class="feat-num">4</div>
+          <div class="feat-note">2 students</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-name">Goals</div>
+          <div class="feat-track"><div class="feat-fill" style="width:4%;background:var(--gold);"></div></div>
+          <div class="feat-num">4</div>
+          <div class="feat-note">↓ from 51</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-name warn">Challenges ⚑</div>
+          <div class="feat-track"><div class="feat-fill" style="width:2%;background:var(--rose);opacity:0.7;"></div></div>
+          <div class="feat-num">2</div>
+          <div class="feat-note">0 completed</div>
+        </div>
+        <div class="feat-row">
+          <div class="feat-name warn">Mental Gym ⚑</div>
+          <div class="feat-track"><div class="feat-fill" style="width:1%;background:var(--rose);opacity:0.5;"></div></div>
+          <div class="feat-num">0</div>
+          <div class="feat-note">↓ from 4</div>
+        </div>
+      </div>
+      <div class="callout c-teal">
+        <div class="callout-ttl">Community Is Carrying Engagement This Month</div>
+        <p>With goals and challenges both quiet this month, community interactions are the main engagement signal — 111 from 4 students. This is where student connection is happening right now, and it's worth nurturing.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="glass pad" style="flex:1;">
+        <div class="clabel">Content Categories — May vs Previous</div>
+        <div class="chart-wrap" style="height:165px;"><canvas id="catChart"></canvas></div>
+        <div class="callout c-violet" style="margin-top:14px;">
+          <div class="callout-ttl">Content Is Diversifying Meaningfully</div>
+          <p>My Character dropped from 88.5% to 41.7%. My Mind and Health & Fitness both hit 25%. Students are branching out into wellbeing content beyond self-development — a sign of growing engagement depth.</p>
+        </div>
+      </div>
+      <div class="glass pad" style="flex:1;">
+        <div class="clabel">Goals — Created vs Completed</div>
+        <div class="chart-wrap" style="height:130px;"><canvas id="goalChart"></canvas></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ INSIGHTS ══ -->
+  <div id="sec-insights" class="slabel">What the Data Is Telling You</div>
+  <div class="grid g3" style="margin-bottom:4px;">
+
+    <div class="glass pcard">
+      <div class="pcard-ttl">The goal-setting habit has stalled — find out why</div>
+      <div class="pcard-desc">Last month, 50 students created and completed 51 goals — a 100% record. This month, only 3 students created 4 goals and none have been completed. This isn't gradual decline; it's a sudden stop. Something structural changed — likely the end of a structured form time or PSHE session that was driving it.</div>
+      <span class="pcard-stat" style="background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,146,60,0.2);">51 → 4 goals · ↓91.8%</span>
+    </div>
+
+    <div class="glass pcard">
+      <div class="pcard-ttl">Anxiety is appearing for the first time — exam season signal</div>
+      <div class="pcard-desc">"Anxious, overthinking or panicky" is a new SOS topic this month. Paired with ongoing sleep difficulties and the timing of May exams, this is almost certainly exam-related pressure. One student logging this is the visible tip — given only a small number of students are actively using SOS, there may be others who haven't flagged it yet.</div>
+      <span class="pcard-stat" style="background:var(--rose-soft);color:var(--rose);border:1px solid rgba(253,164,175,0.2);">New signal · May exams</span>
+    </div>
+
+    <div class="glass pcard">
+      <div class="pcard-ttl">37% negative mood rate — higher than any previous month</div>
+      <div class="pcard-desc">5 of 14 logged moods this month were Sad or Unhappy. Compared to the previous month's profile (which was more evenly spread) this represents the most concerning mood picture Thomas Mills has had. The sample is small — only 5 students logged moods — but the direction is clear and should be watched closely.</div>
+      <span class="pcard-stat" style="background:var(--rose-soft);color:var(--rose);border:1px solid rgba(253,164,175,0.2);">5 negative of 14 · 37%</span>
+    </div>
+
+    <div class="glass pcard">
+      <div class="pcard-ttl">Community posts doubled — this cohort wants to connect</div>
+      <div class="pcard-desc">Posts went from 3 to 6 this month — double — while overall engagement stayed consistent at 111 interactions from 4 students. In a month where other metrics dipped, the community held firm. Students here use the platform to connect with peers, not just track themselves. That's a genuine cultural strength worth protecting.</div>
+      <span class="pcard-stat" style="background:var(--teal-soft);color:var(--teal);border:1px solid rgba(94,234,212,0.2);">6 posts · ↑100%</span>
+    </div>
+
+    <div class="glass pcard">
+      <div class="pcard-ttl">Family stress has now been flagged for two months running</div>
+      <div class="pcard-desc">The same student (or possibly students) has raised family stress as an SOS topic for the second consecutive month. This persistence suggests an ongoing home situation rather than a one-off event. A pastoral lead should be aware and track whether this signal continues or escalates. Ongoing home stress is one of the strongest predictors of academic and emotional difficulty.</div>
+      <span class="pcard-stat" style="background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,146,60,0.2);">2 months consecutive</span>
+    </div>
+
+    <div class="glass pcard">
+      <div class="pcard-ttl">The all-time record remains strong — this is a dip, not a decline</div>
+      <div class="pcard-desc">79.7% all-time challenge completion, 100% goal record, 8.8 moods per student, 3.6 community comments per post — these numbers haven't changed. May is a difficult month for any school cohort. The patterns here are consistent with exam pressure, not platform disengagement. The task is pastoral response now and re-engagement after exams.</div>
+      <span class="pcard-stat" style="background:var(--teal-soft);color:var(--teal);border:1px solid rgba(94,234,212,0.2);">Strong foundation intact</span>
+    </div>
+
+  </div>
+
+  <!-- ══ ACTIONS ══ -->
+  <div id="sec-actions" class="slabel">Your Action Plan — May 2026</div>
+  <div class="grid g3">
+
+    <div class="glass acard">
+      <span class="a-badge a-act">Act Now</span>
+      <div class="a-ttl">Check in with your 3 Amber-status students this week</div>
+      <div class="a-why">Three students have reached Amber status — Kamelion has detected enough signals to flag them for pastoral attention. This isn't a crisis, but it is a clear prompt. At Amber, the right response is an informal, supportive conversation before the situation develops further. Waiting until Red means the opportunity for early intervention has passed.</div>
+      <div class="a-do">Ask your pastoral lead to identify the 3 Amber students from the platform and make time for a brief, informal check-in with each before the end of this week. Document the conversations.</div>
+    </div>
+
+    <div class="glass acard">
+      <span class="a-badge a-act">Act Now</span>
+      <div class="a-ttl">Address the anxiety and sleep SOS signals before exams end</div>
+      <div class="a-why">One student has flagged anxiety and overthinking for the first time this month. Another has been struggling with sleep. These two signals often go together and are strongly associated with exam pressure. With exam season still active, there is a narrow window to offer support before the stress peaks. Both students have actively reached out — they deserve a response.</div>
+      <div class="a-do">Share the SOS breakdown with your pastoral lead. Identify the 2–3 students involved and arrange an informal check-in this week. Consider whether exam support resources or study skills sessions could help the wider cohort.</div>
+    </div>
+
+    <div class="glass acard">
+      <span class="a-badge a-act">Act Now</span>
+      <div class="a-ttl">Follow up on the student with ongoing family stress</div>
+      <div class="a-why">Family stress has been flagged for two consecutive months by the same student. This persistence is significant — ongoing home pressure doesn't resolve itself, and students rarely raise it twice unless it's genuinely affecting them. A pastoral lead should be briefed and should ensure this student has a trusted adult they can speak to regularly.</div>
+      <div class="a-do">Identify the student and brief your DSL or head of year. Ensure they have a named pastoral contact and that the home situation is on your radar — even if no formal intervention is needed yet.</div>
+    </div>
+
+    <div class="glass acard">
+      <span class="a-badge a-monitor">Monitor</span>
+      <div class="a-ttl">Restart the goal-setting activity after exams</div>
+      <div class="a-why">The drop from 51 to 4 goals is almost certainly the result of a structured session ending — not student disengagement. The all-time 100% completion record shows these students respond extremely well to goals when they're set. Reintroducing a brief goal-setting activity in form time in June — post-exams — could restore this habit and give students a positive focus heading into the summer.</div>
+      <div class="a-do">Speak to the teacher or pastoral lead who ran the previous goal-setting session. Plan a post-exam goal-setting activity for early June — frame it around "what do you want to achieve before the end of term?"</div>
+    </div>
+
+    <div class="glass acard">
+      <span class="a-badge a-monitor">Monitor</span>
+      <div class="a-ttl">Watch mood sentiment closely through June</div>
+      <div class="a-why">This month's 37% negative mood rate is the highest Thomas Mills has recorded. If it continues into June after exams have finished, it suggests something deeper than exam pressure. If it improves, the data will confirm this was a seasonal dip. Either way, the next month's mood data will be significantly informative and should be reviewed promptly when available.</div>
+      <div class="a-do">Flag this dashboard to your pastoral team now. When the June report is available, compare mood sentiment directly against May. If negative rates stay above 25%, escalate for a broader review.</div>
+    </div>
+
+    <div class="glass acard">
+      <span class="a-badge a-watch">Keep Going</span>
+      <div class="a-ttl">Protect and grow the community momentum</div>
+      <div class="a-why">In a month where goals and challenges both dipped, community doubled. This cohort uses the platform to connect — and that's a genuine asset. As exam pressure eases, there's an opportunity to channel community energy back into challenges and goal-setting. The community can be the re-entry point for students who have gone quiet on other features.</div>
+      <div class="a-do">After exams, consider posting a community challenge or prompt through the platform. Use your most active community contributors as peer champions to encourage others back into challenge and goal features.</div>
+    </div>
+
+  </div>
+
+  <div class="footer">Kamelion &nbsp;·&nbsp; Thomas Mills High School &nbsp;·&nbsp; May 2026 Monthly Report &nbsp;·&nbsp; 600 licences · 50 activated · 14 mood check-ins · 7 flagged students · 3 Amber · 3 SOS topics · 111 community interactions</div>
+
+</div>
+
+<script>
+  const G = 'rgba(255,255,255,0.07)';
+  const T = 'rgba(255,255,255,0.60)';
+  Chart.defaults.color = T;
+  Chart.defaults.borderColor = G;
+  Chart.defaults.font.family = "'Inter', system-ui, sans-serif";
+
+  // ── Sticky Nav ──
+  (function() {
+    const links = document.querySelectorAll('.snav-link');
+    const ids = ['sec-score','sec-comparison','sec-wellbeing','sec-engagement','sec-insights','sec-actions'];
+    function setActive(id) { links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id)); }
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(link.getAttribute('href'));
+        if (t) window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' });
+      });
+    });
+    const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }); }, { rootMargin: '-52px 0px -70% 0px', threshold: 0 });
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    setActive('sec-score');
+  })();
+
+  // ── Score Gauge ──
+  (function() {
+    const canvas = document.getElementById('scoreGauge');
+    const ctx = canvas.getContext('2d');
+    const score = 70;
+    const cx = 100, cy = 104, r = 82;
+    ctx.beginPath(); ctx.arc(cx, cy, r, Math.PI, 0, true);
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke();
+    for (let i = 0; i <= 10; i++) {
+      const angle = Math.PI - (i / 10) * Math.PI;
+      ctx.beginPath();
+      ctx.moveTo(cx + (r-10)*Math.cos(angle), cy - (r-10)*Math.sin(angle));
+      ctx.lineTo(cx + (r+2)*Math.cos(angle), cy - (r+2)*Math.sin(angle));
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1.5; ctx.stroke();
+    }
+    const grad = ctx.createLinearGradient(cx - r, cy, cx + r, cy);
+    grad.addColorStop(0, 'rgba(253,164,175,0.95)');
+    grad.addColorStop(0.45, 'rgba(252,211,77,0.95)');
+    grad.addColorStop(1, 'rgba(94,234,212,0.95)');
+    const scoreEnd = Math.PI - (score / 100) * Math.PI;
+    ctx.beginPath(); ctx.arc(cx, cy, r, Math.PI, scoreEnd, true);
+    ctx.strokeStyle = grad; ctx.lineWidth = 14; ctx.lineCap = 'round'; ctx.stroke();
+    const dotX = cx + r * Math.cos(scoreEnd), dotY = cy - r * Math.sin(scoreEnd);
+    const glow = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 10);
+    glow.addColorStop(0, 'rgba(251,146,60,0.8)'); glow.addColorStop(1, 'transparent');
+    ctx.beginPath(); ctx.arc(dotX, dotY, 10, 0, Math.PI * 2); ctx.fillStyle = glow; ctx.fill();
+  })();
+
+  // ── Mood Chart ──
+  new Chart(document.getElementById('moodChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Happy','Good','Normal','Unhappy','Sad'],
+      datasets: [{
+        data: [2, 2, 7, 2, 3],
+        backgroundColor: ['rgba(74,222,128,0.85)','rgba(134,239,172,0.75)','rgba(226,232,240,0.35)','rgba(251,146,60,0.85)','rgba(253,164,175,0.85)'],
+        borderWidth: 0, hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '68%',
+      plugins: {
+        legend: { position:'right', labels:{ usePointStyle:true, pointStyle:'circle', padding:12, color:'rgba(255,255,255,0.65)', font:{ size:10, weight:'600' } } },
+        tooltip: { backgroundColor:'rgba(10,15,30,0.88)', borderColor:'rgba(255,255,255,0.1)', borderWidth:1, callbacks:{ label: i => ` ${i.parsed} moods this month` } }
+      }
+    }
+  });
+
+  // ── Category Comparison ──
+  new Chart(document.getElementById('catChart'), {
+    type: 'bar',
+    data: {
+      labels: ['My Character','My Mind','Health & Fitness','Social Life','Career','Money'],
+      datasets: [
+        { label: 'Previous', data: [88.5, 6.6, 4.9, 0, 0, 0], backgroundColor: 'rgba(255,255,255,0.10)', borderRadius: 4, borderSkipped: false },
+        { label: 'May 2026', data: [41.7, 25.0, 25.0, 8.3, 0, 0], backgroundColor: ['rgba(167,139,250,0.80)','rgba(147,197,253,0.75)','rgba(251,146,60,0.70)','rgba(94,234,212,0.65)','rgba(255,255,255,0.1)','rgba(255,255,255,0.1)'], borderRadius: 4, borderSkipped: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: {
+        legend: { position:'top', labels:{ usePointStyle:true, pointStyle:'circle', padding:12, color:'rgba(255,255,255,0.65)', font:{ size:10, weight:'600' } } },
+        tooltip: { backgroundColor:'rgba(10,15,30,0.88)', borderColor:'rgba(255,255,255,0.1)', borderWidth:1, callbacks:{ label: i => ` ${i.parsed.x.toFixed(1)}%` } }
+      },
+      scales: {
+        x: { grid:{ color:G }, ticks:{ font:{ size:9 }, color:'rgba(255,255,255,0.55)', callback: v => v + '%' }, border:{ display:false } },
+        y: { grid:{ display:false }, ticks:{ font:{ size:9, weight:'600' }, color:'rgba(255,255,255,0.62)' } }
+      }
+    }
+  });
+
+  // ── Goals Chart ──
+  new Chart(document.getElementById('goalChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Previous Month', 'May 2026'],
+      datasets: [
+        { label: 'Created',   data: [49, 4],  backgroundColor: 'rgba(255,255,255,0.12)', borderRadius: 6, borderSkipped: false },
+        { label: 'Completed', data: [51, 0],  backgroundColor: ['rgba(94,234,212,0.70)', 'rgba(253,164,175,0.50)'], borderRadius: 6, borderSkipped: false }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position:'top', labels:{ usePointStyle:true, pointStyle:'circle', padding:12, color:'rgba(255,255,255,0.65)', font:{ size:10, weight:'600' } } },
+        tooltip: { backgroundColor:'rgba(10,15,30,0.88)', borderColor:'rgba(255,255,255,0.1)', borderWidth:1 }
+      },
+      scales: {
+        x: { grid:{ display:false }, ticks:{ font:{ size:10, weight:'700' }, color:'rgba(255,255,255,0.62)' } },
+        y: { grid:{ color:G }, ticks:{ font:{ size:9 }, color:'rgba(255,255,255,0.55)' }, border:{ display:false } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
