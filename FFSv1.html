@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Future Female Society - Kamelion Impact Report · May 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --glass:rgba(255,255,255,0.045);--glass-md:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.09);--border-hi:rgba(255,255,255,0.16);
+      --rose:#f472b6;--rose-soft:rgba(244,114,182,0.10);--rose-glow:rgba(244,114,182,0.22);
+      --amber:#fbbf24;--amber-soft:rgba(251,191,36,0.10);--amber-glow:rgba(251,191,36,0.22);
+      --violet:#a78bfa;--violet-soft:rgba(167,139,250,0.10);--violet-glow:rgba(167,139,250,0.22);
+      --sky:#93c5fd;--sky-soft:rgba(147,197,253,0.10);--sky-glow:rgba(147,197,253,0.22);
+      --emerald:#34d399;--emerald-soft:rgba(52,211,153,0.10);--emerald-glow:rgba(52,211,153,0.22);
+      --orange:#fb923c;--orange-soft:rgba(251,146,60,0.10);
+      --t1:rgba(255,255,255,0.95);--t2:rgba(255,255,255,0.75);--t3:rgba(255,255,255,0.52);--t4:rgba(255,255,255,0.36);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#0f0818;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(190,24,93,0.38)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(217,119,6,0.35)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(139,92,246,0.12)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(190,24,93,0.16)0%,transparent 70%);top:20%;left:50%;}
+
+    /* NAV */
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,8,24,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);}
+    .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
+    .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--rose),var(--amber));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#0f0818;}
+    .snav-brand{font-size:0.7rem;font-weight:800;color:var(--rose);white-space:nowrap;}
+    .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
+    .snav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
+    .snav-links::-webkit-scrollbar{display:none;}
+    .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
+    .snav-link:hover{color:var(--t2);background:rgba(255,255,255,0.05);}
+    .snav-link.active{color:var(--rose);background:rgba(244,114,182,0.08);border-color:rgba(244,114,182,0.18);}
+
+    .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1200px;margin:0 auto;}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.08);}
+    .pad{padding:22px;}
+
+    /* HEADER */
+    .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:26px;margin-bottom:4px;border-bottom:1px solid var(--border);}
+    @media(max-width:700px){.header{grid-template-columns:1fr;}}
+    .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--rose),var(--amber));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#0f0818;flex-shrink:0;}
+    .h-brand{font-size:0.75rem;font-weight:800;color:var(--rose);letter-spacing:1px;}
+    .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
+    .h-title{font-size:2.1rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
+    .h-title span{background:linear-gradient(120deg,var(--rose)0%,var(--amber)55%,var(--violet)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .h-sub{margin-top:7px;font-size:0.8rem;color:var(--t2);line-height:1.5;max-width:480px;}
+    .h-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .badge{font-size:0.61rem;font-weight:700;color:var(--t2);background:var(--glass-md);border:1px solid var(--border-hi);padding:5px 13px;border-radius:99px;}
+
+    /* LABELS */
+    .slabel{font-size:0.54rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin:24px 0 10px;}
+    .clabel{font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:11px;}
+
+    /* GRID */
+    .grid{display:grid;gap:12px;}
+    .g4{grid-template-columns:repeat(4,1fr);}
+    .g3{grid-template-columns:repeat(3,1fr);}
+    .g2{grid-template-columns:1fr 1fr;}
+    @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+    @media(max-width:620px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+    /* KPI */
+    .kpi-wrap{padding:18px;}
+    .kpi-num{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:4px;}
+    .kpi-lbl{font-size:0.7rem;font-weight:500;color:var(--t2);margin-bottom:7px;}
+    .kpi-tag{font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block;}
+    .kpi-ro{background:linear-gradient(135deg,var(--rose-glow),rgba(255,255,255,0.01));}
+    .kpi-am{background:linear-gradient(135deg,var(--amber-glow),rgba(255,255,255,0.01));}
+    .kpi-vi{background:linear-gradient(135deg,var(--violet-glow),rgba(255,255,255,0.01));}
+    .kpi-sk{background:linear-gradient(135deg,var(--sky-glow),rgba(255,255,255,0.01));}
+    .kpi-ro .kpi-num{color:var(--rose);}.kpi-am .kpi-num{color:var(--amber);}
+    .kpi-vi .kpi-num{color:var(--violet);}.kpi-sk .kpi-num{color:var(--sky);}
+    .kpi-ro .kpi-tag{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(244,114,182,0.22);}
+    .kpi-am .kpi-tag{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,191,36,0.22);}
+    .kpi-vi .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(167,139,250,0.22);}
+    .kpi-sk .kpi-tag{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(147,197,253,0.22);}
+
+    /* CALLOUT */
+    .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
+    .c-rose{background:var(--rose-soft);border-left-color:var(--rose);}
+    .c-amber{background:var(--amber-soft);border-left-color:var(--amber);}
+    .c-violet{background:var(--violet-soft);border-left-color:var(--violet);}
+    .c-sky{background:var(--sky-soft);border-left-color:var(--sky);}
+    .c-emerald{background:var(--emerald-soft);border-left-color:var(--emerald);}
+    .callout-ttl{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .c-rose .callout-ttl{color:var(--rose);}.c-amber .callout-ttl{color:var(--amber);}
+    .c-violet .callout-ttl{color:var(--violet);}.c-sky .callout-ttl{color:var(--sky);}
+    .c-emerald .callout-ttl{color:var(--emerald);}
+    .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
+
+    /* METHOD IN ACTION */
+    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
+    .method-col{flex:1;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:10px 6px;}
+    .method-col + .method-col{border-left:1px solid var(--border);}
+    .mc-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:900;margin-bottom:3px;flex-shrink:0;}
+    .mc-1{background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.28);color:var(--rose);}
+    .mc-2{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.28);color:var(--amber);}
+    .mc-3{background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.28);color:var(--violet);}
+    .mc-4{background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.28);color:var(--sky);}
+    .mc-5{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--emerald);}
+    .mc-stage{font-size:0.63rem;font-weight:800;color:var(--t1);letter-spacing:0.5px;}
+    .mc-focus{font-size:0.54rem;color:var(--t3);font-weight:600;margin-bottom:8px;}
+    .mc-num{font-size:1.7rem;font-weight:900;line-height:1;letter-spacing:-1px;}
+    .mc-desc{font-size:0.6rem;color:var(--t3);line-height:1.4;max-width:120px;}
+    @media(max-width:700px){.method-grid{flex-wrap:wrap;}.method-col{min-width:45%;}.method-col + .method-col{border-left:none;border-top:1px solid var(--border);}}
+
+    /* WHAT IT MEANS */
+    .means-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+    @media(max-width:700px){.means-strip{grid-template-columns:1fr;}}
+    .ms-tile{padding:14px 16px;border-radius:12px;display:flex;align-items:flex-start;gap:10px;}
+    .ms-t1{background:rgba(244,114,182,0.05);border:1px solid rgba(244,114,182,0.13);}
+    .ms-t2{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.13);}
+    .ms-t3{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.13);}
+    .ms-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .ms-lbl{font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+    .ms-t1 .ms-lbl{color:var(--rose);}.ms-t2 .ms-lbl{color:var(--violet);}.ms-t3 .ms-lbl{color:var(--amber);}
+    .ms-text{font-size:0.73rem;color:var(--t2);line-height:1.45;}
+    .ms-text strong{color:var(--t1);}
+
+    /* RAG + DONUT */
+    .rag-donut-grid{display:grid;grid-template-columns:135px 1fr;gap:14px;align-items:center;margin-bottom:10px;}
+    @media(max-width:500px){.rag-donut-grid{grid-template-columns:1fr;}}
+    .donut-wrap{position:relative;height:135px;}
+    .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+    .rag-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;margin-bottom:6px;}
+    .rag-red{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.18);}
+    .rag-amber{background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.18);}
+    .rag-green{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.18);}
+    .rag-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .rag-dot-red{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,0.4);}
+    .rag-dot-amber{background:#fb923c;box-shadow:0 0 5px rgba(251,146,60,0.4);}
+    .rag-dot-green{background:#34d399;box-shadow:0 0 5px rgba(52,211,153,0.4);}
+    .rag-label{font-size:0.71rem;font-weight:600;flex:1;}
+    .rag-count{font-size:1.35rem;font-weight:900;}
+    .rag-red .rag-label{color:#fca5a5;}.rag-red .rag-count{color:#ef4444;}
+    .rag-amber .rag-label{color:#fdba74;}.rag-amber .rag-count{color:#fb923c;}
+    .rag-green .rag-label{color:#6ee7b7;}.rag-green .rag-count{color:#34d399;}
+
+    /* MOOD PILLS */
+    .mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+    .mood-pill{display:flex;align-items:center;gap:5px;background:var(--glass-md);border:1px solid var(--border-hi);border-radius:99px;padding:5px 11px;font-size:0.7rem;font-weight:600;color:var(--t2);}
+    .mood-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .mood-count{font-weight:800;color:var(--t1);margin-left:2px;}
+
+    /* SUPPORT AREAS */
+    .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
+    .sa-hi{background:rgba(244,114,182,0.07);border:1px solid rgba(244,114,182,0.15);}
+    .sa-lo{background:rgba(255,255,255,0.03);border:1px solid var(--border);}
+    .sa-icon{font-size:0.85rem;flex-shrink:0;}
+    .sa-name{font-size:0.75rem;font-weight:600;color:var(--t2);flex:1;}
+    .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+    .sa-new{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(244,114,182,0.22);}
+    .sa-cont{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,191,36,0.22);}
+    .sau-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .sau-row:last-child{border-bottom:none;padding-bottom:0;}
+    .sau-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .sau-text{font-size:0.74rem;color:var(--t2);line-height:1.45;}
+    .sau-text strong{color:var(--t1);display:block;font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px;}
+
+    /* ACTION CARDS */
+    .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
+    .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
+    .a-embed{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(244,114,182,0.22);}
+    .a-insight{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(167,139,250,0.22);}
+    .a-expand{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,191,36,0.22);}
+    .a-ttl{font-size:0.86rem;font-weight:700;color:var(--t1);line-height:1.25;}
+    .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
+    .a-do{font-size:0.69rem;font-weight:600;color:var(--rose);border-top:1px solid var(--border);padding-top:8px;}
+    .a-do::before{content:'→  ';opacity:0.7;}
+
+    /* REVIEW BOX */
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(255,255,255,0.025);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
+
+    /* REACH */
+    .reach-wrap{padding:22px;background:linear-gradient(135deg,rgba(244,114,182,0.07)0%,rgba(167,139,250,0.05)100%);border:1px solid rgba(244,114,182,0.18);border-radius:18px;margin-bottom:4px;}
+    .reach-title{font-size:1.05rem;font-weight:900;letter-spacing:-0.3px;line-height:1.2;margin-bottom:6px;}
+    .reach-title em{font-style:normal;color:var(--rose);}
+    .reach-body{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;}
+    @media(max-width:700px){.reach-body{grid-template-columns:1fr;}}
+    .reach-sub{font-size:0.76rem;color:var(--t2);line-height:1.5;margin-bottom:14px;}
+    .reach-bullets{display:flex;flex-direction:column;gap:7px;min-width:210px;}
+    .rb-row{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:10px;background:var(--glass-md);border:1px solid var(--border-hi);}
+    .rb-icon{font-size:0.85rem;flex-shrink:0;}
+    .rb-text{font-size:0.68rem;color:var(--t2);line-height:1.4;}
+    .rb-text strong{color:var(--t1);display:block;font-size:0.56rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1px;}
+
+    .chart-wrap{position:relative;width:100%;}
+    .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+  </style>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-logo">
+      <div class="snav-k">K</div>
+      <div class="snav-brand">KAMELION <span>· Future Female Society · May 2026</span></div>
+    </div>
+    <div class="snav-links">
+      <a class="snav-link" href="#sec-activity">Activity</a>
+      <a class="snav-link" href="#sec-month">This Month</a>
+      <a class="snav-link" href="#sec-method">Method</a>
+      <a class="snav-link" href="#sec-members">Members</a>
+      <a class="snav-link" href="#sec-support">Support Areas</a>
+      <a class="snav-link" href="#sec-next">Next Steps</a>
+    </div>
+  </div>
+</nav>
+
+<div class="bg">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="h-logo">
+        <div class="h-k">K</div>
+        <div>
+          <div class="h-brand">KAMELION</div>
+          <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
+        </div>
+      </div>
+      <h1 class="h-title"><span>Future Female Society</span></h1>
+      <div class="h-sub">Young women investing in themselves - building confidence, self-belief and voice. Here's what that looks like in data.</div>
+    </div>
+    <div class="h-right">
+      <span class="badge">May 2026 Report</span>
+      <span class="badge" style="color:var(--rose);">56 Challenges Completed · 59.6% Rate</span>
+      <span class="badge" style="color:var(--amber);">39 Journals · 25 Mood Check-ins</span>
+    </div>
+  </header>
+
+  <!-- MAY 2026 ACTIVITY -->
+  <div id="sec-activity" class="slabel">May 2026 Activity</div>
+  <div class="grid g4" style="margin-bottom:4px;">
+    <div class="glass-md kpi-ro"><div class="kpi-wrap"><div class="kpi-num">56</div><div class="kpi-lbl">Challenges Completed</div><span class="kpi-tag">out of 94 started</span></div></div>
+    <div class="glass-md kpi-am"><div class="kpi-wrap"><div class="kpi-num">39</div><div class="kpi-lbl">Journal Reflections</div><span class="kpi-tag">members reflecting on their lives</span></div></div>
+    <div class="glass-md kpi-vi"><div class="kpi-wrap"><div class="kpi-num">25</div><div class="kpi-lbl">Mood Check-ins</div><span class="kpi-tag">members tracking how they feel</span></div></div>
+    <div class="glass-md kpi-sk"><div class="kpi-wrap"><div class="kpi-num">59.6%</div><div class="kpi-lbl">Challenge Completion Rate</div><span class="kpi-tag">94 started · 56 finished</span></div></div>
+  </div>
+
+  <!-- THIS MONTH - May 2026 -->
+  <div id="sec-month" class="slabel">This Month - May 2026</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+    <div class="glass pad">
+      <div class="clabel">How Members Are Feeling - May 2026</div>
+      <div class="chart-wrap" style="height:195px;"><canvas id="moodChart"></canvas></div>
+      <div class="callout c-rose">
+        <div class="callout-ttl">Building the Habit of Self-Awareness</div>
+        <p>25 check-ins this month. Members are forming the habit of tuning in to how they feel - a foundation that compounds over time.</p>
+      </div>
+    </div>
+    <div class="glass pad">
+      <div class="clabel">What Members Are Engaging With - May 2026</div>
+      <div class="chart-wrap" style="height:195px;"><canvas id="contentChart"></canvas></div>
+      <div class="callout c-violet">
+        <div class="callout-ttl">Top Two Areas Mirror FFS's Mission Directly</div>
+        <p>My Character (28.4%) and My Mind (26.7%) lead the way. Members are engaging with exactly what FFS is built to develop.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE KAMELION METHOD IN ACTION -->
+  <div id="sec-method" class="slabel">The Kamelion Method - In Action at FFS</div>
+  <div class="method-grid">
+    <div class="method-col">
+      <div class="mc-circle mc-1">1</div>
+      <div class="mc-stage">KNOW</div>
+      <div class="mc-focus">Self-Awareness</div>
+      <div class="mc-num" style="color:var(--rose);">25</div>
+      <div class="mc-desc">mood check-ins - young women learning how they feel over time</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-2">2</div>
+      <div class="mc-stage">ACCEPT</div>
+      <div class="mc-focus">Compassion</div>
+      <div class="mc-num" style="color:var(--amber);">45</div>
+      <div class="mc-desc">journal entries & Mental Gym sessions - building a kinder relationship with self</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-3">3</div>
+      <div class="mc-stage">ACT</div>
+      <div class="mc-focus">Responsibility</div>
+      <div class="mc-num" style="color:var(--violet);">56</div>
+      <div class="mc-desc">challenges completed - taking ownership and following through</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-4">4</div>
+      <div class="mc-stage">CONNECT</div>
+      <div class="mc-focus">Belonging</div>
+      <div class="mc-num" style="color:var(--sky);">1</div>
+      <div class="mc-desc">community interactions - connections beginning to form</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-5">5</div>
+      <div class="mc-stage">GROW</div>
+      <div class="mc-focus">Reflection</div>
+      <div class="mc-num" style="color:var(--emerald);">8</div>
+      <div class="mc-desc">personality insights completed - members actively investing in self-knowledge</div>
+    </div>
+  </div>
+
+  <!-- WHAT THIS MEANS -->
+  <div class="means-strip">
+    <div class="ms-tile ms-t1">
+      <div class="ms-icon">📊</div>
+      <div>
+        <div class="ms-lbl">Impact Evidence</div>
+        <div class="ms-text">56 completed challenges and 39 journal entries in one month. <strong>Documented, attributed proof that FFS members are investing in themselves.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t2">
+      <div class="ms-icon">🛡️</div>
+      <div>
+        <div class="ms-lbl">Always-On Support</div>
+        <div class="ms-text">Kamelion extends FFS's reach into the spaces you can't physically be. <strong>Members have access between sessions - not just when they're with you.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t3">
+      <div class="ms-icon">📋</div>
+      <div>
+        <div class="ms-lbl">Grant-Ready Data</div>
+        <div class="ms-text">Every interaction logged and attributable. <strong>A measurable record of engagement and development for funders, trustees and commissioners.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW MEMBERS ARE DOING -->
+  <div id="sec-members" class="slabel">How Your Members Are Doing - May 2026</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">Member Status</div>
+      <div class="rag-donut-grid">
+        <div class="donut-wrap">
+          <canvas id="ragChart"></canvas>
+          <div class="donut-center">
+            <div style="font-size:1.7rem;font-weight:900;color:var(--t1);line-height:1;">3</div>
+            <div style="font-size:0.52rem;color:var(--t3);font-weight:600;">tracked</div>
+          </div>
+        </div>
+        <div>
+          <div class="rag-row rag-green"><div class="rag-dot rag-dot-green"></div><div class="rag-label">Active &amp; Engaged</div><div class="rag-count">2</div></div>
+          <div class="rag-row rag-amber"><div class="rag-dot rag-dot-amber"></div><div class="rag-label">Worth Keeping an Eye On</div><div class="rag-count">1</div></div>
+          <div class="rag-row rag-red"><div class="rag-dot rag-dot-red"></div><div class="rag-label">Under Review</div><div class="rag-count">0</div></div>
+        </div>
+      </div>
+      <div class="callout c-emerald">
+        <div class="callout-ttl">Your Members Are Doing Well</div>
+        <p>Two active and engaged. One showing some variation - normal life, normal ups and downs. <strong>No action needed for Amber.</strong></p>
+      </div>
+      <div class="review-box">
+        <strong>How the review process works</strong>
+        Kamelion reviews each case before anything is shared. We only make contact when there is genuine reason to. Individual member details are not shared with your organisation without our review first.
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">Mood Check-ins - May 2026 (25 total)</div>
+      <div class="mood-row">
+        <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">1</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">6</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">18</span></div>
+      </div>
+      <div style="font-size:0.67rem;color:var(--t3);margin-bottom:4px;">28% positive · 72% steady and stable this month</div>
+      <div class="callout c-amber">
+        <div class="callout-ttl">Steady Is Significant</div>
+        <p>A majority checking in as Normal is healthy. Members are building the habit of regular self-check - the awareness itself is the foundation everything else rests on.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUPPORT AREAS -->
+  <div id="sec-support" class="slabel">Support Areas - What's on Members' Minds</div>
+  <div class="glass-md" style="padding:20px;margin-bottom:4px;">
+    <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:660px;">When members use Kamelion's relaxation features, they can tag what's on their mind. Over time, this gives you a picture of what themes are present in your cohort - so you can understand unmet needs, shape your programmes around real evidence, and <strong style="color:var(--t1);">ensure no one goes unseen.</strong></div>
+    <div class="grid g2">
+      <div>
+        <div class="clabel">Themes This Month</div>
+        <div class="sa-row sa-lo"><div class="sa-icon">😴</div><div class="sa-name">Struggling to sleep or switch off</div><div class="sa-tag sa-cont">this month</div></div>
+        <div class="sa-row sa-lo"><div class="sa-icon">💬</div><div class="sa-name">Friendship or relationship issues</div><div class="sa-tag sa-cont">this month</div></div>
+        <div class="sa-row sa-hi"><div class="sa-icon">🌀</div><div class="sa-name">Other (member-defined)</div><div class="sa-tag sa-new">tagged this month</div></div>
+        <div class="callout c-rose">
+          <div class="callout-ttl">You Know Your Members - This Adds What You Don't</div>
+          <p>These themes surface between sessions, when members are on their own. You bring the relationship. This brings the fuller picture.</p>
+        </div>
+      </div>
+      <div>
+        <div class="clabel">How to Use This Data</div>
+        <div class="sau-row">
+          <div class="sau-icon">🔍</div>
+          <div class="sau-text"><strong>Understand Unmet Needs</strong>Build a fuller picture of what members are carrying between sessions - before it becomes a bigger issue.</div>
+        </div>
+        <div class="sau-row">
+          <div class="sau-icon">🎯</div>
+          <div class="sau-text"><strong>Shape Your Programmes</strong>Real data from your own members - not national statistics - tells you where to focus your energy and resource.</div>
+        </div>
+        <div class="sau-row">
+          <div class="sau-icon">⏱️</div>
+          <div class="sau-text"><strong>Right Support, Right Time</strong>When themes appear consistently, you have the chance to respond early. So no one goes unseen.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YOUR BIGGEST OPPORTUNITY -->
+  <div class="slabel">Your Biggest Opportunity</div>
+  <div class="reach-wrap">
+    <div class="reach-title">The data from May makes a powerful case.<br><em>Every member who joins extends what you can evidence.</em></div>
+    <div class="reach-body">
+      <div>
+        <div class="reach-sub">56 completed challenges, 39 journal entries, 25 mood check-ins - in a single month. As more FFS members use Kamelion, the picture becomes richer, your impact evidence becomes stronger, and the case you make to funders, trustees and commissioners becomes undeniable.</div>
+      </div>
+      <div class="reach-bullets">
+        <div style="font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:3px;">More members means...</div>
+        <div class="rb-row"><div class="rb-icon">📊</div><div class="rb-text"><strong>Richer Impact Evidence</strong>A fuller picture of what your members need and what is working</div></div>
+        <div class="rb-row"><div class="rb-icon">🗂️</div><div class="rb-text"><strong>Stronger Grant Applications</strong>Quantifiable engagement data that funders can see and trust</div></div>
+        <div class="rb-row"><div class="rb-icon">🧭</div><div class="rb-text"><strong>Better Programme Design</strong>Support area themes become more meaningful as more members contribute</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div id="sec-next" class="slabel">Next Steps - June 2026</div>
+  <div class="grid g3">
+    <div class="glass acard">
+      <span class="a-badge a-embed">Embed It</span>
+      <div class="a-ttl">Weave Kamelion into your next session</div>
+      <div class="a-why">The 13 May data spike shows what happens when challenges are introduced in session - 55 started in a single day. That is not coincidence, that is structure working.</div>
+      <div class="a-do">Open the next session with a challenge. Give members 5 minutes to log it. The habit forms fast.</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-insight">Use It</span>
+      <div class="a-ttl">Put this data in front of your funders and trustees</div>
+      <div class="a-why">56 completed challenges and 39 journal reflections is the language of impact. This data does not just tell a story - it evidences one.</div>
+      <div class="a-do">Include May's numbers in your next funder update. Walk trustees through the dashboard at your next board meeting.</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-expand">Grow It</span>
+      <div class="a-ttl">Add new programme members from day one</div>
+      <div class="a-why">Every new member extends your insight and your impact story. The earlier they join, the richer your evidence base becomes over time.</div>
+      <div class="a-do">Add each new programme participant to Kamelion from the start. Do not wait for them to settle in first.</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="snav-logo" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="snav-k">K</div>
+      <span style="font-size:0.65rem;font-weight:800;color:var(--rose);">KAMELION</span>
+      <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
+    </div>
+    <div>Future Female Society · May 2026 Impact Report &nbsp;·&nbsp; 56 challenges completed · 39 journals · 25 mood check-ins · 59.6% completion rate</div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    const links=document.querySelectorAll('.snav-link');
+    const ids=['sec-activity','sec-month','sec-method','sec-members','sec-support','sec-next'];
+    function setActive(id){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));}
+    links.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});});});
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-52px 0px -70% 0px',threshold:0});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+    setActive('sec-activity');
+  })();
+
+  const G='rgba(255,255,255,0.07)';
+  Chart.defaults.color='rgba(255,255,255,0.60)';
+  Chart.defaults.borderColor=G;
+  Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+
+  // Mood Doughnut - May 2026
+  new Chart(document.getElementById('moodChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Happy','Good','Normal'],
+      datasets:[{data:[1,6,18],backgroundColor:['#4ade80','#86efac','#94a3b8'],borderColor:'rgba(15,8,24,0.5)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
+      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(255,255,255,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
+      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
+    }}
+  });
+
+  // Content Bar - May 2026 (6 categories)
+  new Chart(document.getElementById('contentChart'),{
+    type:'bar',
+    data:{
+      labels:['My Character','My Mind','Health & Fitness','Social Life','Career','Money'],
+      datasets:[{data:[28.4,26.7,21.9,21.6,0.7,0.7],backgroundColor:['#f472b6','#a78bfa','#34d399','#fbbf24','#93c5fd','#fb923c'],borderRadius:6,borderSkipped:false}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
+    },scales:{
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(255,255,255,0.50)',callback:v=>v+'%'},border:{display:false},max:40},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(255,255,255,0.65)'}}
+    }}
+  });
+
+  // RAG Donut - member status
+  new Chart(document.getElementById('ragChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Under Review','Worth Keeping an Eye On','Active & Engaged'],
+      datasets:[{data:[0.001,1,2],backgroundColor:['#ef4444','#fb923c','#34d399'],borderColor:'rgba(15,8,24,0.5)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{
+        label:i=>{
+          const v=Math.round(i.parsed);
+          return i.label.includes('Review')?' 0 members':` ${v} member${v!==1?'s':''}`;
+        }
+      }}
+    }}
+  });
+</script>
+</body>
+</html>
