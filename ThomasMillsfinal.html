@@ -10,27 +10,27 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     :root{
-      --glass:rgba(255,255,255,0.045);--glass-md:rgba(255,255,255,0.08);
-      --border:rgba(255,255,255,0.09);--border-hi:rgba(255,255,255,0.16);
-      --violet:#a78bfa;--violet-soft:rgba(167,139,250,0.10);--violet-glow:rgba(167,139,250,0.22);
-      --teal:#5eead4;--teal-soft:rgba(94,234,212,0.10);--teal-glow:rgba(94,234,212,0.22);
-      --gold:#fcd34d;--gold-soft:rgba(252,211,77,0.10);--gold-glow:rgba(252,211,77,0.22);
-      --sky:#93c5fd;--sky-soft:rgba(147,197,253,0.10);--sky-glow:rgba(147,197,253,0.22);
-      --amber:#fb923c;--amber-soft:rgba(251,146,60,0.10);
-      --emerald:#34d399;--emerald-soft:rgba(52,211,153,0.10);--emerald-glow:rgba(52,211,153,0.22);
-      --t1:rgba(255,255,255,0.95);--t2:rgba(255,255,255,0.75);--t3:rgba(255,255,255,0.52);--t4:rgba(255,255,255,0.36);
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.04);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --violet:#6d28d9;--violet-soft:rgba(109,40,217,0.10);--violet-glow:rgba(109,40,217,0.20);
+      --teal:#0d9488;--teal-soft:rgba(13,148,136,0.12);--teal-glow:rgba(13,148,136,0.20);
+      --gold:#b45309;--gold-soft:rgba(180,83,9,0.10);--gold-glow:rgba(180,83,9,0.20);
+      --sky:#2563eb;--sky-soft:rgba(37,99,235,0.10);--sky-glow:rgba(37,99,235,0.20);
+      --amber:#ea580c;--amber-soft:rgba(234,88,12,0.10);
+      --emerald:#047857;--emerald-soft:rgba(4,120,87,0.10);--emerald-glow:rgba(4,120,87,0.20);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
-    .bg{position:fixed;inset:0;z-index:0;background:#060a18;overflow:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
     .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
-    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(15,118,110,0.48)0%,transparent 70%);top:-220px;left:-160px;}
-    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(91,33,182,0.46)0%,transparent 70%);bottom:-120px;right:-120px;}
-    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(239,68,68,0.09)0%,transparent 70%);top:40%;right:8%;}
-    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(6,95,70,0.24)0%,transparent 70%);top:20%;left:50%;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(15,118,110,0.12)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(91,33,182,0.09)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(239,68,68,0.04)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(6,95,70,0.07)0%,transparent 70%);top:20%;left:50%;}
 
     /* NAV */
-    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,10,24,0.86);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);}
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
     .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
     .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
     .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--teal),var(--sky));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#060a18;}
@@ -40,11 +40,11 @@
     .snav-links::-webkit-scrollbar{display:none;}
     .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
     .snav-link:hover{color:var(--t2);background:rgba(255,255,255,0.05);}
-    .snav-link.active{color:var(--teal);background:rgba(94,234,212,0.08);border-color:rgba(94,234,212,0.18);}
+    .snav-link.active{color:var(--teal);background:rgba(13,148,136,0.08);border-color:rgba(13,148,136,0.18);}
 
     .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1200px;margin:0 auto;}
-    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06);}
-    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.08);}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 2px 14px rgba(15,23,42,0.08),0 1px 4px rgba(15,23,42,0.04);}
     .pad{padding:22px;}
 
     /* HEADER */
@@ -82,10 +82,10 @@
     .kpi-go{background:linear-gradient(135deg,var(--gold-glow),rgba(255,255,255,0.01));}
     .kpi-sk{background:linear-gradient(135deg,var(--sky-glow),rgba(255,255,255,0.01));}
     .kpi-te .kpi-num{color:var(--teal);}.kpi-vi .kpi-num{color:var(--violet);}.kpi-go .kpi-num{color:var(--gold);}.kpi-sk .kpi-num{color:var(--sky);}
-    .kpi-te .kpi-tag{background:var(--teal-soft);color:var(--teal);border:1px solid rgba(94,234,212,0.22);}
-    .kpi-vi .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(167,139,250,0.22);}
-    .kpi-go .kpi-tag{background:var(--gold-soft);color:var(--gold);border:1px solid rgba(252,211,77,0.22);}
-    .kpi-sk .kpi-tag{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(147,197,253,0.22);}
+    .kpi-te .kpi-tag{background:var(--teal-soft);color:var(--teal);border:1px solid rgba(13,148,136,0.22);}
+    .kpi-vi .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(109,40,217,0.22);}
+    .kpi-go .kpi-tag{background:var(--gold-soft);color:var(--gold);border:1px solid rgba(180,83,9,0.22);}
+    .kpi-sk .kpi-tag{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(37,99,235,0.22);}
 
     /* CALLOUT */
     .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
@@ -101,15 +101,15 @@
     .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
 
     /* METHOD IN ACTION - data-connected 5-stage */
-    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
+    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(15,23,42,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
     .method-col{flex:1;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:10px 6px;}
     .method-col + .method-col{border-left:1px solid var(--border);}
     .mc-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:900;margin-bottom:3px;flex-shrink:0;}
-    .mc-1{background:rgba(94,234,212,0.12);border:1px solid rgba(94,234,212,0.28);color:var(--teal);}
-    .mc-2{background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.28);color:var(--violet);}
-    .mc-3{background:rgba(252,211,77,0.12);border:1px solid rgba(252,211,77,0.28);color:var(--gold);}
-    .mc-4{background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.28);color:var(--sky);}
-    .mc-5{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--emerald);}
+    .mc-1{background:rgba(13,148,136,0.12);border:1px solid rgba(13,148,136,0.28);color:var(--teal);}
+    .mc-2{background:rgba(109,40,217,0.12);border:1px solid rgba(109,40,217,0.28);color:var(--violet);}
+    .mc-3{background:rgba(180,83,9,0.12);border:1px solid rgba(180,83,9,0.28);color:var(--gold);}
+    .mc-4{background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);color:var(--sky);}
+    .mc-5{background:rgba(4,120,87,0.12);border:1px solid rgba(4,120,87,0.28);color:var(--emerald);}
     .mc-stage{font-size:0.63rem;font-weight:800;color:var(--t1);letter-spacing:0.5px;}
     .mc-focus{font-size:0.54rem;color:var(--t3);font-weight:600;margin-bottom:8px;}
     .mc-num{font-size:1.7rem;font-weight:900;line-height:1;letter-spacing:-1px;}
@@ -121,9 +121,9 @@
     .means-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
     @media(max-width:700px){.means-strip{grid-template-columns:1fr;}}
     .ms-tile{padding:14px 16px;border-radius:12px;display:flex;align-items:flex-start;gap:10px;}
-    .ms-t1{background:rgba(94,234,212,0.05);border:1px solid rgba(94,234,212,0.13);}
-    .ms-t2{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.13);}
-    .ms-t3{background:rgba(252,211,77,0.05);border:1px solid rgba(252,211,77,0.13);}
+    .ms-t1{background:rgba(13,148,136,0.05);border:1px solid rgba(13,148,136,0.13);}
+    .ms-t2{background:rgba(109,40,217,0.05);border:1px solid rgba(109,40,217,0.13);}
+    .ms-t3{background:rgba(180,83,9,0.05);border:1px solid rgba(180,83,9,0.13);}
     .ms-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
     .ms-lbl{font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
     .ms-t1 .ms-lbl{color:var(--teal);}.ms-t2 .ms-lbl{color:var(--violet);}.ms-t3 .ms-lbl{color:var(--gold);}
@@ -137,17 +137,17 @@
     .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
     .rag-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;margin-bottom:6px;}
     .rag-red{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.18);}
-    .rag-amber{background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.18);}
-    .rag-green{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.18);}
+    .rag-amber{background:rgba(234,88,12,0.07);border:1px solid rgba(234,88,12,0.18);}
+    .rag-green{background:rgba(4,120,87,0.07);border:1px solid rgba(4,120,87,0.18);}
     .rag-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-    .rag-dot-red{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,0.4);}
-    .rag-dot-amber{background:#fb923c;box-shadow:0 0 5px rgba(251,146,60,0.4);}
-    .rag-dot-green{background:#34d399;box-shadow:0 0 5px rgba(52,211,153,0.4);}
+    .rag-dot-red{background:#dc2626;box-shadow:0 0 5px rgba(239,68,68,0.4);}
+    .rag-dot-amber{background:#ea580c;box-shadow:0 0 5px rgba(234,88,12,0.4);}
+    .rag-dot-green{background:#059669;box-shadow:0 0 5px rgba(4,120,87,0.4);}
     .rag-label{font-size:0.71rem;font-weight:600;flex:1;}
     .rag-count{font-size:1.35rem;font-weight:900;}
-    .rag-red .rag-label{color:#fca5a5;}.rag-red .rag-count{color:#ef4444;}
-    .rag-amber .rag-label{color:#fdba74;}.rag-amber .rag-count{color:#fb923c;}
-    .rag-green .rag-label{color:#6ee7b7;}.rag-green .rag-count{color:#34d399;}
+    .rag-red .rag-label{color:#991b1b;}.rag-red .rag-count{color:#b91c1c;}
+    .rag-amber .rag-label{color:#92400e;}.rag-amber .rag-count{color:#c2410c;}
+    .rag-green .rag-label{color:#065f46;}.rag-green .rag-count{color:#047857;}
 
     /* MOOD PILLS */
     .mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
@@ -157,13 +157,13 @@
 
     /* SUPPORT AREAS */
     .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
-    .sa-hi{background:rgba(147,197,253,0.07);border:1px solid rgba(147,197,253,0.15);}
+    .sa-hi{background:rgba(37,99,235,0.07);border:1px solid rgba(37,99,235,0.15);}
     .sa-lo{background:rgba(255,255,255,0.03);border:1px solid var(--border);}
     .sa-icon{font-size:0.85rem;flex-shrink:0;}
     .sa-name{font-size:0.75rem;font-weight:600;color:var(--t2);flex:1;}
     .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
-    .sa-new{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(147,197,253,0.22);}
-    .sa-cont{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,146,60,0.22);}
+    .sa-new{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(37,99,235,0.22);}
+    .sa-cont{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(234,88,12,0.22);}
     /* Support use - icon lines */
     .sau-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
     .sau-row:last-child{border-bottom:none;padding-bottom:0;}
@@ -174,20 +174,20 @@
     /* ACTION CARDS */
     .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
     .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
-    .a-grow{background:var(--teal-soft);color:var(--teal);border:1px solid rgba(94,234,212,0.22);}
-    .a-insight{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(167,139,250,0.22);}
-    .a-expand{background:var(--gold-soft);color:var(--gold);border:1px solid rgba(252,211,77,0.22);}
+    .a-grow{background:var(--teal-soft);color:var(--teal);border:1px solid rgba(13,148,136,0.22);}
+    .a-insight{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(109,40,217,0.22);}
+    .a-expand{background:var(--gold-soft);color:var(--gold);border:1px solid rgba(180,83,9,0.22);}
     .a-ttl{font-size:0.86rem;font-weight:700;color:var(--t1);line-height:1.25;}
     .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
     .a-do{font-size:0.69rem;font-weight:600;color:var(--teal);border-top:1px solid var(--border);padding-top:8px;}
     .a-do::before{content:'→  ';opacity:0.7;}
 
     /* REVIEW BOX */
-    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(255,255,255,0.025);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
     .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
 
     /* REACH */
-    .reach-wrap{padding:22px;background:linear-gradient(135deg,rgba(94,234,212,0.07)0%,rgba(167,139,250,0.05)100%);border:1px solid rgba(94,234,212,0.18);border-radius:18px;margin-bottom:4px;}
+    .reach-wrap{padding:22px;background:linear-gradient(135deg,rgba(13,148,136,0.07)0%,rgba(109,40,217,0.05)100%);border:1px solid rgba(13,148,136,0.18);border-radius:18px;margin-bottom:4px;}
     .reach-title{font-size:1.05rem;font-weight:900;letter-spacing:-0.3px;line-height:1.2;margin-bottom:6px;}
     .reach-title em{font-style:normal;color:var(--teal);}
     .reach-body{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;}
@@ -205,6 +205,8 @@
 
     .chart-wrap{position:relative;width:100%;}
     .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+    .a-nums{font-size:1.05rem;font-weight:800;color:var(--t1);line-height:1.3;letter-spacing:-0.3px;margin-bottom:4px;}
+    .a-q{font-size:0.74rem;font-style:italic;color:var(--t2);border-top:1px solid var(--border);padding-top:9px;margin-top:4px;line-height:1.55;}
   </style>
 </head>
 <body>
@@ -384,7 +386,7 @@
         <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">2</span></div>
         <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">2</span></div>
         <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">7</span></div>
-        <div class="mood-pill"><div class="mood-dot" style="background:#fb923c;"></div>Unhappy <span class="mood-count">2</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">2</span></div>
         <div class="mood-pill"><div class="mood-dot" style="background:#fda4af;"></div>Sad <span class="mood-count">3</span></div>
       </div>
       <div style="font-size:0.67rem;color:var(--t3);margin-bottom:4px;">50% positive · 50% neutral or harder moments this month</div>
@@ -451,25 +453,25 @@
 
   <!-- NEXT STEPS -->
   <div id="sec-next" class="slabel">Next Steps - June & July 2026</div>
-  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas: skills and knowledge, peer and organisational connection, and participation readiness. The data pinpoints where Thomas Mills is strongest, where the gap is, and what to do about it - across the next two months.</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where Thomas Mills stands in each - and the one move that extends what is already working.</div>
   <div class="grid g3">
-    <div class="glass acard" style="border-color:rgba(94,234,212,0.28);box-shadow:0 0 24px rgba(94,234,212,0.07),0 8px 32px rgba(0,0,0,0.25);">
-      <span class="a-badge a-grow">Focus Now - Participation Readiness</span>
-      <div class="a-ttl">Agree a July activation goal with SLT</div>
-      <div class="a-why">100% goal completion and 79.7% challenge rate prove the model works with the 50 students you have. The other 550 have no early intervention signal, no audit trail, no picture of what they carry. The window to act is June and July - while the school is still in session.</div>
-      <div class="a-do">June: share this dashboard with SLT - one conversation, one question: how many more students can we activate before the end of term? July: brief form tutors. They are the delivery mechanism - five minutes is enough to get them started.</div>
+    <div class="glass acard">
+      <span class="a-badge a-insight">Skills &amp; Knowledge</span>
+      <div class="a-nums">442 mood check-ins. 41.7% on My Character.</div>
+      <div class="a-why">Your students are already reflecting. Most just haven't started yet. Share the family stress, sleep and anxiety themes with your PSHE lead - they're already in your data.</div>
+      <div class="a-q">What would change if your whole school had this picture?</div>
     </div>
     <div class="glass acard">
-      <span class="a-badge a-insight">Skills & Knowledge</span>
-      <div class="a-ttl">Make check-ins a form time habit in June and July</div>
-      <div class="a-why">442 mood check-ins and My Character at 41.7% show students are building genuine self-knowledge. Family stress, sleep and anxiety are already in the support area data - themes your PSHE team can act on right now. Two more months of consistent check-ins turns this snapshot into a longitudinal picture governors and Ofsted can read.</div>
-      <div class="a-do">June: ask form tutors to open registration with a two-minute Kamelion check-in - mood log and one challenge, every week. July: share the support area themes with your PSHE lead and ask: does this match what you are seeing in class?</div>
+      <span class="a-badge a-expand">Peer &amp; Organisational Connection</span>
+      <div class="a-nums">Social Life is your weakest area at 8.3%.</div>
+      <div class="a-why">That's not a problem to solve, it's a conversation waiting to happen. Your PSHE team already covers these topics. Now they have the evidence to back it up.</div>
+      <div class="a-q">What are your students carrying that you can't currently see?</div>
     </div>
-    <div class="glass acard">
-      <span class="a-badge a-expand">Peer & Organisational Connection</span>
-      <div class="a-ttl">Use the data to open a real conversation this term</div>
-      <div class="a-why">Social Life sits at 8.3% - the weakest content area. Sleep, relationships and anxiety are already showing up in support areas. Your team does not need to introduce these topics. They just need to name them - and the data gives you the evidence to do it.</div>
-      <div class="a-do">June: in your next PSHE lesson, use the support area themes as a discussion starter - sleep, relationships, anxiety. July: in that same session or the next, raise Kamelion directly. Students who see peers engaging with real topics are far more likely to use it themselves.</div>
+    <div class="glass acard" style="border-color:rgba(13,148,136,0.28);box-shadow:0 0 18px rgba(13,148,136,0.06),0 2px 12px rgba(15,23,42,0.07);">
+      <span class="a-badge a-grow">Participation &amp; Readiness</span>
+      <div class="a-nums">51 goals. 100% completion. 106 challenges met.</div>
+      <div class="a-why">Your students are showing up for themselves - that's readiness in action. Use this evidence in your next careers, PSHE or destinations conversation with SLT.</div>
+      <div class="a-q">How are you connecting what students are building here to what comes next for them?</div>
     </div>
   </div>
 
@@ -495,8 +497,8 @@
     setActive('sec-foundation');
   })();
 
-  const G='rgba(255,255,255,0.07)';
-  Chart.defaults.color='rgba(255,255,255,0.60)';
+  const G='rgba(15,23,42,0.08)';
+  Chart.defaults.color='rgba(15,23,42,0.55)';
   Chart.defaults.borderColor=G;
   Chart.defaults.font.family="'Inter',system-ui,sans-serif";
 
@@ -505,11 +507,11 @@
     type:'doughnut',
     data:{
       labels:['Happy','Good','Normal','Unhappy','Sad'],
-      datasets:[{data:[2,2,7,2,3],backgroundColor:['#4ade80','#86efac','#94a3b8','#fb923c','#f87171'],borderColor:'rgba(6,10,24,0.5)',borderWidth:2}]
+      datasets:[{data:[2,2,7,2,3],backgroundColor:['#4ade80','#86efac','#94a3b8','#ea580c','#f87171'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
     },
     options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
-      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(255,255,255,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
-      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
+      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(15,23,42,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)',callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}` }}
     }}
   });
 
@@ -518,14 +520,14 @@
     type:'bar',
     data:{
       labels:['My Character','My Mind','Health & Fitness','Social Life'],
-      datasets:[{data:[41.7,25,25,8.3],backgroundColor:['#a78bfa','#93c5fd','#34d399','#fcd34d'],borderRadius:6,borderSkipped:false}]
+      datasets:[{data:[41.7,25,25,8.3],backgroundColor:['#6d28d9','#2563eb','#047857','#b45309'],borderRadius:6,borderSkipped:false}]
     },
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
       legend:{display:false},
-      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)',callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
     },scales:{
-      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(255,255,255,0.50)',callback:v=>v+'%'},border:{display:false},max:55},
-      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(255,255,255,0.65)'}}
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:55},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}}
     }}
   });
 
@@ -534,11 +536,11 @@
     type:'doughnut',
     data:{
       labels:['Under Review','Worth Keeping an Eye On','Active & Engaged'],
-      datasets:[{data:[0.001,3,7],backgroundColor:['#ef4444','#fb923c','#34d399'],borderColor:'rgba(6,10,24,0.5)',borderWidth:2}]
+      datasets:[{data:[0.001,3,7],backgroundColor:['#dc2626','#ea580c','#059669'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
     },
     options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{
       legend:{display:false},
-      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)',callbacks:{
         label:i=>{
           const v=Math.round(i.parsed);
           return i.label.includes('Review')?' 0 students':` ${v} student${v!==1?'s':''}`;
