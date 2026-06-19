@@ -10,48 +10,48 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <style>
     :root{
-      --glass:rgba(255,255,255,0.045);--glass-md:rgba(255,255,255,0.08);
-      --border:rgba(255,255,255,0.09);--border-hi:rgba(255,255,255,0.16);
-      --rose:#f472b6;--rose-soft:rgba(244,114,182,0.10);--rose-glow:rgba(244,114,182,0.22);
-      --amber:#fbbf24;--amber-soft:rgba(251,191,36,0.10);--amber-glow:rgba(251,191,36,0.22);
-      --violet:#a78bfa;--violet-soft:rgba(167,139,250,0.10);--violet-glow:rgba(167,139,250,0.22);
-      --sky:#93c5fd;--sky-soft:rgba(147,197,253,0.10);--sky-glow:rgba(147,197,253,0.22);
-      --emerald:#34d399;--emerald-soft:rgba(52,211,153,0.10);--emerald-glow:rgba(52,211,153,0.22);
-      --orange:#fb923c;--orange-soft:rgba(251,146,60,0.10);
-      --t1:rgba(255,255,255,0.95);--t2:rgba(255,255,255,0.75);--t3:rgba(255,255,255,0.52);--t4:rgba(255,255,255,0.36);
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.04);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --rose:#9d174d;--rose-soft:rgba(157,23,77,0.10);--rose-glow:rgba(157,23,77,0.22);
+      --amber:#b45309;--amber-soft:rgba(180,83,9,0.10);--amber-glow:rgba(180,83,9,0.22);
+      --violet:#6d28d9;--violet-soft:rgba(109,40,217,0.10);--violet-glow:rgba(109,40,217,0.22);
+      --sky:#2563eb;--sky-soft:rgba(37,99,235,0.10);--sky-glow:rgba(37,99,235,0.22);
+      --emerald:#047857;--emerald-soft:rgba(4,120,87,0.10);--emerald-glow:rgba(4,120,87,0.22);
+      --orange:#ea580c;--orange-soft:rgba(234,88,12,0.10);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
-    .bg{position:fixed;inset:0;z-index:0;background:#0f0818;overflow:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
     .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
-    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(190,24,93,0.38)0%,transparent 70%);top:-220px;left:-160px;}
-    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(217,119,6,0.35)0%,transparent 70%);bottom:-120px;right:-120px;}
-    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(139,92,246,0.12)0%,transparent 70%);top:40%;right:8%;}
-    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(190,24,93,0.16)0%,transparent 70%);top:20%;left:50%;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(190,24,93,0.10)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(180,83,9,0.08)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(109,40,217,0.07)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(190,24,93,0.06)0%,transparent 70%);top:20%;left:50%;}
 
     /* NAV */
-    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,8,24,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);}
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
     .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
     .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--rose),var(--amber));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#0f0818;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--rose),var(--amber));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#ffffff;}
     .snav-brand{font-size:0.7rem;font-weight:800;color:var(--rose);white-space:nowrap;}
     .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
     .snav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
     .snav-links::-webkit-scrollbar{display:none;}
     .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
-    .snav-link:hover{color:var(--t2);background:rgba(255,255,255,0.05);}
-    .snav-link.active{color:var(--rose);background:rgba(244,114,182,0.08);border-color:rgba(244,114,182,0.18);}
+    .snav-link:hover{color:var(--t2);background:rgba(15,23,42,0.04);}
+    .snav-link.active{color:var(--rose);background:rgba(157,23,77,0.08);border-color:rgba(157,23,77,0.18);}
 
     .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1200px;margin:0 auto;}
-    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.06);}
-    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.08);}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 2px 14px rgba(15,23,42,0.08),0 1px 4px rgba(15,23,42,0.04);}
     .pad{padding:22px;}
 
     /* HEADER */
     .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:26px;margin-bottom:4px;border-bottom:1px solid var(--border);}
     @media(max-width:700px){.header{grid-template-columns:1fr;}}
     .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--rose),var(--amber));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#0f0818;flex-shrink:0;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--rose),var(--amber));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#ffffff;flex-shrink:0;}
     .h-brand{font-size:0.75rem;font-weight:800;color:var(--rose);letter-spacing:1px;}
     .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
     .h-title{font-size:2.1rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
@@ -83,10 +83,10 @@
     .kpi-sk{background:linear-gradient(135deg,var(--sky-glow),rgba(255,255,255,0.01));}
     .kpi-ro .kpi-num{color:var(--rose);}.kpi-am .kpi-num{color:var(--amber);}
     .kpi-vi .kpi-num{color:var(--violet);}.kpi-sk .kpi-num{color:var(--sky);}
-    .kpi-ro .kpi-tag{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(244,114,182,0.22);}
-    .kpi-am .kpi-tag{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,191,36,0.22);}
-    .kpi-vi .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(167,139,250,0.22);}
-    .kpi-sk .kpi-tag{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(147,197,253,0.22);}
+    .kpi-ro .kpi-tag{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(157,23,77,0.22);}
+    .kpi-am .kpi-tag{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(180,83,9,0.22);}
+    .kpi-vi .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(109,40,217,0.22);}
+    .kpi-sk .kpi-tag{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(37,99,235,0.22);}
 
     /* CALLOUT */
     .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
@@ -102,15 +102,15 @@
     .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
 
     /* METHOD IN ACTION */
-    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
+    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(15,23,42,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
     .method-col{flex:1;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:10px 6px;}
     .method-col + .method-col{border-left:1px solid var(--border);}
     .mc-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:900;margin-bottom:3px;flex-shrink:0;}
-    .mc-1{background:rgba(244,114,182,0.12);border:1px solid rgba(244,114,182,0.28);color:var(--rose);}
-    .mc-2{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.28);color:var(--amber);}
-    .mc-3{background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.28);color:var(--violet);}
-    .mc-4{background:rgba(147,197,253,0.12);border:1px solid rgba(147,197,253,0.28);color:var(--sky);}
-    .mc-5{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--emerald);}
+    .mc-1{background:rgba(157,23,77,0.12);border:1px solid rgba(157,23,77,0.28);color:var(--rose);}
+    .mc-2{background:rgba(180,83,9,0.12);border:1px solid rgba(180,83,9,0.28);color:var(--amber);}
+    .mc-3{background:rgba(109,40,217,0.12);border:1px solid rgba(109,40,217,0.28);color:var(--violet);}
+    .mc-4{background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.28);color:var(--sky);}
+    .mc-5{background:rgba(4,120,87,0.12);border:1px solid rgba(4,120,87,0.28);color:var(--emerald);}
     .mc-stage{font-size:0.63rem;font-weight:800;color:var(--t1);letter-spacing:0.5px;}
     .mc-focus{font-size:0.54rem;color:var(--t3);font-weight:600;margin-bottom:8px;}
     .mc-num{font-size:1.7rem;font-weight:900;line-height:1;letter-spacing:-1px;}
@@ -121,9 +121,9 @@
     .means-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
     @media(max-width:700px){.means-strip{grid-template-columns:1fr;}}
     .ms-tile{padding:14px 16px;border-radius:12px;display:flex;align-items:flex-start;gap:10px;}
-    .ms-t1{background:rgba(244,114,182,0.05);border:1px solid rgba(244,114,182,0.13);}
-    .ms-t2{background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.13);}
-    .ms-t3{background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.13);}
+    .ms-t1{background:rgba(157,23,77,0.05);border:1px solid rgba(157,23,77,0.13);}
+    .ms-t2{background:rgba(109,40,217,0.05);border:1px solid rgba(109,40,217,0.13);}
+    .ms-t3{background:rgba(180,83,9,0.05);border:1px solid rgba(180,83,9,0.13);}
     .ms-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
     .ms-lbl{font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
     .ms-t1 .ms-lbl{color:var(--rose);}.ms-t2 .ms-lbl{color:var(--violet);}.ms-t3 .ms-lbl{color:var(--amber);}
@@ -136,18 +136,18 @@
     .donut-wrap{position:relative;height:135px;}
     .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
     .rag-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;margin-bottom:6px;}
-    .rag-red{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.18);}
-    .rag-amber{background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.18);}
-    .rag-green{background:rgba(52,211,153,0.07);border:1px solid rgba(52,211,153,0.18);}
+    .rag-red{background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.18);}
+    .rag-amber{background:rgba(234,88,12,0.07);border:1px solid rgba(234,88,12,0.18);}
+    .rag-green{background:rgba(4,120,87,0.07);border:1px solid rgba(4,120,87,0.18);}
     .rag-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-    .rag-dot-red{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,0.4);}
-    .rag-dot-amber{background:#fb923c;box-shadow:0 0 5px rgba(251,146,60,0.4);}
-    .rag-dot-green{background:#34d399;box-shadow:0 0 5px rgba(52,211,153,0.4);}
+    .rag-dot-red{background:#dc2626;box-shadow:0 0 5px rgba(220,38,38,0.4);}
+    .rag-dot-amber{background:#ea580c;box-shadow:0 0 5px rgba(234,88,12,0.4);}
+    .rag-dot-green{background:#059669;box-shadow:0 0 5px rgba(4,120,87,0.4);}
     .rag-label{font-size:0.71rem;font-weight:600;flex:1;}
     .rag-count{font-size:1.35rem;font-weight:900;}
-    .rag-red .rag-label{color:#fca5a5;}.rag-red .rag-count{color:#ef4444;}
-    .rag-amber .rag-label{color:#fdba74;}.rag-amber .rag-count{color:#fb923c;}
-    .rag-green .rag-label{color:#6ee7b7;}.rag-green .rag-count{color:#34d399;}
+    .rag-red .rag-label{color:#991b1b;}.rag-red .rag-count{color:#dc2626;}
+    .rag-amber .rag-label{color:#92400e;}.rag-amber .rag-count{color:#ea580c;}
+    .rag-green .rag-label{color:#065f46;}.rag-green .rag-count{color:#059669;}
 
     /* MOOD PILLS */
     .mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
@@ -157,13 +157,13 @@
 
     /* SUPPORT AREAS */
     .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
-    .sa-hi{background:rgba(244,114,182,0.07);border:1px solid rgba(244,114,182,0.15);}
-    .sa-lo{background:rgba(255,255,255,0.03);border:1px solid var(--border);}
+    .sa-hi{background:rgba(157,23,77,0.07);border:1px solid rgba(157,23,77,0.15);}
+    .sa-lo{background:rgba(15,23,42,0.02);border:1px solid var(--border);}
     .sa-icon{font-size:0.85rem;flex-shrink:0;}
     .sa-name{font-size:0.75rem;font-weight:600;color:var(--t2);flex:1;}
     .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
-    .sa-new{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(244,114,182,0.22);}
-    .sa-cont{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,191,36,0.22);}
+    .sa-new{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(157,23,77,0.22);}
+    .sa-cont{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(180,83,9,0.22);}
     .sau-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
     .sau-row:last-child{border-bottom:none;padding-bottom:0;}
     .sau-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
@@ -173,20 +173,22 @@
     /* ACTION CARDS */
     .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
     .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
-    .a-embed{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(244,114,182,0.22);}
-    .a-insight{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(167,139,250,0.22);}
-    .a-expand{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(251,191,36,0.22);}
+    .a-embed{background:var(--rose-soft);color:var(--rose);border:1px solid rgba(157,23,77,0.22);}
+    .a-insight{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(109,40,217,0.22);}
+    .a-expand{background:var(--amber-soft);color:var(--amber);border:1px solid rgba(180,83,9,0.22);}
     .a-ttl{font-size:0.86rem;font-weight:700;color:var(--t1);line-height:1.25;}
     .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
     .a-do{font-size:0.69rem;font-weight:600;color:var(--rose);border-top:1px solid var(--border);padding-top:8px;}
     .a-do::before{content:'→  ';opacity:0.7;}
+    .a-nums{font-size:1.05rem;font-weight:800;color:var(--t1);line-height:1.3;letter-spacing:-0.3px;margin-bottom:4px;}
+    .a-q{font-size:0.74rem;font-style:italic;color:var(--t2);border-top:1px solid var(--border);padding-top:9px;margin-top:4px;line-height:1.55;}
 
     /* REVIEW BOX */
-    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(255,255,255,0.025);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
     .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
 
     /* REACH */
-    .reach-wrap{padding:22px;background:linear-gradient(135deg,rgba(244,114,182,0.07)0%,rgba(167,139,250,0.05)100%);border:1px solid rgba(244,114,182,0.18);border-radius:18px;margin-bottom:4px;}
+    .reach-wrap{padding:22px;background:linear-gradient(135deg,rgba(157,23,77,0.07)0%,rgba(109,40,217,0.05)100%);border:1px solid rgba(157,23,77,0.18);border-radius:18px;margin-bottom:4px;}
     .reach-title{font-size:1.05rem;font-weight:900;letter-spacing:-0.3px;line-height:1.2;margin-bottom:6px;}
     .reach-title em{font-style:normal;color:var(--rose);}
     .reach-body{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;}
@@ -344,11 +346,12 @@
   </div>
 
   <!-- HOW MEMBERS ARE DOING -->
-  <div id="sec-members" class="slabel">How Your Members Are Doing - May 2026</div>
+  <div id="sec-members" class="slabel">Cohort Overview - May 2026</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">A live picture of how your cohort is engaging with Kamelion. This data builds your evidence base - and gives funders and trustees a measurable view of what FFS members are experiencing outside of sessions.</div>
   <div class="grid g2" style="margin-bottom:4px;">
 
     <div class="glass pad">
-      <div class="clabel">Member Status</div>
+      <div class="clabel">Cohort Status</div>
       <div class="rag-donut-grid">
         <div class="donut-wrap">
           <canvas id="ragChart"></canvas>
@@ -359,17 +362,17 @@
         </div>
         <div>
           <div class="rag-row rag-green"><div class="rag-dot rag-dot-green"></div><div class="rag-label">Active &amp; Engaged</div><div class="rag-count">2</div></div>
-          <div class="rag-row rag-amber"><div class="rag-dot rag-dot-amber"></div><div class="rag-label">Worth Keeping an Eye On</div><div class="rag-count">1</div></div>
+          <div class="rag-row rag-amber"><div class="rag-dot rag-dot-amber"></div><div class="rag-label">Some Variation in Data</div><div class="rag-count">1</div></div>
           <div class="rag-row rag-red"><div class="rag-dot rag-dot-red"></div><div class="rag-label">Under Review</div><div class="rag-count">0</div></div>
         </div>
       </div>
       <div class="callout c-emerald">
-        <div class="callout-ttl">Your Members Are Doing Well</div>
-        <p>Two active and engaged. One showing some variation - normal life, normal ups and downs. <strong>No action needed for Amber.</strong></p>
+        <div class="callout-ttl">Cohort Is Stable - Evidence Is Building</div>
+        <p>Two members actively engaging. One showing natural variation - this is normal. No action is needed. <strong>Kamelion reviews any flagged data before anything is shared with your organisation.</strong></p>
       </div>
       <div class="review-box">
-        <strong>How the review process works</strong>
-        Kamelion reviews each case before anything is shared. We only make contact when there is genuine reason to. Individual member details are not shared with your organisation without our review first.
+        <strong>How the data review process works</strong>
+        Kamelion reviews all flagged data before anything is passed on. Individual member details are never shared directly with your organisation - we only make contact when there is genuine reason to, and only after our internal review.
       </div>
     </div>
 
@@ -380,10 +383,10 @@
         <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">6</span></div>
         <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">18</span></div>
       </div>
-      <div style="font-size:0.67rem;color:var(--t3);margin-bottom:4px;">28% positive · 72% steady and stable this month</div>
+      <div style="font-size:0.67rem;color:var(--t3);margin-bottom:4px;">28% positive · 72% steady and consistent this month</div>
       <div class="callout c-amber">
-        <div class="callout-ttl">Steady Is Significant</div>
-        <p>A majority checking in as Normal is healthy. Members are building the habit of regular self-check - the awareness itself is the foundation everything else rests on.</p>
+        <div class="callout-ttl">Consistent Engagement Is the Evidence</div>
+        <p>25 check-ins. A cohort that is mostly steady is a cohort that is showing up. The habit of pausing and reflecting - whatever the mood - is exactly the kind of behaviour change this data can evidence to funders.</p>
       </div>
     </div>
 
@@ -440,25 +443,26 @@
   </div>
 
   <!-- NEXT STEPS -->
-  <div id="sec-next" class="slabel">Next Steps - June 2026</div>
+  <div id="sec-next" class="slabel">Next Steps - June &amp; July 2026</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where FFS stands in each - and the one move that extends what is already working.</div>
   <div class="grid g3">
     <div class="glass acard">
-      <span class="a-badge a-embed">Embed It</span>
-      <div class="a-ttl">Weave Kamelion into your next session</div>
-      <div class="a-why">The 13 May data spike shows what happens when challenges are introduced in session - 55 started in a single day. That is not coincidence, that is structure working.</div>
-      <div class="a-do">Open the next session with a challenge. Give members 5 minutes to log it. The habit forms fast.</div>
+      <span class="a-badge a-embed">Skills &amp; Knowledge</span>
+      <div class="a-nums">39 journal entries. 55% of all activity is My Character and My Mind.</div>
+      <div class="a-why">Your members are reflecting on themselves between sessions - that is where self-knowledge actually builds. The topics they are already exploring are already in this data. Shape your next session around them.</div>
+      <div class="a-q">What would your programme look like if it was designed around what members are actually working on between sessions?</div>
     </div>
     <div class="glass acard">
-      <span class="a-badge a-insight">Use It</span>
-      <div class="a-ttl">Put this data in front of your funders and trustees</div>
-      <div class="a-why">56 completed challenges and 39 journal reflections is the language of impact. This data does not just tell a story - it evidences one.</div>
-      <div class="a-do">Include May's numbers in your next funder update. Walk trustees through the dashboard at your next board meeting.</div>
+      <span class="a-badge a-insight">Peer &amp; Community Connection</span>
+      <div class="a-nums">1 community interaction in May. The peer layer is the next frontier.</div>
+      <div class="a-why">Members are growing individually - but connection between them is almost untouched. That is not a gap, it is the next thing FFS is already positioned to unlock. One shared prompt in a session is all it takes to start.</div>
+      <div class="a-q">What does peer connection look like for your members when FFS is not in the room with them?</div>
     </div>
     <div class="glass acard">
-      <span class="a-badge a-expand">Grow It</span>
-      <div class="a-ttl">Add new programme members from day one</div>
-      <div class="a-why">Every new member extends your insight and your impact story. The earlier they join, the richer your evidence base becomes over time.</div>
-      <div class="a-do">Add each new programme participant to Kamelion from the start. Do not wait for them to settle in first.</div>
+      <span class="a-badge a-expand">Participation &amp; Readiness</span>
+      <div class="a-nums">56 challenges completed. 59.6% completion rate.</div>
+      <div class="a-why">Your members are showing up for themselves between sessions. That is not engagement on a spreadsheet - it is evidence of readiness. Take May's completion rate into your next funder report or trustee pack. This is what behavioural evidence looks like.</div>
+      <div class="a-q">How are you connecting what members are building here to the outcomes FFS is promising its funders?</div>
     </div>
   </div>
 
@@ -484,8 +488,8 @@
     setActive('sec-activity');
   })();
 
-  const G='rgba(255,255,255,0.07)';
-  Chart.defaults.color='rgba(255,255,255,0.60)';
+  const G='rgba(15,23,42,0.08)';
+  Chart.defaults.color='rgba(15,23,42,0.60)';
   Chart.defaults.borderColor=G;
   Chart.defaults.font.family="'Inter',system-ui,sans-serif";
 
@@ -494,11 +498,11 @@
     type:'doughnut',
     data:{
       labels:['Happy','Good','Normal'],
-      datasets:[{data:[1,6,18],backgroundColor:['#4ade80','#86efac','#94a3b8'],borderColor:'rgba(15,8,24,0.5)',borderWidth:2}]
+      datasets:[{data:[1,6,18],backgroundColor:['#4ade80','#86efac','#94a3b8'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
     },
     options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
-      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(255,255,255,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
-      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
+      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(15,23,42,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
     }}
   });
 
@@ -507,14 +511,14 @@
     type:'bar',
     data:{
       labels:['My Character','My Mind','Health & Fitness','Social Life','Career','Money'],
-      datasets:[{data:[28.4,26.7,21.9,21.6,0.7,0.7],backgroundColor:['#f472b6','#a78bfa','#34d399','#fbbf24','#93c5fd','#fb923c'],borderRadius:6,borderSkipped:false}]
+      datasets:[{data:[28.4,26.7,21.9,21.6,0.7,0.7],backgroundColor:['#9d174d','#6d28d9','#059669','#b45309','#2563eb','#ea580c'],borderRadius:6,borderSkipped:false}]
     },
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
       legend:{display:false},
-      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
     },scales:{
-      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(255,255,255,0.50)',callback:v=>v+'%'},border:{display:false},max:40},
-      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(255,255,255,0.65)'}}
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:40},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}}
     }}
   });
 
@@ -523,11 +527,11 @@
     type:'doughnut',
     data:{
       labels:['Under Review','Worth Keeping an Eye On','Active & Engaged'],
-      datasets:[{data:[0.001,1,2],backgroundColor:['#ef4444','#fb923c','#34d399'],borderColor:'rgba(15,8,24,0.5)',borderWidth:2}]
+      datasets:[{data:[0.001,1,2],backgroundColor:['#dc2626','#ea580c','#059669'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
     },
     options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{
       legend:{display:false},
-      tooltip:{backgroundColor:'rgba(10,15,30,0.92)',borderColor:'rgba(255,255,255,0.1)',borderWidth:1,callbacks:{
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{
         label:i=>{
           const v=Math.round(i.parsed);
           return i.label.includes('Review')?' 0 members':` ${v} member${v!==1?'s':''}`;
