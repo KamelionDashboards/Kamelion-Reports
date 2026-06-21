@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alde Valley Academy - Kamelion Impact Report · 2025-26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.04);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --cobalt:#1d4ed8;--cobalt-soft:rgba(29,78,216,0.10);--cobalt-glow:rgba(29,78,216,0.22);
+      --coral:#c2410c;--coral-soft:rgba(194,65,12,0.10);--coral-glow:rgba(194,65,12,0.22);
+      --plum:#6b21a8;--plum-soft:rgba(107,33,168,0.10);--plum-glow:rgba(107,33,168,0.22);
+      --pine:#166534;--pine-soft:rgba(22,101,52,0.10);--pine-glow:rgba(22,101,52,0.22);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(29,78,216,0.11)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(107,33,168,0.09)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(194,65,12,0.06)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(22,101,52,0.07)0%,transparent 70%);top:20%;left:50%;}
+
+    /* NAV */
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
+    .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
+    .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--cobalt),var(--plum));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#ffffff;}
+    .snav-brand{font-size:0.7rem;font-weight:800;color:var(--cobalt);white-space:nowrap;}
+    .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
+    .snav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
+    .snav-links::-webkit-scrollbar{display:none;}
+    .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
+    .snav-link:hover{color:var(--t2);background:rgba(15,23,42,0.04);}
+    .snav-link.active{color:var(--cobalt);background:rgba(29,78,216,0.08);border-color:rgba(29,78,216,0.18);}
+
+    .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1200px;margin:0 auto;}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 2px 14px rgba(15,23,42,0.08),0 1px 4px rgba(15,23,42,0.04);}
+    .pad{padding:22px;}
+
+    /* HEADER */
+    .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:26px;margin-bottom:4px;border-bottom:1px solid var(--border);}
+    @media(max-width:700px){.header{grid-template-columns:1fr;}}
+    .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--cobalt),var(--plum));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#ffffff;flex-shrink:0;}
+    .h-brand{font-size:0.75rem;font-weight:800;color:var(--cobalt);letter-spacing:1px;}
+    .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
+    .h-title{font-size:2.1rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
+    .h-title span{background:linear-gradient(120deg,var(--cobalt)0%,var(--plum)55%,var(--coral)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .h-sub{margin-top:7px;font-size:0.8rem;color:var(--t2);line-height:1.5;max-width:520px;}
+    .h-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .badge{font-size:0.61rem;font-weight:700;color:var(--t2);background:var(--glass-md);border:1px solid var(--border-hi);padding:5px 13px;border-radius:99px;}
+
+    /* LABELS */
+    .slabel{font-size:0.54rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin:24px 0 10px;}
+    .clabel{font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:11px;}
+
+    /* GRID */
+    .grid{display:grid;gap:12px;}
+    .g4{grid-template-columns:repeat(4,1fr);}
+    .g3{grid-template-columns:repeat(3,1fr);}
+    .g2{grid-template-columns:1fr 1fr;}
+    @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+    @media(max-width:620px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+    /* KPI */
+    .kpi-wrap{padding:18px;}
+    .kpi-num{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:4px;}
+    .kpi-lbl{font-size:0.7rem;font-weight:500;color:var(--t2);margin-bottom:7px;}
+    .kpi-tag{font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block;}
+    .kpi-co{background:linear-gradient(135deg,var(--cobalt-glow),rgba(255,255,255,0.01));}
+    .kpi-cr{background:linear-gradient(135deg,var(--coral-glow),rgba(255,255,255,0.01));}
+    .kpi-pl{background:linear-gradient(135deg,var(--plum-glow),rgba(255,255,255,0.01));}
+    .kpi-pi{background:linear-gradient(135deg,var(--pine-glow),rgba(255,255,255,0.01));}
+    .kpi-co .kpi-num{color:var(--cobalt);}
+    .kpi-cr .kpi-num{color:var(--coral);}
+    .kpi-pl .kpi-num{color:var(--plum);}
+    .kpi-pi .kpi-num{color:var(--pine);}
+    .kpi-co .kpi-tag{background:var(--cobalt-soft);color:var(--cobalt);border:1px solid rgba(29,78,216,0.22);}
+    .kpi-cr .kpi-tag{background:var(--coral-soft);color:var(--coral);border:1px solid rgba(194,65,12,0.22);}
+    .kpi-pl .kpi-tag{background:var(--plum-soft);color:var(--plum);border:1px solid rgba(107,33,168,0.22);}
+    .kpi-pi .kpi-tag{background:var(--pine-soft);color:var(--pine);border:1px solid rgba(22,101,52,0.22);}
+
+    /* CALLOUT */
+    .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
+    .c-cobalt{background:var(--cobalt-soft);border-left-color:var(--cobalt);}
+    .c-coral{background:var(--coral-soft);border-left-color:var(--coral);}
+    .c-plum{background:var(--plum-soft);border-left-color:var(--plum);}
+    .c-pine{background:var(--pine-soft);border-left-color:var(--pine);}
+    .callout-ttl{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .c-cobalt .callout-ttl{color:var(--cobalt);}
+    .c-coral .callout-ttl{color:var(--coral);}
+    .c-plum .callout-ttl{color:var(--plum);}
+    .c-pine .callout-ttl{color:var(--pine);}
+    .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
+
+    /* METHOD */
+    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(15,23,42,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
+    .method-col{flex:1;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:10px 6px;}
+    .method-col + .method-col{border-left:1px solid var(--border);}
+    .mc-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:900;margin-bottom:3px;flex-shrink:0;}
+    .mc-1{background:rgba(29,78,216,0.12);border:1px solid rgba(29,78,216,0.28);color:var(--cobalt);}
+    .mc-2{background:rgba(194,65,12,0.12);border:1px solid rgba(194,65,12,0.28);color:var(--coral);}
+    .mc-3{background:rgba(107,33,168,0.12);border:1px solid rgba(107,33,168,0.28);color:var(--plum);}
+    .mc-4{background:rgba(22,101,52,0.12);border:1px solid rgba(22,101,52,0.28);color:var(--pine);}
+    .mc-5{background:rgba(29,78,216,0.08);border:1px solid rgba(29,78,216,0.20);color:var(--cobalt);}
+    .mc-stage{font-size:0.63rem;font-weight:800;color:var(--t1);letter-spacing:0.5px;}
+    .mc-focus{font-size:0.54rem;color:var(--t3);font-weight:600;margin-bottom:8px;}
+    .mc-num{font-size:1.7rem;font-weight:900;line-height:1;letter-spacing:-1px;}
+    .mc-desc{font-size:0.6rem;color:var(--t3);line-height:1.4;max-width:120px;}
+    @media(max-width:700px){.method-grid{flex-wrap:wrap;}.method-col{min-width:45%;}.method-col + .method-col{border-left:none;border-top:1px solid var(--border);}}
+
+    /* WHAT IT MEANS */
+    .means-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+    @media(max-width:700px){.means-strip{grid-template-columns:1fr;}}
+    .ms-tile{padding:14px 16px;border-radius:12px;display:flex;align-items:flex-start;gap:10px;}
+    .ms-t1{background:rgba(29,78,216,0.05);border:1px solid rgba(29,78,216,0.13);}
+    .ms-t2{background:rgba(107,33,168,0.05);border:1px solid rgba(107,33,168,0.13);}
+    .ms-t3{background:rgba(22,101,52,0.05);border:1px solid rgba(22,101,52,0.13);}
+    .ms-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .ms-lbl{font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+    .ms-t1 .ms-lbl{color:var(--cobalt);}
+    .ms-t2 .ms-lbl{color:var(--plum);}
+    .ms-t3 .ms-lbl{color:var(--pine);}
+    .ms-text{font-size:0.73rem;color:var(--t2);line-height:1.45;}
+    .ms-text strong{color:var(--t1);}
+
+    /* COHORT STATUS */
+    .cs-wrap{display:grid;grid-template-columns:80px 1fr;gap:18px;align-items:start;}
+    @media(max-width:500px){.cs-wrap{grid-template-columns:1fr;}}
+    .cs-indicator{width:80px;height:80px;border-radius:16px;background:var(--pine-soft);border:2px solid rgba(22,101,52,0.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;}
+    .cs-dot{width:14px;height:14px;border-radius:50%;background:#16a34a;box-shadow:0 0 7px rgba(22,163,74,0.45);}
+    .cs-label{font-size:0.48rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--pine);}
+    .cs-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px;}
+    .cs-stat{display:flex;flex-direction:column;gap:1px;}
+    .cs-num{font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;}
+    .cs-co .cs-num{color:var(--cobalt);}
+    .cs-pi .cs-num{color:var(--pine);}
+    .cs-desc{font-size:0.62rem;color:var(--t3);font-weight:600;}
+
+    /* WELLBEING */
+    .wb-strip{display:flex;gap:8px;margin-bottom:10px;}
+    .wb-tile{flex:1;padding:12px 10px;border-radius:10px;text-align:center;}
+    .wb-up{background:rgba(22,101,52,0.08);border:1px solid rgba(22,101,52,0.18);}
+    .wb-same{background:rgba(15,23,42,0.04);border:1px solid rgba(15,23,42,0.09);}
+    .wb-dn{background:rgba(194,65,12,0.08);border:1px solid rgba(194,65,12,0.18);}
+    .wb-num{font-size:1.5rem;font-weight:900;line-height:1;letter-spacing:-0.5px;}
+    .wb-up .wb-num{color:var(--pine);}
+    .wb-same .wb-num{color:var(--t2);}
+    .wb-dn .wb-num{color:var(--coral);}
+    .wb-lbl{font-size:0.57rem;font-weight:700;margin-top:3px;}
+    .wb-up .wb-lbl{color:var(--pine);}
+    .wb-same .wb-lbl{color:var(--t3);}
+    .wb-dn .wb-lbl{color:var(--coral);}
+
+    /* MOOD PILLS */
+    .mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+    .mood-pill{display:flex;align-items:center;gap:5px;background:var(--glass-md);border:1px solid var(--border-hi);border-radius:99px;padding:5px 11px;font-size:0.7rem;font-weight:600;color:var(--t2);}
+    .mood-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .mood-count{font-weight:800;color:var(--t1);margin-left:2px;}
+
+    /* SUPPORT AREAS */
+    .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
+    .sa-hi{background:rgba(194,65,12,0.07);border:1px solid rgba(194,65,12,0.15);}
+    .sa-lo{background:rgba(15,23,42,0.02);border:1px solid var(--border);}
+    .sa-icon{font-size:0.9rem;flex-shrink:0;}
+    .sa-name{font-size:0.75rem;font-weight:600;color:var(--t2);flex:1;}
+    .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 8px;border-radius:99px;flex-shrink:0;white-space:nowrap;background:var(--cobalt-soft);color:var(--cobalt);border:1px solid rgba(29,78,216,0.22);}
+
+    /* REVIEW BOX */
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
+
+    /* NEXT STEPS */
+    .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
+    .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
+    .a-co{background:var(--cobalt-soft);color:var(--cobalt);border:1px solid rgba(29,78,216,0.22);}
+    .a-pl{background:var(--plum-soft);color:var(--plum);border:1px solid rgba(107,33,168,0.22);}
+    .a-cr{background:var(--coral-soft);color:var(--coral);border:1px solid rgba(194,65,12,0.22);}
+    .a-nums{font-size:1.05rem;font-weight:800;color:var(--t1);line-height:1.3;letter-spacing:-0.3px;margin-bottom:4px;}
+    .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
+    .a-q{font-size:0.74rem;font-style:italic;color:var(--t2);border-top:1px solid var(--border);padding-top:9px;margin-top:4px;line-height:1.55;}
+
+    .chart-wrap{position:relative;width:100%;}
+    .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+  </style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-logo">
+      <div class="snav-k">K</div>
+      <div class="snav-brand">KAMELION <span>· Alde Valley Academy · 2025-26</span></div>
+    </div>
+    <div class="snav-links">
+      <a class="snav-link" href="#sec-activity">Foundation</a>
+      <a class="snav-link" href="#sec-year">This Year</a>
+      <a class="snav-link" href="#sec-method">Method</a>
+      <a class="snav-link" href="#sec-students">Students</a>
+      <a class="snav-link" href="#sec-support">Support Areas</a>
+      <a class="snav-link" href="#sec-next">Next Steps</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="h-logo">
+        <div class="h-k">K</div>
+        <div>
+          <div class="h-brand">KAMELION</div>
+          <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
+        </div>
+      </div>
+      <div class="h-title"><span>Alde Valley Academy</span></div>
+      <div class="h-sub">41 young people investing in themselves - building knowledge, skills and self-awareness. Here is what that looks like in data. A small number of students have flagged support areas this year - covered in full below.</div>
+    </div>
+    <div class="h-right">
+      <span class="badge">Academic Year 2025-26</span>
+      <span class="badge">41 Students Active · All-Time</span>
+      <span class="badge">100% Goal Completion · All-Time</span>
+    </div>
+  </div>
+
+  <!-- ALL-TIME FOUNDATION -->
+  <div id="sec-activity" class="slabel">All-Time Foundation</div>
+  <div class="grid g4" style="margin-bottom:4px;">
+    <div class="glass kpi-wrap kpi-co">
+      <div class="kpi-num">164</div>
+      <div class="kpi-lbl">Mood Check-ins</div>
+      <span class="kpi-tag">4.0 per student</span>
+    </div>
+    <div class="glass kpi-wrap kpi-cr">
+      <div class="kpi-num">41/41</div>
+      <div class="kpi-lbl">Goals Achieved</div>
+      <span class="kpi-tag">100% · every one</span>
+    </div>
+    <div class="glass kpi-wrap kpi-pl">
+      <div class="kpi-num">82</div>
+      <div class="kpi-lbl">Challenges Completed</div>
+      <span class="kpi-tag">89.1% completion rate</span>
+    </div>
+    <div class="glass kpi-wrap kpi-pi">
+      <div class="kpi-num">40</div>
+      <div class="kpi-lbl">Personality Tests</div>
+      <span class="kpi-tag">22 unique students</span>
+    </div>
+  </div>
+
+  <!-- THIS ACADEMIC YEAR -->
+  <div id="sec-year" class="slabel">This Academic Year - 2025-26</div>
+  <div class="grid g2" style="margin-bottom:12px;">
+    <div class="glass pad">
+      <div class="clabel">How Students Are Feeling - All Year</div>
+      <div class="chart-wrap" style="height:185px;">
+        <canvas id="moodChart"></canvas>
+      </div>
+      <div class="mood-row" style="margin-top:10px;">
+        <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">26</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">41</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">67</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">14</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#f87171;"></div>Sad <span class="mood-count">16</span></div>
+      </div>
+      <div class="callout c-cobalt">
+        <div class="callout-ttl">Regular Reflection Builds Self-Awareness</div>
+        <p>164 check-ins across the year. The habit of pausing - whatever the mood - is one of the most valuable things Kamelion builds. 41% of check-ins are positive. Awareness comes before change.</p>
+      </div>
+    </div>
+    <div class="glass pad">
+      <div class="clabel">What Students Are Engaging With - All Year</div>
+      <div class="chart-wrap" style="height:185px;">
+        <canvas id="contentChart"></canvas>
+      </div>
+      <div class="callout c-plum">
+        <div class="callout-ttl">Character Work Leads - That Is the Deep Work</div>
+        <p>My Character at 40.1% shows students are engaging with who they are, not just what they know. That is exactly what Kamelion is designed to build - and your students are already doing it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE TIMELINE -->
+  <div class="glass pad" style="margin-bottom:4px;">
+    <div class="clabel">Challenge Activity by Month - Academic Year 2025-26</div>
+    <div class="chart-wrap" style="height:155px;">
+      <canvas id="activityChart"></canvas>
+    </div>
+    <div class="callout c-coral" style="margin-top:12px;">
+      <div class="callout-ttl">Strong Start to the Year - 89.1% Completion Rate Across Both Months</div>
+      <p>68 challenges started in October, 24 in November. Both months show students following through at a high rate - 61 and 21 completed respectively. This is the kind of consistency that builds the evidence trail over time.</p>
+    </div>
+  </div>
+
+  <!-- KAMELION METHOD -->
+  <div id="sec-method" class="slabel">The Kamelion Method - In Action at Alde Valley</div>
+  <div class="method-grid">
+    <div class="method-col">
+      <div class="mc-circle mc-1">K</div>
+      <div class="mc-stage">KNOW</div>
+      <div class="mc-focus">Self-Awareness</div>
+      <div class="mc-num" style="color:var(--cobalt);">164</div>
+      <div class="mc-desc">mood check-ins building daily self-awareness</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-2">A</div>
+      <div class="mc-stage">ACCEPT</div>
+      <div class="mc-focus">Self-Understanding</div>
+      <div class="mc-num" style="color:var(--coral);">46</div>
+      <div class="mc-desc">journals and personality tests taken</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-3">A</div>
+      <div class="mc-stage">ACT</div>
+      <div class="mc-focus">Taking Action</div>
+      <div class="mc-num" style="color:var(--plum);">82</div>
+      <div class="mc-desc">challenges completed this year</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-4">C</div>
+      <div class="mc-stage">CONNECT</div>
+      <div class="mc-focus">Community</div>
+      <div class="mc-num" style="color:var(--pine);">1</div>
+      <div class="mc-desc">community interaction this year</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-5">G</div>
+      <div class="mc-stage">GROW</div>
+      <div class="mc-focus">Goal Achievement</div>
+      <div class="mc-num" style="color:var(--cobalt);">41</div>
+      <div class="mc-desc">goals set and every one completed</div>
+    </div>
+  </div>
+  <div class="means-strip">
+    <div class="ms-tile ms-t1">
+      <div class="ms-icon">🧠</div>
+      <div>
+        <div class="ms-lbl">Early Intervention</div>
+        <div class="ms-text">Kamelion works in the background between lessons. <strong>Students are building skills and awareness outside the classroom - without it feeling like support.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t2">
+      <div class="ms-icon">📊</div>
+      <div>
+        <div class="ms-lbl">Evidence Trail</div>
+        <div class="ms-text">Every interaction is logged and attributable. <strong>A measurable record of student development for your school, governors and Ofsted.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t3">
+      <div class="ms-icon">🌱</div>
+      <div>
+        <div class="ms-lbl">Prevention First</div>
+        <div class="ms-text">Students using Kamelion between sessions build resilience before they need support. <strong>That is the model working as designed.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div id="sec-students" class="slabel">How Your Students Are Doing - 2025-26</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">Cohort Status</div>
+      <div class="cs-wrap">
+        <div class="cs-indicator">
+          <div class="cs-dot"></div>
+          <div class="cs-label">All Clear</div>
+        </div>
+        <div>
+          <div class="cs-stats">
+            <div class="cs-stat cs-co">
+              <div class="cs-num">41</div>
+              <div class="cs-desc">students active</div>
+            </div>
+            <div class="cs-stat cs-pi">
+              <div class="cs-num">0</div>
+              <div class="cs-desc">flags raised this year</div>
+            </div>
+          </div>
+          <p style="font-size:0.74rem;color:var(--t2);line-height:1.5;">No students have been flagged this academic year. Kamelion monitors patterns in the background and updates in real time. If anything shifts, Kamelion reviews before anything is shared with your school.</p>
+        </div>
+      </div>
+      <div class="review-box">
+        <strong>How the review process works</strong>
+        Kamelion reviews each case before anything is passed on. We only make contact when there is genuine reason to. Individual student files are never shared directly with your school without our review first.
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">Wellbeing Scores - 22 Tracked Students</div>
+      <div class="wb-strip">
+        <div class="wb-tile wb-up">
+          <div class="wb-num">6</div>
+          <div class="wb-lbl">Improved</div>
+        </div>
+        <div class="wb-tile wb-same">
+          <div class="wb-num">10</div>
+          <div class="wb-lbl">Stable</div>
+        </div>
+        <div class="wb-tile wb-dn">
+          <div class="wb-num">6</div>
+          <div class="wb-lbl">Decreased</div>
+        </div>
+      </div>
+      <div class="callout c-pine">
+        <div class="callout-ttl">Stability Is the Baseline for Growth</div>
+        <p>6 students showing improved wellbeing across the year. 10 holding steady - that consistency is what early intervention protects. Where wellbeing has decreased, Kamelion is already tracking the pattern so your team does not have to spot it alone.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUPPORT AREAS -->
+  <div id="sec-support" class="slabel">Support Areas - What's on Students' Minds</div>
+  <div class="glass-md" style="padding:20px;margin-bottom:4px;">
+    <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:660px;">When students use Kamelion's relaxation features, they can tag what is on their mind. Over time, this builds a picture of the themes running through your cohort - so nothing goes unseen. <strong style="color:var(--t1);">Kamelion reviews all flagged areas before anything is shared with your school.</strong></div>
+    <div style="max-width:580px;margin-bottom:14px;">
+      <div class="sa-row sa-hi">
+        <div class="sa-icon">📚</div>
+        <div class="sa-name">Worried about school or exams</div>
+        <span class="sa-tag">2 students</span>
+      </div>
+      <div class="sa-row sa-hi">
+        <div class="sa-icon">💙</div>
+        <div class="sa-name">Feeling sad, low or numb</div>
+        <span class="sa-tag">1 student</span>
+      </div>
+    </div>
+    <div class="sa-row sa-lo" style="max-width:580px;">
+      <div class="sa-icon" style="font-size:0.8rem;">ℹ</div>
+      <div class="sa-name" style="font-size:0.7rem;color:var(--t3);">Support areas reflect student-selected tags when using Kamelion's relaxation tools. They are not diagnoses. Kamelion monitors these and reviews before any contact is made with your school.</div>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div id="sec-next" class="slabel">Next Steps - June & July 2026</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where Alde Valley stands in each - and the one move that extends what is already working.</div>
+  <div class="grid g3">
+    <div class="glass acard">
+      <span class="a-badge a-co">Skills & Knowledge</span>
+      <div class="a-nums">40 personality tests. 40.1% of all activity in My Character.</div>
+      <div class="a-why">22 students have already taken personality tests and 40.1% of all activity is in My Character. Your students are doing the deeper work - exploring who they are. Share those character and mindset themes with your PSHE lead. They are already in your data.</div>
+      <div class="a-q">What would change if your PSHE team could see this picture of your students every term?</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-pl">Peer & Organisational Connection</span>
+      <div class="a-nums">1 community interaction this year. Social Life is the quietest category at 16.9%.</div>
+      <div class="a-why">Students are growing individually - but the social layer of Kamelion has barely started. That is not a problem to fix, it is the next conversation to open. Your form tutors already have the relationships to start it.</div>
+      <div class="a-q">What are your students carrying between lessons that you currently have no way to see?</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-cr">Participation & Readiness</span>
+      <div class="a-nums">82 challenges completed. 89.1% completion rate. 41/41 goals.</div>
+      <div class="a-why">Your students are showing up for themselves - that is readiness in action. An 89.1% completion rate and 100% goal record is the kind of evidence that belongs in your next conversation with SLT or governors.</div>
+      <div class="a-q">How are you connecting what students are building here to what comes next for them?</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="snav-logo" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="snav-k">K</div>
+      <span style="font-size:0.65rem;font-weight:800;color:var(--cobalt);">KAMELION</span>
+      <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
+    </div>
+    <div>Alde Valley Academy · Academic Year 2025-26 · 82 challenges completed · 41 goals achieved · 164 mood check-ins · 89.1% completion rate</div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    const links=document.querySelectorAll('.snav-link');
+    const ids=['sec-activity','sec-year','sec-method','sec-students','sec-support','sec-next'];
+    function setActive(id){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));}
+    links.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});});});
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-52px 0px -70% 0px',threshold:0});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+    setActive('sec-activity');
+  })();
+
+  const G='rgba(15,23,42,0.08)';
+  Chart.defaults.color='rgba(15,23,42,0.60)';
+  Chart.defaults.borderColor=G;
+  Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+
+  // Mood Doughnut
+  new Chart(document.getElementById('moodChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Happy','Good','Normal','Unhappy','Sad'],
+      datasets:[{data:[26,41,67,14,16],backgroundColor:['#4ade80','#86efac','#94a3b8','#ea580c','#f87171'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
+      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(15,23,42,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
+    }}
+  });
+
+  // Content Bar
+  new Chart(document.getElementById('contentChart'),{
+    type:'bar',
+    data:{
+      labels:['My Character','My Mind','Health & Fitness','Social Life'],
+      datasets:[{data:[40.1,23.5,19.5,16.9],backgroundColor:['#1d4ed8','#6b21a8','#166534','#c2410c'],borderRadius:6,borderSkipped:false}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
+    },scales:{
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:55},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}}
+    }}
+  });
+
+  // Challenge Activity by Month
+  new Chart(document.getElementById('activityChart'),{
+    type:'bar',
+    data:{
+      labels:['Oct 2025','Nov 2025'],
+      datasets:[
+        {label:'Completed',data:[61,21],backgroundColor:'#1d4ed8',borderRadius:5,borderSkipped:false},
+        {label:'Started',data:[68,24],backgroundColor:'rgba(107,33,168,0.35)',borderRadius:5,borderSkipped:false}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{position:'top',align:'end',labels:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)',boxWidth:10,boxHeight:10,borderRadius:3,useBorderRadius:true,padding:14}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)'}
+    },scales:{
+      x:{grid:{display:false},ticks:{font:{size:11,weight:'600'},color:'rgba(15,23,42,0.65)'}},
+      y:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)'},border:{display:false}}
+    }}
+  });
+</script>
+</body>
+</html>
