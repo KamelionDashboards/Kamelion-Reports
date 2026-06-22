@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Northgate High School - Kamelion Impact Report · 2025-26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.04);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --violet:#4c1d95;--violet-soft:rgba(76,29,149,0.10);--violet-glow:rgba(76,29,149,0.22);
+      --gold:#a16207;--gold-soft:rgba(161,98,7,0.10);--gold-glow:rgba(161,98,7,0.22);
+      --emerald:#064e3b;--emerald-soft:rgba(6,78,59,0.10);--emerald-glow:rgba(6,78,59,0.22);
+      --ruby:#881337;--ruby-soft:rgba(136,19,55,0.10);--ruby-glow:rgba(136,19,55,0.22);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(76,29,149,0.10)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(136,19,55,0.08)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(161,98,7,0.06)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(6,78,59,0.07)0%,transparent 70%);top:20%;left:50%;}
+
+    /* NAV */
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
+    .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
+    .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--violet),var(--ruby));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#ffffff;}
+    .snav-brand{font-size:0.7rem;font-weight:800;color:var(--violet);white-space:nowrap;}
+    .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
+    .snav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
+    .snav-links::-webkit-scrollbar{display:none;}
+    .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
+    .snav-link:hover{color:var(--t2);background:rgba(15,23,42,0.04);}
+    .snav-link.active{color:var(--violet);background:rgba(76,29,149,0.08);border-color:rgba(76,29,149,0.18);}
+
+    .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1200px;margin:0 auto;}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 2px 14px rgba(15,23,42,0.08),0 1px 4px rgba(15,23,42,0.04);}
+    .pad{padding:22px;}
+
+    /* HEADER */
+    .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:26px;margin-bottom:4px;border-bottom:1px solid var(--border);}
+    @media(max-width:700px){.header{grid-template-columns:1fr;}}
+    .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--violet),var(--ruby));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#ffffff;flex-shrink:0;}
+    .h-brand{font-size:0.75rem;font-weight:800;color:var(--violet);letter-spacing:1px;}
+    .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
+    .h-title{font-size:2.1rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
+    .h-title span{background:linear-gradient(120deg,var(--violet)0%,var(--ruby)55%,var(--gold)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .h-sub{margin-top:7px;font-size:0.8rem;color:var(--t2);line-height:1.5;max-width:520px;}
+    .h-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .badge{font-size:0.61rem;font-weight:700;color:var(--t2);background:var(--glass-md);border:1px solid var(--border-hi);padding:5px 13px;border-radius:99px;}
+
+    /* LABELS */
+    .slabel{font-size:0.54rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin:24px 0 10px;}
+    .clabel{font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:11px;}
+
+    /* GRID */
+    .grid{display:grid;gap:12px;}
+    .g4{grid-template-columns:repeat(4,1fr);}
+    .g3{grid-template-columns:repeat(3,1fr);}
+    .g2{grid-template-columns:1fr 1fr;}
+    @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+    @media(max-width:620px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+    /* KPI */
+    .kpi-wrap{padding:18px;}
+    .kpi-num{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:4px;}
+    .kpi-lbl{font-size:0.7rem;font-weight:500;color:var(--t2);margin-bottom:7px;}
+    .kpi-tag{font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block;}
+    .kpi-vi{background:linear-gradient(135deg,var(--violet-glow),rgba(255,255,255,0.01));}
+    .kpi-go{background:linear-gradient(135deg,var(--gold-glow),rgba(255,255,255,0.01));}
+    .kpi-em{background:linear-gradient(135deg,var(--emerald-glow),rgba(255,255,255,0.01));}
+    .kpi-ru{background:linear-gradient(135deg,var(--ruby-glow),rgba(255,255,255,0.01));}
+    .kpi-vi .kpi-num{color:var(--violet);}
+    .kpi-go .kpi-num{color:var(--gold);}
+    .kpi-em .kpi-num{color:var(--emerald);}
+    .kpi-ru .kpi-num{color:var(--ruby);}
+    .kpi-vi .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(76,29,149,0.22);}
+    .kpi-go .kpi-tag{background:var(--gold-soft);color:var(--gold);border:1px solid rgba(161,98,7,0.22);}
+    .kpi-em .kpi-tag{background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(6,78,59,0.22);}
+    .kpi-ru .kpi-tag{background:var(--ruby-soft);color:var(--ruby);border:1px solid rgba(136,19,55,0.22);}
+
+    /* CALLOUT */
+    .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
+    .c-violet{background:var(--violet-soft);border-left-color:var(--violet);}
+    .c-gold{background:var(--gold-soft);border-left-color:var(--gold);}
+    .c-emerald{background:var(--emerald-soft);border-left-color:var(--emerald);}
+    .c-ruby{background:var(--ruby-soft);border-left-color:var(--ruby);}
+    .callout-ttl{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .c-violet .callout-ttl{color:var(--violet);}
+    .c-gold .callout-ttl{color:var(--gold);}
+    .c-emerald .callout-ttl{color:var(--emerald);}
+    .c-ruby .callout-ttl{color:var(--ruby);}
+    .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
+
+    /* METHOD */
+    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(15,23,42,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
+    .method-col{flex:1;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:10px 6px;}
+    .method-col + .method-col{border-left:1px solid var(--border);}
+    .mc-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:900;margin-bottom:3px;flex-shrink:0;}
+    .mc-1{background:rgba(76,29,149,0.12);border:1px solid rgba(76,29,149,0.28);color:var(--violet);}
+    .mc-2{background:rgba(161,98,7,0.12);border:1px solid rgba(161,98,7,0.28);color:var(--gold);}
+    .mc-3{background:rgba(136,19,55,0.12);border:1px solid rgba(136,19,55,0.28);color:var(--ruby);}
+    .mc-4{background:rgba(6,78,59,0.12);border:1px solid rgba(6,78,59,0.28);color:var(--emerald);}
+    .mc-5{background:rgba(76,29,149,0.08);border:1px solid rgba(76,29,149,0.20);color:var(--violet);}
+    .mc-stage{font-size:0.63rem;font-weight:800;color:var(--t1);letter-spacing:0.5px;}
+    .mc-focus{font-size:0.54rem;color:var(--t3);font-weight:600;margin-bottom:8px;}
+    .mc-num{font-size:1.7rem;font-weight:900;line-height:1;letter-spacing:-1px;}
+    .mc-desc{font-size:0.6rem;color:var(--t3);line-height:1.4;max-width:120px;}
+    @media(max-width:700px){.method-grid{flex-wrap:wrap;}.method-col{min-width:45%;}.method-col + .method-col{border-left:none;border-top:1px solid var(--border);}}
+
+    /* WHAT IT MEANS */
+    .means-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+    @media(max-width:700px){.means-strip{grid-template-columns:1fr;}}
+    .ms-tile{padding:14px 16px;border-radius:12px;display:flex;align-items:flex-start;gap:10px;}
+    .ms-t1{background:rgba(76,29,149,0.05);border:1px solid rgba(76,29,149,0.13);}
+    .ms-t2{background:rgba(136,19,55,0.05);border:1px solid rgba(136,19,55,0.13);}
+    .ms-t3{background:rgba(6,78,59,0.05);border:1px solid rgba(6,78,59,0.13);}
+    .ms-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .ms-lbl{font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+    .ms-t1 .ms-lbl{color:var(--violet);}
+    .ms-t2 .ms-lbl{color:var(--ruby);}
+    .ms-t3 .ms-lbl{color:var(--emerald);}
+    .ms-text{font-size:0.73rem;color:var(--t2);line-height:1.45;}
+    .ms-text strong{color:var(--t1);}
+
+    /* COHORT STATUS */
+    .cs-wrap{display:grid;grid-template-columns:80px 1fr;gap:18px;align-items:start;}
+    @media(max-width:500px){.cs-wrap{grid-template-columns:1fr;}}
+    .cs-indicator{width:80px;height:80px;border-radius:16px;background:var(--emerald-soft);border:2px solid rgba(6,78,59,0.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;}
+    .cs-dot{width:14px;height:14px;border-radius:50%;background:#16a34a;box-shadow:0 0 7px rgba(22,163,74,0.45);}
+    .cs-label{font-size:0.48rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--emerald);}
+    .cs-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px;}
+    .cs-stat{display:flex;flex-direction:column;gap:1px;}
+    .cs-num{font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;}
+    .cs-vi .cs-num{color:var(--violet);}
+    .cs-em .cs-num{color:var(--emerald);}
+    .cs-desc{font-size:0.62rem;color:var(--t3);font-weight:600;}
+
+    /* WELLBEING */
+    .wb-strip{display:flex;gap:8px;margin-bottom:10px;}
+    .wb-tile{flex:1;padding:12px 10px;border-radius:10px;text-align:center;}
+    .wb-up{background:rgba(6,78,59,0.08);border:1px solid rgba(6,78,59,0.18);}
+    .wb-same{background:rgba(15,23,42,0.04);border:1px solid rgba(15,23,42,0.09);}
+    .wb-dn{background:rgba(136,19,55,0.08);border:1px solid rgba(136,19,55,0.18);}
+    .wb-num{font-size:1.8rem;font-weight:900;line-height:1;letter-spacing:-0.8px;}
+    .wb-up .wb-num{color:var(--emerald);}
+    .wb-same .wb-num{color:var(--t2);}
+    .wb-dn .wb-num{color:var(--ruby);}
+    .wb-lbl{font-size:0.57rem;font-weight:700;margin-top:3px;}
+    .wb-up .wb-lbl{color:var(--emerald);}
+    .wb-same .wb-lbl{color:var(--t3);}
+    .wb-dn .wb-lbl{color:var(--ruby);}
+
+    /* MOOD PILLS */
+    .mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+    .mood-pill{display:flex;align-items:center;gap:5px;background:var(--glass-md);border:1px solid var(--border-hi);border-radius:99px;padding:5px 11px;font-size:0.7rem;font-weight:600;color:var(--t2);}
+    .mood-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .mood-count{font-weight:800;color:var(--t1);margin-left:2px;}
+
+    /* SUPPORT AREAS */
+    .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
+    .sa-hi{background:rgba(136,19,55,0.07);border:1px solid rgba(136,19,55,0.15);}
+    .sa-mid{background:rgba(76,29,149,0.05);border:1px solid rgba(76,29,149,0.12);}
+    .sa-lo{background:rgba(15,23,42,0.02);border:1px solid var(--border);}
+    .sa-icon{font-size:0.9rem;flex-shrink:0;}
+    .sa-name{font-size:0.74rem;font-weight:600;color:var(--t2);flex:1;}
+    .sa-count{font-size:0.65rem;font-weight:800;color:var(--t1);margin-left:auto;flex-shrink:0;padding-right:4px;}
+    .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 8px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+    .sa-hi-tag{background:var(--ruby-soft);color:var(--ruby);border:1px solid rgba(136,19,55,0.22);}
+    .sa-mid-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(76,29,149,0.22);}
+
+    /* NEXT STEPS */
+    .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
+    .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
+    .a-vi{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(76,29,149,0.22);}
+    .a-go{background:var(--gold-soft);color:var(--gold);border:1px solid rgba(161,98,7,0.22);}
+    .a-em{background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(6,78,59,0.22);}
+    .a-nums{font-size:1.05rem;font-weight:800;color:var(--t1);line-height:1.3;letter-spacing:-0.3px;margin-bottom:4px;}
+    .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
+    .a-q{font-size:0.74rem;font-style:italic;color:var(--t2);border-top:1px solid var(--border);padding-top:9px;margin-top:4px;line-height:1.55;}
+
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
+    .chart-wrap{position:relative;width:100%;}
+    .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+  </style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-logo">
+      <div class="snav-k">K</div>
+      <div class="snav-brand">KAMELION <span>· Northgate High School · 2025-26</span></div>
+    </div>
+    <div class="snav-links">
+      <a class="snav-link" href="#sec-foundation">Foundation</a>
+      <a class="snav-link" href="#sec-activity">Activity</a>
+      <a class="snav-link" href="#sec-method">Method</a>
+      <a class="snav-link" href="#sec-students">Students</a>
+      <a class="snav-link" href="#sec-support">Support Areas</a>
+      <a class="snav-link" href="#sec-next">Next Steps</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="h-logo">
+        <div class="h-k">K</div>
+        <div>
+          <div class="h-brand">KAMELION</div>
+          <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
+        </div>
+      </div>
+      <div class="h-title"><span>Northgate High School</span></div>
+      <div class="h-sub">75 young people investing in themselves across this academic year - building knowledge, skills and self-awareness. Here is what that looks like in data. A number of students have flagged support areas this year - covered in full below.</div>
+    </div>
+    <div class="h-right">
+      <span class="badge">Academic Year 2025-26</span>
+      <span class="badge">75 Students Active</span>
+      <span class="badge">127/127 Goals Completed · 100%</span>
+    </div>
+  </div>
+
+  <!-- FOUNDATION -->
+  <div id="sec-foundation" class="slabel">Foundation - All-Time</div>
+  <div class="grid g4" style="margin-bottom:4px;">
+    <div class="glass kpi-wrap kpi-vi">
+      <div class="kpi-num">1,332</div>
+      <div class="kpi-lbl">Mood Check-ins</div>
+      <span class="kpi-tag">17.8 per student</span>
+    </div>
+    <div class="glass kpi-wrap kpi-go">
+      <div class="kpi-num">545</div>
+      <div class="kpi-lbl">Challenges Completed</div>
+      <span class="kpi-tag">84.1% completion rate</span>
+    </div>
+    <div class="glass kpi-wrap kpi-em">
+      <div class="kpi-num">127/127</div>
+      <div class="kpi-lbl">Goals Achieved</div>
+      <span class="kpi-tag">100% · every one</span>
+    </div>
+    <div class="glass kpi-wrap kpi-ru">
+      <div class="kpi-num">370</div>
+      <div class="kpi-lbl">Journal Entries</div>
+      <span class="kpi-tag">40 unique students</span>
+    </div>
+  </div>
+
+  <div class="grid g4" style="margin-bottom:4px;">
+    <div class="glass kpi-wrap kpi-vi" style="background:none;">
+      <div class="kpi-num" style="font-size:1.5rem;color:var(--violet);">152</div>
+      <div class="kpi-lbl">Personality Tests</div>
+      <span class="kpi-tag" style="background:var(--violet-soft);color:var(--violet);border:1px solid rgba(76,29,149,0.22);">57 unique students</span>
+    </div>
+    <div class="glass kpi-wrap kpi-go" style="background:none;">
+      <div class="kpi-num" style="font-size:1.5rem;color:var(--gold);">222</div>
+      <div class="kpi-lbl">Mental Gym Workouts</div>
+      <span class="kpi-tag" style="background:var(--gold-soft);color:var(--gold);border:1px solid rgba(161,98,7,0.22);">56 unique students</span>
+    </div>
+    <div class="glass kpi-wrap kpi-em" style="background:none;">
+      <div class="kpi-num" style="font-size:1.5rem;color:var(--emerald);">142</div>
+      <div class="kpi-lbl">Community Interactions</div>
+      <span class="kpi-tag" style="background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(6,78,59,0.22);">67 posts · 75 comments</span>
+    </div>
+    <div class="glass kpi-wrap kpi-ru" style="background:none;">
+      <div class="kpi-num" style="font-size:1.5rem;color:var(--ruby);">648</div>
+      <div class="kpi-lbl">Challenges Started</div>
+      <span class="kpi-tag" style="background:var(--ruby-soft);color:var(--ruby);border:1px solid rgba(136,19,55,0.22);">84.1% completed</span>
+    </div>
+  </div>
+
+  <!-- ACTIVITY -->
+  <div id="sec-activity" class="slabel">This Academic Year - 2025-26</div>
+  <div class="grid g2" style="margin-bottom:12px;">
+    <div class="glass pad">
+      <div class="clabel">How Students Are Feeling</div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="moodChart"></canvas>
+      </div>
+      <div class="mood-row" style="margin-top:10px;">
+        <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">213</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">322</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">506</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">129</span></div>
+        <div class="mood-pill"><div class="mood-dot" style="background:#f87171;"></div>Sad <span class="mood-count">162</span></div>
+      </div>
+      <div class="callout c-violet">
+        <div class="callout-ttl">1,332 Check-ins - A Cohort That Reflects</div>
+        <p>40.2% of check-ins are positive. 21.9% sit with some difficulty. The most important thing is the habit itself - these students have built it across a full year.</p>
+      </div>
+    </div>
+    <div class="glass pad">
+      <div class="clabel">What Students Are Engaging With</div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="contentChart"></canvas>
+      </div>
+      <div class="callout c-ruby">
+        <div class="callout-ttl">Character and Mind - The Deep Work</div>
+        <p>My Character (41.5%) and My Mind (33.2%) together account for 74.7% of all activity. Students are engaging with the things that matter most - identity, thinking and self-awareness.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHALLENGE TIMELINE -->
+  <div class="glass pad" style="margin-bottom:4px;">
+    <div class="clabel">Challenge Activity by Month - Academic Year 2025-26</div>
+    <div class="chart-wrap" style="height:200px;">
+      <canvas id="challengeChart"></canvas>
+    </div>
+    <div class="grid g2" style="margin-top:14px;">
+      <div class="callout c-gold" style="margin-top:0;">
+        <div class="callout-ttl">October 2025 - 297 Challenges Completed</div>
+        <p>The biggest single month in Northgate's year. The cohort opened the academic year with momentum and sustained it through the autumn term.</p>
+      </div>
+      <div class="callout c-violet" style="margin-top:0;">
+        <div class="callout-ttl">February 2026 - Second Surge</div>
+        <p>A second peak midway through the spring term - 76 completions from a sustained mid-year push. The pattern shows Northgate students re-engage when it matters.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KAMELION METHOD -->
+  <div id="sec-method" class="slabel">The Kamelion Method - In Action at Northgate</div>
+  <div class="method-grid">
+    <div class="method-col">
+      <div class="mc-circle mc-1">K</div>
+      <div class="mc-stage">KNOW</div>
+      <div class="mc-focus">Self-Awareness</div>
+      <div class="mc-num" style="color:var(--violet);">1,332</div>
+      <div class="mc-desc">mood check-ins building daily self-awareness</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-2">A</div>
+      <div class="mc-stage">ACCEPT</div>
+      <div class="mc-focus">Self-Understanding</div>
+      <div class="mc-num" style="color:var(--gold);">522</div>
+      <div class="mc-desc">journals and personality tests taken</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-3">A</div>
+      <div class="mc-stage">ACT</div>
+      <div class="mc-focus">Taking Action</div>
+      <div class="mc-num" style="color:var(--ruby);">545</div>
+      <div class="mc-desc">challenges completed this year</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-4">C</div>
+      <div class="mc-stage">CONNECT</div>
+      <div class="mc-focus">Community</div>
+      <div class="mc-num" style="color:var(--emerald);">142</div>
+      <div class="mc-desc">community interactions this year</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-5">G</div>
+      <div class="mc-stage">GROW</div>
+      <div class="mc-focus">Goal Achievement</div>
+      <div class="mc-num" style="color:var(--violet);">127</div>
+      <div class="mc-desc">goals set and every one completed</div>
+    </div>
+  </div>
+  <div class="means-strip">
+    <div class="ms-tile ms-t1">
+      <div class="ms-icon">🧠</div>
+      <div>
+        <div class="ms-lbl">Early Intervention</div>
+        <div class="ms-text">Kamelion works in the background between lessons. <strong>Students are building skills and awareness outside the classroom - without it feeling like support.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t2">
+      <div class="ms-icon">📊</div>
+      <div>
+        <div class="ms-lbl">Evidence Trail</div>
+        <div class="ms-text">Every interaction is logged and attributable. <strong>A measurable record of student development for your school, governors and Ofsted.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t3">
+      <div class="ms-icon">🌱</div>
+      <div>
+        <div class="ms-lbl">Prevention First</div>
+        <div class="ms-text">Students using Kamelion between sessions build resilience before they need support. <strong>That is the model working as designed.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div id="sec-students" class="slabel">How Your Students Are Doing - 2025-26</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">Cohort Status</div>
+      <div class="cs-wrap">
+        <div class="cs-indicator">
+          <div class="cs-dot"></div>
+          <div class="cs-label">All Clear</div>
+        </div>
+        <div>
+          <div class="cs-stats">
+            <div class="cs-stat cs-vi">
+              <div class="cs-num">75</div>
+              <div class="cs-desc">students active</div>
+            </div>
+            <div class="cs-stat cs-em">
+              <div class="cs-num">0</div>
+              <div class="cs-desc">flags raised this year</div>
+            </div>
+          </div>
+          <p style="font-size:0.74rem;color:var(--t2);line-height:1.5;">No students have been flagged this academic year. Kamelion monitors patterns in the background and updates in real time. If anything shifts, Kamelion reviews before anything is shared with your school.</p>
+        </div>
+      </div>
+      <div class="review-box">
+        <strong>How the review process works</strong>
+        Kamelion reviews each case before anything is passed on. We only make contact when there is genuine reason to. Individual student files are never shared directly with your school without our review first.
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">Wellbeing Scores - 57 Tracked Students</div>
+      <div class="wb-strip">
+        <div class="wb-tile wb-up"><div class="wb-num">20</div><div class="wb-lbl">Improved</div></div>
+        <div class="wb-tile wb-same"><div class="wb-num">21</div><div class="wb-lbl">Stable</div></div>
+        <div class="wb-tile wb-dn"><div class="wb-num">16</div><div class="wb-lbl">Decreased</div></div>
+      </div>
+      <div class="callout c-emerald" style="margin-top:0;">
+        <div class="callout-ttl">Stability Holds Across the Cohort</div>
+        <p>20 students showing improved wellbeing across the year. 21 holding steady. Where wellbeing has decreased, Kamelion is already tracking the pattern so your team does not have to spot it alone.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUPPORT AREAS -->
+  <div id="sec-support" class="slabel">Support Areas - What's on Students' Minds</div>
+  <div class="glass-md" style="padding:20px;margin-bottom:4px;">
+    <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:16px;max-width:660px;">When students use Kamelion's relaxation features, they can tag what is on their mind. Over time, this builds a picture of the themes running through your cohort - so nothing goes unseen. <strong style="color:var(--t1);">Kamelion reviews all flagged areas before anything is shared with your school.</strong></div>
+    <div class="grid g2" style="margin-bottom:12px;">
+      <div>
+        <div class="sa-row sa-hi">
+          <div class="sa-icon">🏠</div>
+          <div class="sa-name">Family stress or tension at home</div>
+          <div class="sa-count">20</div>
+          <span class="sa-tag sa-hi-tag">8 students</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-icon">💤</div>
+          <div class="sa-name">Struggling to sleep or switch off</div>
+          <div class="sa-count">8</div>
+          <span class="sa-tag sa-mid-tag">7 students</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-icon">💭</div>
+          <div class="sa-name">Anxious, overthinking or panicky</div>
+          <div class="sa-count">7</div>
+          <span class="sa-tag sa-mid-tag">5 students</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-icon">🤝</div>
+          <div class="sa-name">Friendship or relationship issues</div>
+          <div class="sa-count">7</div>
+          <span class="sa-tag sa-mid-tag">5 students</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-icon">💙</div>
+          <div class="sa-name">Feeling sad, low or numb</div>
+          <div class="sa-count">6</div>
+          <span class="sa-tag sa-mid-tag">5 students</span>
+        </div>
+      </div>
+      <div>
+        <div class="sa-row sa-lo">
+          <div class="sa-icon">🔮</div>
+          <div class="sa-name">Stressed about the future</div>
+          <div class="sa-count">4</div>
+          <span class="sa-tag sa-mid-tag">4 students</span>
+        </div>
+        <div class="sa-row sa-lo">
+          <div class="sa-icon">📚</div>
+          <div class="sa-name">Worried about school or exams</div>
+          <div class="sa-count">4</div>
+          <span class="sa-tag sa-mid-tag">4 students</span>
+        </div>
+        <div class="sa-row sa-lo">
+          <div class="sa-icon">🤍</div>
+          <div class="sa-name">Lonely or isolated</div>
+          <div class="sa-count">3</div>
+          <span class="sa-tag sa-mid-tag">2 students</span>
+        </div>
+        <div class="sa-row sa-lo">
+          <div class="sa-icon">🪞</div>
+          <div class="sa-name">Not feeling good or comparing to others</div>
+          <div class="sa-count">1</div>
+          <span class="sa-tag sa-mid-tag">1 student</span>
+        </div>
+        <div class="sa-row sa-lo">
+          <div class="sa-icon">💬</div>
+          <div class="sa-name">Other</div>
+          <div class="sa-count">17</div>
+          <span class="sa-tag sa-mid-tag">13 students</span>
+        </div>
+      </div>
+    </div>
+    <div class="callout c-ruby">
+      <div class="callout-ttl">Family Stress Is the Most Consistent Theme Across the Cohort</div>
+      <p>Family stress or tension at home is the most named area - flagged by 8 students across the year. This is what some of your young people are carrying outside school. Your PSHE and pastoral teams may already know some of these stories. Now you have the data to back the conversation.</p>
+    </div>
+    <div class="sa-row sa-lo" style="margin-top:12px;max-width:640px;">
+      <div class="sa-icon" style="font-size:0.8rem;">ℹ</div>
+      <div class="sa-name" style="font-size:0.7rem;color:var(--t3);">Support areas reflect student-selected tags when using Kamelion's relaxation tools. They are not diagnoses. Kamelion monitors these and reviews before any contact is made with your school.</div>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div id="sec-next" class="slabel">Next Steps - June & July 2026</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where Northgate stands in each - and the one move that extends what is already working.</div>
+  <div class="grid g3">
+    <div class="glass acard">
+      <span class="a-badge a-vi">Skills & Knowledge</span>
+      <div class="a-nums">522 journals and personality tests. 74.7% of all activity in My Character and My Mind.</div>
+      <div class="a-why">Your students are doing the deep work - 370 journals, 152 personality tests and nearly three quarters of all activity in character and identity. That is the data your PSHE lead needs to see. Family stress, sleep and anxiety are already showing up in support areas. The curriculum can respond to this before students have to raise it themselves.</div>
+      <div class="a-q">What would your PSHE team do differently if they could see this picture of your students every term?</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-go">Peer & Organisational Connection</span>
+      <div class="a-nums">142 community interactions. Social Life is the quietest content area at 13.7%.</div>
+      <div class="a-why">Northgate already has one of the stronger community engagement records across schools using Kamelion - 67 posts and 75 comments shows students are talking. Social Life is the least engaged content category. The peer layer is where the next level of growth sits for your cohort.</div>
+      <div class="a-q">How are you extending what students are building individually into the connections they have with each other?</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-em">Participation & Readiness</span>
+      <div class="a-nums">545 challenges completed at 84.1%. 127 goals set - 127 completed.</div>
+      <div class="a-why">An 84.1% challenge completion rate and 100% goal achievement is the kind of evidence that belongs in your next conversation with SLT or governors. 75 students have shown they set goals and see them through. That readiness is already built - now it needs a stage.</div>
+      <div class="a-q">How are you connecting what students are building here to what comes next for them?</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="snav-logo" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="snav-k">K</div>
+      <span style="font-size:0.65rem;font-weight:800;color:var(--violet);">KAMELION</span>
+      <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
+    </div>
+    <div>Northgate High School · Academic Year 2025-26 · 545 challenges completed · 127/127 goals · 1,332 mood check-ins · 75 students</div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    const links=document.querySelectorAll('.snav-link');
+    const ids=['sec-foundation','sec-activity','sec-method','sec-students','sec-support','sec-next'];
+    function setActive(id){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));}
+    links.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});});});
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-52px 0px -70% 0px',threshold:0});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+    setActive('sec-foundation');
+  })();
+
+  const G='rgba(15,23,42,0.08)';
+  Chart.defaults.color='rgba(15,23,42,0.60)';
+  Chart.defaults.borderColor=G;
+  Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+
+  // Mood Doughnut - combined
+  new Chart(document.getElementById('moodChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Happy','Good','Normal','Unhappy','Sad'],
+      datasets:[{data:[213,322,506,129,162],backgroundColor:['#4ade80','#86efac','#94a3b8','#ea580c','#f87171'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
+      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(15,23,42,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
+    }}
+  });
+
+  // Content Bar - combined
+  new Chart(document.getElementById('contentChart'),{
+    type:'bar',
+    data:{
+      labels:['My Character','My Mind','Social Life','Health & Fitness'],
+      datasets:[{data:[41.5,33.2,13.7,11.5],backgroundColor:['#4c1d95','#881337','#a16207','#064e3b'],borderRadius:6,borderSkipped:false}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
+    },scales:{
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:55},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}}
+    }}
+  });
+
+  // Combined Challenge Timeline
+  const months=['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
+  new Chart(document.getElementById('challengeChart'),{
+    type:'bar',
+    data:{
+      labels:months,
+      datasets:[
+        {label:'Completed',data:[11,9,1,297,39,67,0,76,12,17,16],backgroundColor:'#4c1d95',borderRadius:4,borderSkipped:false},
+        {label:'Started',data:[13,12,1,336,38,69,2,114,20,6,39],backgroundColor:'rgba(136,19,55,0.28)',borderRadius:4,borderSkipped:false}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{position:'top',align:'end',labels:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)',boxWidth:10,boxHeight:10,borderRadius:3,useBorderRadius:true,padding:12}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)'}
+    },scales:{
+      x:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}},
+      y:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)'},border:{display:false}}
+    }}
+  });
+</script>
+</body>
+</html>
