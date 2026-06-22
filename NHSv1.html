@@ -212,6 +212,7 @@
     <div class="snav-links">
       <a class="snav-link" href="#sec-foundation">Foundation</a>
       <a class="snav-link" href="#sec-activity">Activity</a>
+      <a class="snav-link" href="#sec-months">Month vs Month</a>
       <a class="snav-link" href="#sec-method">Method</a>
       <a class="snav-link" href="#sec-students">Students</a>
       <a class="snav-link" href="#sec-support">Support Areas</a>
@@ -336,6 +337,62 @@
       <div class="callout c-violet" style="margin-top:0;">
         <div class="callout-ttl">February 2026 - Second Surge</div>
         <p>A second peak midway through the spring term - 76 completions from a sustained mid-year push. The pattern shows Northgate students re-engage when it matters.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTH VS MONTH -->
+  <div id="sec-months" class="slabel">Month vs Month - Challenge Activity</div>
+
+  <!-- Term summary -->
+  <div class="grid g3" style="margin-bottom:12px;">
+    <div class="glass pad" style="background:linear-gradient(135deg,var(--gold-glow),rgba(255,255,255,0.01));">
+      <div class="clabel" style="color:var(--gold);">Autumn Term 2025</div>
+      <div style="font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;color:var(--gold);line-height:1;">404</div>
+      <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 10px;">challenges completed · Sep - Dec 2025</div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <span style="font-size:0.6rem;font-weight:700;background:var(--gold-soft);color:var(--gold);border:1px solid rgba(161,98,7,0.22);padding:3px 9px;border-radius:99px;">415 started</span>
+        <span style="font-size:0.6rem;font-weight:700;background:var(--gold-soft);color:var(--gold);border:1px solid rgba(161,98,7,0.22);padding:3px 9px;border-radius:99px;">97.3% rate</span>
+      </div>
+      <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">Led by a standout October - 297 completions in a single month. The strongest term of the year.</div>
+    </div>
+    <div class="glass pad" style="background:linear-gradient(135deg,var(--violet-glow),rgba(255,255,255,0.01));">
+      <div class="clabel" style="color:var(--violet);">Spring Term 2026</div>
+      <div style="font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;color:var(--violet);line-height:1;">105</div>
+      <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 10px;">challenges completed · Jan - Apr 2026</div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <span style="font-size:0.6rem;font-weight:700;background:var(--violet-soft);color:var(--violet);border:1px solid rgba(76,29,149,0.22);padding:3px 9px;border-radius:99px;">142 started</span>
+        <span style="font-size:0.6rem;font-weight:700;background:var(--violet-soft);color:var(--violet);border:1px solid rgba(76,29,149,0.22);padding:3px 9px;border-radius:99px;">73.9% rate</span>
+      </div>
+      <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">A February surge (76 completions) anchors the spring term. Activity then steadied across March and April.</div>
+    </div>
+    <div class="glass pad" style="background:linear-gradient(135deg,var(--emerald-glow),rgba(255,255,255,0.01));">
+      <div class="clabel" style="color:var(--emerald);">Summer Term 2026</div>
+      <div style="font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;color:var(--emerald);line-height:1;">16</div>
+      <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 10px;">challenges completed · May 2026 to date</div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <span style="font-size:0.6rem;font-weight:700;background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(6,78,59,0.22);padding:3px 9px;border-radius:99px;">39 started</span>
+        <span style="font-size:0.6rem;font-weight:700;background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(6,78,59,0.22);padding:3px 9px;border-radius:99px;">Term in progress</span>
+      </div>
+      <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">39 challenges started in May with 16 completed - a number still in progress. The summer term is just beginning.</div>
+    </div>
+  </div>
+
+  <!-- Month-by-month grid -->
+  <div class="glass pad" style="margin-bottom:4px;">
+    <div class="clabel">Month-by-Month Breakdown - Challenges Completed</div>
+    <div style="display:grid;grid-template-columns:repeat(11,1fr);gap:6px;margin-bottom:4px;" id="monthGrid">
+      <!-- JS-rendered -->
+    </div>
+    <div style="display:flex;gap:14px;margin-top:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--t3);font-weight:600;">
+        <div style="width:8px;height:8px;border-radius:2px;background:var(--emerald);"></div>Up vs previous month
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--t3);font-weight:600;">
+        <div style="width:8px;height:8px;border-radius:2px;background:var(--ruby);"></div>Down vs previous month
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--t3);font-weight:600;">
+        <div style="width:8px;height:8px;border-radius:2px;background:var(--t4);"></div>Baseline / no prior month
       </div>
     </div>
   </div>
@@ -567,12 +624,41 @@
 <script>
   (function(){
     const links=document.querySelectorAll('.snav-link');
-    const ids=['sec-foundation','sec-activity','sec-method','sec-students','sec-support','sec-next'];
+    const ids=['sec-foundation','sec-activity','sec-months','sec-method','sec-students','sec-support','sec-next'];
     function setActive(id){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));}
     links.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});});});
     const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-52px 0px -70% 0px',threshold:0});
     ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
     setActive('sec-foundation');
+  })();
+
+  // Month-by-month grid
+  (function(){
+    const months=[
+      {m:'Jul 25',v:11},{m:'Aug 25',v:9},{m:'Sep 25',v:1},{m:'Oct 25',v:297},
+      {m:'Nov 25',v:39},{m:'Dec 25',v:67},{m:'Jan 26',v:0},{m:'Feb 26',v:76},
+      {m:'Mar 26',v:12},{m:'Apr 26',v:17},{m:'May 26',v:16}
+    ];
+    const max=297;
+    const grid=document.getElementById('monthGrid');
+    months.forEach((d,i)=>{
+      const prev=i>0?months[i-1].v:null;
+      const delta=prev!==null?d.v-prev:null;
+      const isUp=delta!==null&&delta>0;
+      const isDown=delta!==null&&delta<0;
+      const barPct=Math.max(d.v/max*100,d.v>0?3:0);
+      const barColor=isUp?'var(--emerald)':isDown?'var(--ruby)':'rgba(15,23,42,0.18)';
+      const deltaStr=delta===null?'—':delta>0?`+${delta}`:String(delta);
+      const deltaColor=isUp?'var(--emerald)':isDown?'var(--ruby)':'var(--t3)';
+      grid.innerHTML+=`<div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+        <div style="font-size:0.52rem;font-weight:700;color:var(--t3);letter-spacing:0.5px;text-align:center;">${d.m}</div>
+        <div style="width:100%;height:80px;display:flex;align-items:flex-end;justify-content:center;">
+          <div style="width:28px;background:${barColor};border-radius:4px 4px 0 0;height:${barPct}%;min-height:${d.v>0?'4px':'0'};transition:height .3s;"></div>
+        </div>
+        <div style="font-size:0.8rem;font-weight:900;color:var(--t1);letter-spacing:-0.5px;">${d.v}</div>
+        <div style="font-size:0.58rem;font-weight:700;color:${deltaColor};">${deltaStr}</div>
+      </div>`;
+    });
   })();
 
   const G='rgba(15,23,42,0.08)';
