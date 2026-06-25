@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kamelion · Platform Dashboard · May 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.04);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --green:#065f46;--green-soft:rgba(6,95,70,0.10);--green-glow:rgba(6,95,70,0.22);
+      --emerald:#16a34a;--emerald-soft:rgba(22,163,74,0.10);--emerald-glow:rgba(22,163,74,0.22);
+      --forest:#0d9488;--forest-soft:rgba(13,148,136,0.10);--forest-glow:rgba(13,148,136,0.22);
+      --moss:#65a30d;--moss-soft:rgba(101,163,13,0.10);--moss-glow:rgba(101,163,13,0.22);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(6,95,70,0.12)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(22,163,74,0.09)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(101,163,13,0.07)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(13,148,136,0.08)0%,transparent 70%);top:20%;left:50%;}
+
+    /* NAV */
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
+    .snav-inner{max-width:1280px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
+    .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--green),var(--emerald));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#ffffff;}
+    .snav-brand{font-size:0.7rem;font-weight:800;color:var(--green);white-space:nowrap;}
+    .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
+    .snav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
+    .snav-links::-webkit-scrollbar{display:none;}
+    .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
+    .snav-link:hover{color:var(--t2);background:rgba(15,23,42,0.04);}
+    .snav-link.active{color:var(--green);background:rgba(6,95,70,0.08);border-color:rgba(6,95,70,0.18);}
+
+    .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1280px;margin:0 auto;}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 2px 14px rgba(15,23,42,0.08),0 1px 4px rgba(15,23,42,0.04);}
+    .pad{padding:22px;}
+
+    /* HEADER */
+    .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:26px;margin-bottom:4px;border-bottom:1px solid var(--border);}
+    @media(max-width:700px){.header{grid-template-columns:1fr;}}
+    .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--green),var(--emerald));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#ffffff;flex-shrink:0;}
+    .h-brand{font-size:0.75rem;font-weight:800;color:var(--green);letter-spacing:1px;}
+    .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
+    .h-title{font-size:2.1rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
+    .h-title span{background:linear-gradient(120deg,var(--green)0%,var(--emerald)50%,var(--moss)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .h-sub{margin-top:7px;font-size:0.8rem;color:var(--t2);line-height:1.5;max-width:520px;}
+    .h-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .badge{font-size:0.61rem;font-weight:700;color:var(--t2);background:var(--glass-md);border:1px solid var(--border-hi);padding:5px 13px;border-radius:99px;}
+
+    /* LABELS */
+    .slabel{font-size:0.54rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin:24px 0 10px;}
+    .clabel{font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:11px;}
+
+    /* GRID */
+    .grid{display:grid;gap:12px;}
+    .g4{grid-template-columns:repeat(4,1fr);}
+    .g3{grid-template-columns:repeat(3,1fr);}
+    .g2{grid-template-columns:1fr 1fr;}
+    @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+    @media(max-width:620px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+    /* KPI */
+    .kpi-wrap{padding:18px;}
+    .kpi-num{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:4px;}
+    .kpi-lbl{font-size:0.7rem;font-weight:500;color:var(--t2);margin-bottom:7px;}
+    .kpi-tag{font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block;}
+    .kpi-gr{background:linear-gradient(135deg,var(--green-glow),rgba(255,255,255,0.01));}
+    .kpi-em{background:linear-gradient(135deg,var(--emerald-glow),rgba(255,255,255,0.01));}
+    .kpi-fo{background:linear-gradient(135deg,var(--forest-glow),rgba(255,255,255,0.01));}
+    .kpi-ms{background:linear-gradient(135deg,var(--moss-glow),rgba(255,255,255,0.01));}
+    .kpi-gr .kpi-num{color:var(--green);}
+    .kpi-em .kpi-num{color:var(--emerald);}
+    .kpi-fo .kpi-num{color:var(--forest);}
+    .kpi-ms .kpi-num{color:var(--moss);}
+    .kpi-gr .kpi-tag{background:var(--green-soft);color:var(--green);border:1px solid rgba(6,95,70,0.22);}
+    .kpi-em .kpi-tag{background:var(--emerald-soft);color:var(--emerald);border:1px solid rgba(22,163,74,0.22);}
+    .kpi-fo .kpi-tag{background:var(--forest-soft);color:var(--forest);border:1px solid rgba(13,148,136,0.22);}
+    .kpi-ms .kpi-tag{background:var(--moss-soft);color:var(--moss);border:1px solid rgba(101,163,13,0.22);}
+
+    /* CALLOUT */
+    .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
+    .c-green{background:var(--green-soft);border-left-color:var(--green);}
+    .c-emerald{background:var(--emerald-soft);border-left-color:var(--emerald);}
+    .c-forest{background:var(--forest-soft);border-left-color:var(--forest);}
+    .c-moss{background:var(--moss-soft);border-left-color:var(--moss);}
+    .callout-ttl{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .c-green .callout-ttl{color:var(--green);}
+    .c-emerald .callout-ttl{color:var(--emerald);}
+    .c-forest .callout-ttl{color:var(--forest);}
+    .c-moss .callout-ttl{color:var(--moss);}
+    .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
+
+    /* FEATURE STAT CARDS */
+    .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
+    @media(max-width:900px){.feat-grid{grid-template-columns:repeat(2,1fr);}}
+    .feat-card{padding:14px 16px;border-radius:12px;}
+    .feat-gr{background:rgba(6,95,70,0.06);border:1px solid rgba(6,95,70,0.15);}
+    .feat-em{background:rgba(22,163,74,0.06);border:1px solid rgba(22,163,74,0.15);}
+    .feat-fo{background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.15);}
+    .feat-ms{background:rgba(101,163,13,0.06);border:1px solid rgba(101,163,13,0.15);}
+    .feat-num{font-size:1.8rem;font-weight:900;line-height:1;letter-spacing:-1px;margin-bottom:3px;}
+    .feat-gr .feat-num{color:var(--green);}
+    .feat-em .feat-num{color:var(--emerald);}
+    .feat-fo .feat-num{color:var(--forest);}
+    .feat-ms .feat-num{color:var(--moss);}
+    .feat-lbl{font-size:0.65rem;font-weight:600;color:var(--t2);margin-bottom:2px;}
+    .feat-sub{font-size:0.57rem;color:var(--t3);}
+
+    /* COMPARISON TABLE */
+    .comp-section{background:var(--glass);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07);overflow:hidden;margin-bottom:4px;}
+    .comp-head{display:grid;grid-template-columns:1fr 120px 120px 90px;gap:0;padding:10px 18px;background:rgba(6,95,70,0.04);border-bottom:1px solid var(--border);}
+    .comp-head-cell{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--t3);}
+    .comp-row{display:grid;grid-template-columns:1fr 120px 120px 90px;gap:0;padding:11px 18px;border-bottom:1px solid rgba(15,23,42,0.06);align-items:center;}
+    .comp-row:last-child{border-bottom:none;}
+    .comp-row.group-head{padding:7px 18px 4px;background:rgba(15,23,42,0.02);}
+    .comp-group-lbl{font-size:0.5rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--green);grid-column:1/-1;}
+    .comp-metric{font-size:0.74rem;font-weight:600;color:var(--t2);}
+    .comp-val{font-size:0.88rem;font-weight:700;color:var(--t3);text-align:right;padding-right:20px;}
+    .comp-val-curr{font-size:0.88rem;font-weight:800;color:var(--t1);text-align:right;padding-right:20px;}
+    .comp-pill{display:inline-flex;align-items:center;font-size:0.57rem;font-weight:800;padding:3px 9px;border-radius:99px;justify-self:end;}
+    .gp-up{background:rgba(22,163,74,0.12);color:#065f46;border:1px solid rgba(22,163,74,0.28);}
+    .gp-dn{background:rgba(220,38,38,0.10);color:#991b1b;border:1px solid rgba(220,38,38,0.22);}
+    .gp-dn-good{background:rgba(22,163,74,0.12);color:#065f46;border:1px solid rgba(22,163,74,0.28);}
+    .gp-flat{background:rgba(15,23,42,0.06);color:var(--t3);border:1px solid var(--border-hi);}
+    @media(max-width:700px){.comp-head,.comp-row{grid-template-columns:1fr 80px 80px 70px;}.comp-val,.comp-val-curr{font-size:0.78rem;padding-right:10px;}}
+
+    /* RAG */
+    .rag-donut-grid{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:start;margin-bottom:12px;}
+    @media(max-width:500px){.rag-donut-grid{grid-template-columns:1fr;}}
+    .donut-wrap{position:relative;height:140px;}
+    .donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+    .rag-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:10px;margin-bottom:6px;}
+    .rag-red{background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.18);}
+    .rag-amber{background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.18);}
+    .rag-green{background:rgba(22,101,52,0.07);border:1px solid rgba(22,101,52,0.18);}
+    .rag-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .rag-dot-red{background:#dc2626;box-shadow:0 0 5px rgba(220,38,38,0.4);}
+    .rag-dot-amber{background:#d97706;box-shadow:0 0 5px rgba(217,119,6,0.4);}
+    .rag-dot-green{background:#16a34a;box-shadow:0 0 5px rgba(22,163,74,0.4);}
+    .rag-label{font-size:0.71rem;font-weight:600;flex:1;}
+    .rag-count{font-size:1.35rem;font-weight:900;}
+    .rag-delta{font-size:0.55rem;font-weight:700;margin-left:4px;}
+    .rag-red .rag-label{color:#991b1b;}.rag-red .rag-count{color:#dc2626;}.rag-red .rag-delta{color:#16a34a;}
+    .rag-amber .rag-label{color:#92400e;}.rag-amber .rag-count{color:#b45309;}.rag-amber .rag-delta{color:#16a34a;}
+    .rag-green .rag-label{color:#166534;}.rag-green .rag-count{color:#15803d;}.rag-green .rag-delta{color:#15803d;}
+
+    /* TRIGGER BREAKDOWN */
+    .trigger-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+    .trigger-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;background:rgba(15,23,42,0.03);border:1px solid var(--border);}
+    .trigger-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;}
+    .trigger-name{font-size:0.66rem;font-weight:600;color:var(--t2);}
+
+    /* SOS */
+    .sos-bar{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+    .sos-label{font-size:0.68rem;font-weight:600;color:var(--t2);min-width:190px;max-width:190px;}
+    .sos-track{flex:1;height:7px;background:rgba(15,23,42,0.07);border-radius:99px;overflow:hidden;}
+    .sos-fill{height:100%;border-radius:99px;background:var(--green);}
+    .sos-count{font-size:0.68rem;font-weight:800;color:var(--green);min-width:22px;text-align:right;}
+    .sos-users{font-size:0.57rem;color:var(--t3);min-width:52px;}
+
+    /* REVIEW BOX */
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
+
+    .chart-wrap{position:relative;width:100%;}
+    .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+  </style>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-logo">
+      <div class="snav-k">K</div>
+      <div class="snav-brand">KAMELION <span>· Platform Dashboard · May 2026</span></div>
+    </div>
+    <div class="snav-links">
+      <a class="snav-link" href="#sec-snapshot">Snapshot</a>
+      <a class="snav-link" href="#sec-may">This Month</a>
+      <a class="snav-link" href="#sec-compare">April vs May</a>
+      <a class="snav-link" href="#sec-cohort">Cohort Health</a>
+    </div>
+  </div>
+</nav>
+
+<div class="bg">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="h-logo">
+        <div class="h-k">K</div>
+        <div>
+          <div class="h-brand">KAMELION</div>
+          <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
+        </div>
+      </div>
+      <h1 class="h-title"><span>Platform Dashboard</span></h1>
+      <div class="h-sub">Platform-wide engagement data across all active organisations. May 2026 - with April comparison.</div>
+    </div>
+    <div class="h-right">
+      <span class="badge">May 2026</span>
+      <span class="badge" style="color:var(--green);">102 Active Users Across Platform</span>
+      <span class="badge" style="color:var(--emerald);">46 Goals Completed · 90.2% Rate</span>
+    </div>
+  </header>
+
+  <!-- PLATFORM SNAPSHOT -->
+  <div id="sec-snapshot" class="slabel">Platform Snapshot - May 2026</div>
+  <div class="grid g4" style="margin-bottom:4px;">
+    <div class="glass-md kpi-gr"><div class="kpi-wrap"><div class="kpi-num">102</div><div class="kpi-lbl">Active Users</div><span class="kpi-tag">across all organisations</span></div></div>
+    <div class="glass-md kpi-em"><div class="kpi-wrap"><div class="kpi-num">46</div><div class="kpi-lbl">Goals Completed</div><span class="kpi-tag">90.2% completion rate</span></div></div>
+    <div class="glass-md kpi-fo"><div class="kpi-wrap"><div class="kpi-num">41</div><div class="kpi-lbl">Challenges Completed</div><span class="kpi-tag">of 131 started this month</span></div></div>
+    <div class="glass-md kpi-ms"><div class="kpi-wrap"><div class="kpi-num">11m 37s</div><div class="kpi-lbl">Avg. Session Time</div><span class="kpi-tag">+7.6% vs April</span></div></div>
+  </div>
+
+  <!-- THIS MONTH -->
+  <div id="sec-may" class="slabel">This Month - May 2026 Detail</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+    <div class="glass pad">
+      <div class="clabel">How Young People Are Feeling - May 2026</div>
+      <div class="chart-wrap" style="height:200px;"><canvas id="moodChart"></canvas></div>
+      <div class="callout c-green">
+        <div class="callout-ttl">Mood Distribution - 116 Check-ins This Month</div>
+        <p>The majority of check-ins this month sit in Good and Normal - a stable, engaged cohort. Sad and Unhappy account for 8.7% of total check-ins and are tracked through the RAG monitoring system.</p>
+      </div>
+    </div>
+    <div class="glass pad">
+      <div class="clabel">Content Categories - May 2026 Distribution</div>
+      <div class="chart-wrap" style="height:200px;"><canvas id="contentChart"></canvas></div>
+      <div class="callout c-emerald">
+        <div class="callout-ttl">Balanced Spread Across All Six Categories</div>
+        <p>My Character leads at 33.6% but all six categories are now active. My Mind, Health and Fitness and Social Life are each drawing 20%+ of engagement - the broadest distribution seen to date.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURE ENGAGEMENT STATS -->
+  <div class="glass pad" style="margin-bottom:4px;">
+    <div class="clabel">Feature Engagement - May 2026</div>
+    <div class="feat-grid">
+      <div class="feat-card feat-gr">
+        <div class="feat-num">50</div>
+        <div class="feat-lbl">Journal Entries</div>
+        <div class="feat-sub">11 unique users · +733% vs April</div>
+      </div>
+      <div class="feat-card feat-em">
+        <div class="feat-num">59</div>
+        <div class="feat-lbl">Mental Gym Completed</div>
+        <div class="feat-sub">5 unique users · +391.7% vs April</div>
+      </div>
+      <div class="feat-card feat-fo">
+        <div class="feat-num">23</div>
+        <div class="feat-lbl">Personality Tests</div>
+        <div class="feat-sub">7 unique users · -47% vs April</div>
+      </div>
+      <div class="feat-card feat-ms">
+        <div class="feat-num">12</div>
+        <div class="feat-lbl">Community Posts + Comments</div>
+        <div class="feat-sub">10 posts · 2 comments · 24 users</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APRIL vs MAY COMPARISON -->
+  <div id="sec-compare" class="slabel">April vs May - Month on Month</div>
+  <p style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:12px;max-width:720px;">May shows significant depth gains across the core engagement features. Goals, Mental Gym and Journal adoption all grew substantially. Active user count is broadly stable. Personality tests and community posts declined.</p>
+
+  <div class="comp-section">
+    <div class="comp-head">
+      <div class="comp-head-cell">Metric</div>
+      <div class="comp-head-cell" style="text-align:right;padding-right:20px;">April</div>
+      <div class="comp-head-cell" style="text-align:right;padding-right:20px;">May</div>
+      <div class="comp-head-cell" style="text-align:right;">Change</div>
+    </div>
+
+    <div class="comp-row group-head"><div class="comp-group-lbl">Platform Reach</div></div>
+    <div class="comp-row">
+      <div class="comp-metric">Active Users</div>
+      <div class="comp-val">104</div>
+      <div class="comp-val-curr">102</div>
+      <div class="comp-pill gp-flat">-1.9%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Avg. Session Time</div>
+      <div class="comp-val">10m 21s</div>
+      <div class="comp-val-curr">11m 37s</div>
+      <div class="comp-pill gp-up">+12.1%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Licences Activated</div>
+      <div class="comp-val">12</div>
+      <div class="comp-val-curr">8</div>
+      <div class="comp-pill gp-flat">monthly new</div>
+    </div>
+
+    <div class="comp-row group-head"><div class="comp-group-lbl">Engagement</div></div>
+    <div class="comp-row">
+      <div class="comp-metric">Moods Added</div>
+      <div class="comp-val">93</div>
+      <div class="comp-val-curr">116</div>
+      <div class="comp-pill gp-up">+24.7%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Journal Entries</div>
+      <div class="comp-val">6</div>
+      <div class="comp-val-curr">50</div>
+      <div class="comp-pill gp-up">+733%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Personality Tests</div>
+      <div class="comp-val">44</div>
+      <div class="comp-val-curr">23</div>
+      <div class="comp-pill gp-dn">-47.7%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Mental Gym Completed</div>
+      <div class="comp-val">12</div>
+      <div class="comp-val-curr">59</div>
+      <div class="comp-pill gp-up">+391.7%</div>
+    </div>
+
+    <div class="comp-row group-head"><div class="comp-group-lbl">Participation</div></div>
+    <div class="comp-row">
+      <div class="comp-metric">Challenges Started</div>
+      <div class="comp-val">31</div>
+      <div class="comp-val-curr">131</div>
+      <div class="comp-pill gp-up">+322.6%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Challenges Completed</div>
+      <div class="comp-val">21</div>
+      <div class="comp-val-curr">41</div>
+      <div class="comp-pill gp-up">+95.2%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Challenge Completion Rate</div>
+      <div class="comp-val">67.7%</div>
+      <div class="comp-val-curr">31.3%</div>
+      <div class="comp-pill gp-dn">volume spike</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Goals Completed</div>
+      <div class="comp-val">4</div>
+      <div class="comp-val-curr">46</div>
+      <div class="comp-pill gp-up">+1,050%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Goal Completion Rate</div>
+      <div class="comp-val">50%</div>
+      <div class="comp-val-curr">90.2%</div>
+      <div class="comp-pill gp-up">+40.2pp</div>
+    </div>
+
+    <div class="comp-row group-head"><div class="comp-group-lbl">Community</div></div>
+    <div class="comp-row">
+      <div class="comp-metric">Community Posts</div>
+      <div class="comp-val">21</div>
+      <div class="comp-val-curr">10</div>
+      <div class="comp-pill gp-dn">-52.4%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Community Comments</div>
+      <div class="comp-val">1</div>
+      <div class="comp-val-curr">2</div>
+      <div class="comp-pill gp-up">+100%</div>
+    </div>
+
+    <div class="comp-row group-head"><div class="comp-group-lbl">Cohort Health</div></div>
+    <div class="comp-row">
+      <div class="comp-metric">Users - Red Status</div>
+      <div class="comp-val">3</div>
+      <div class="comp-val-curr">1</div>
+      <div class="comp-pill gp-dn-good">-66.7%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Users - Amber Status</div>
+      <div class="comp-val">10</div>
+      <div class="comp-val-curr">8</div>
+      <div class="comp-pill gp-dn-good">-20%</div>
+    </div>
+    <div class="comp-row">
+      <div class="comp-metric">Users - Green / Clear</div>
+      <div class="comp-val">28</div>
+      <div class="comp-val-curr">29</div>
+      <div class="comp-pill gp-up">+3.6%</div>
+    </div>
+  </div>
+
+  <!-- COHORT HEALTH -->
+  <div id="sec-cohort" class="slabel">Cohort Health - May 2026</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">RAG Status - End of May 2026</div>
+      <div class="rag-donut-grid">
+        <div class="donut-wrap">
+          <canvas id="ragChart"></canvas>
+          <div class="donut-center">
+            <div style="font-size:1.6rem;font-weight:900;color:var(--t1);line-height:1;">29</div>
+            <div style="font-size:0.51rem;color:var(--t3);font-weight:600;">users tracked</div>
+          </div>
+        </div>
+        <div>
+          <div class="rag-row rag-red">
+            <div class="rag-dot rag-dot-red"></div>
+            <div class="rag-label">Under Review</div>
+            <div class="rag-count">1</div>
+            <div class="rag-delta">was 3 in Apr</div>
+          </div>
+          <div class="rag-row rag-amber">
+            <div class="rag-dot rag-dot-amber"></div>
+            <div class="rag-label">Normal Ups and Downs</div>
+            <div class="rag-count">8</div>
+            <div class="rag-delta">was 10 in Apr</div>
+          </div>
+          <div class="rag-row rag-green">
+            <div class="rag-dot rag-dot-green"></div>
+            <div class="rag-label">Active and Engaged</div>
+            <div class="rag-count">29</div>
+            <div class="rag-delta">was 28 in Apr</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout c-green">
+        <div class="callout-ttl">Cohort Health Improving Month on Month</div>
+        <p>Red reduced from 3 to 1 (-66.7%). Amber from 10 to 8 (-20%). Green up from 28 to 29. The monitoring system is working - and the trend is moving in the right direction.</p>
+      </div>
+      <div style="margin-top:12px;">
+        <div class="clabel">Lio + Monitoring Signals</div>
+        <p style="font-size:0.7rem;color:var(--t3);margin-bottom:8px;">Kamelion monitors across five signal types in parallel. Lio - Kamelion's AI companion - is one of those signals.</p>
+        <div class="trigger-grid">
+          <div class="trigger-row"><div class="trigger-dot"></div><div class="trigger-name">Mood Status</div></div>
+          <div class="trigger-row"><div class="trigger-dot"></div><div class="trigger-name">Journal Status</div></div>
+          <div class="trigger-row"><div class="trigger-dot"></div><div class="trigger-name">Community Status</div></div>
+          <div class="trigger-row"><div class="trigger-dot"></div><div class="trigger-name">Support Status</div></div>
+          <div class="trigger-row" style="grid-column:1/-1;background:rgba(6,95,70,0.06);border-color:rgba(6,95,70,0.20);">
+            <div class="trigger-dot" style="background:var(--green);box-shadow:0 0 5px rgba(6,95,70,0.4);"></div>
+            <div class="trigger-name" style="color:var(--green);font-weight:700;">Lio Response Status · AI Companion</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-box">
+        <strong>How Kamelion's review process works</strong>
+        Red flags are reviewed internally before any contact with an organisation. Amber flags reflect normal variation - no action required. Individual data is never passed directly to an organisation without Kamelion's review.
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">Support Area Themes - May 2026</div>
+      <p style="font-size:0.73rem;color:var(--t2);line-height:1.5;margin-bottom:14px;">Platform-wide SOS themes from young people using Kamelion's relaxation features. Shown by number of interactions. These themes are signals for both Kamelion's product direction and what organisations should be aware of in their cohorts.</p>
+
+      <div class="sos-bar">
+        <div class="sos-label">Family stress or tension</div>
+        <div class="sos-track"><div class="sos-fill" style="width:100%;"></div></div>
+        <div class="sos-count">5</div>
+        <div class="sos-users">4 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Lonely or isolated</div>
+        <div class="sos-track"><div class="sos-fill" style="width:80%;"></div></div>
+        <div class="sos-count">4</div>
+        <div class="sos-users">3 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Feeling sad, low or numb</div>
+        <div class="sos-track"><div class="sos-fill" style="width:60%;background:var(--forest);"></div></div>
+        <div class="sos-count">3</div>
+        <div class="sos-users">3 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Anxious, overthinking, panicky</div>
+        <div class="sos-track"><div class="sos-fill" style="width:60%;background:var(--forest);"></div></div>
+        <div class="sos-count">3</div>
+        <div class="sos-users">2 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Struggling to sleep or switch off</div>
+        <div class="sos-track"><div class="sos-fill" style="width:40%;background:var(--moss);"></div></div>
+        <div class="sos-count">2</div>
+        <div class="sos-users">2 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Friendship or relationship issues</div>
+        <div class="sos-track"><div class="sos-fill" style="width:40%;background:var(--moss);"></div></div>
+        <div class="sos-count">2</div>
+        <div class="sos-users">2 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Other</div>
+        <div class="sos-track"><div class="sos-fill" style="width:40%;background:var(--moss);"></div></div>
+        <div class="sos-count">2</div>
+        <div class="sos-users">2 users</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Worried about school or exams</div>
+        <div class="sos-track"><div class="sos-fill" style="width:20%;background:rgba(15,23,42,0.18);"></div></div>
+        <div class="sos-count" style="color:var(--t3);">1</div>
+        <div class="sos-users">1 user</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Stressed about the future</div>
+        <div class="sos-track"><div class="sos-fill" style="width:20%;background:rgba(15,23,42,0.18);"></div></div>
+        <div class="sos-count" style="color:var(--t3);">1</div>
+        <div class="sos-users">1 user</div>
+      </div>
+      <div class="sos-bar">
+        <div class="sos-label">Not feeling good / comparing</div>
+        <div class="sos-track"><div class="sos-fill" style="width:20%;background:rgba(15,23,42,0.18);"></div></div>
+        <div class="sos-count" style="color:var(--t3);">1</div>
+        <div class="sos-users">1 user</div>
+      </div>
+
+      <div class="callout c-emerald" style="margin-top:4px;">
+        <div class="callout-ttl">Top Theme - Family Stress and Loneliness</div>
+        <p>Family stress (5) and loneliness (4) are the two most-flagged themes this month - consistent with April data. These themes should inform content prioritisation and organisational briefings.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="snav-logo" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="snav-k">K</div>
+      <span style="font-size:0.65rem;font-weight:800;color:var(--green);">KAMELION</span>
+      <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
+    </div>
+    <div>Kamelion Platform Dashboard · May 2026 &nbsp;·&nbsp; 102 active users · 116 moods · 41 challenges · 46/51 goals · 11m 37s avg session time</div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    const links=document.querySelectorAll('.snav-link');
+    const ids=['sec-snapshot','sec-may','sec-compare','sec-cohort'];
+    function setActive(id){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));}
+    links.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});});});
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-52px 0px -70% 0px',threshold:0});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+    setActive('sec-snapshot');
+  })();
+
+  const G='rgba(15,23,42,0.08)';
+  Chart.defaults.color='rgba(15,23,42,0.55)';
+  Chart.defaults.borderColor=G;
+  Chart.defaults.font.family="'Inter',system-ui,sans-serif";
+
+  // Mood Doughnut - May 2026
+  new Chart(document.getElementById('moodChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Good','Normal','Happy','Unhappy','Sad'],
+      datasets:[{data:[54,55,18,4,6],backgroundColor:['#86efac','#94a3b8','#4ade80','#ea580c','#f87171'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
+      legend:{position:'right',labels:{font:{size:11,weight:'600'},color:'rgba(15,23,42,0.65)',padding:10,boxWidth:11,boxHeight:11,borderRadius:3,useBorderRadius:true}},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)',callbacks:{label:i=>` ${i.parsed} check-in${i.parsed!==1?'s':''}`}}
+    }}
+  });
+
+  // Content Bar - May 2026
+  new Chart(document.getElementById('contentChart'),{
+    type:'bar',
+    data:{
+      labels:['My Character','My Mind','Health & Fitness','Social Life','Career','Money'],
+      datasets:[{data:[33.6,24.9,20.2,19.7,0.9,0.7],backgroundColor:['#065f46','#16a34a','#0d9488','#65a30d','#0891b2','#84cc16'],borderRadius:6,borderSkipped:false}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)',callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
+    },scales:{
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:45},
+      y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}}
+    }}
+  });
+
+  // RAG Donut - May end state
+  new Chart(document.getElementById('ragChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Under Review','Normal Ups and Downs','Active & Engaged'],
+      datasets:[{data:[1,8,29],backgroundColor:['#dc2626','#d97706','#16a34a'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,titleColor:'rgba(15,23,42,0.85)',bodyColor:'rgba(15,23,42,0.70)',callbacks:{
+        label:i=>` ${i.parsed} user${i.parsed!==1?'s':''}`
+      }}
+    }}
+  });
+</script>
+</body>
+</html>
