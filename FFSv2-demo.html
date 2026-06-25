@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FFS - Kamelion Impact Report · 2024-26</title>
+  <title>Kamelion Demo Data Dashboard - Impact Report · 2024-26</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -238,7 +238,7 @@
   <div class="snav-inner">
     <div class="snav-logo">
       <div class="snav-k">K</div>
-      <div class="snav-brand">KAMELION <span>· FFS · 2024-26</span></div>
+      <div class="snav-brand">KAMELION <span>· Demo Data Dashboard · 2024-26</span></div>
     </div>
     <div class="snav-links">
       <a class="snav-link" href="#sec-foundation">All-Time</a>
@@ -271,7 +271,7 @@
           <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
         </div>
       </div>
-      <div class="h-title"><span>FFS</span></div>
+      <div class="h-title"><span>Kamelion Demo Data Dashboard</span></div>
       <div class="h-sub">200 young people. Two years. Consistent, measurable growth in every area - engagement, wellbeing, challenge completion and community. Here is what that looks like in data, and what it means for the work you do.</div>
     </div>
     <div class="h-right">
@@ -434,12 +434,12 @@
     </div>
     <div class="glass pad">
       <div class="clabel">What Members Are Engaging With · 2025-26</div>
-      <div class="chart-wrap" style="height:180px;">
+      <div class="chart-wrap" style="height:230px;">
         <canvas id="contentChart"></canvas>
       </div>
       <div class="callout c-amber">
-        <div class="callout-ttl">Character and Mind Lead - The Deep Work Is Sustained</div>
-        <p>My Character (44%) and My Mind (32%) together account for 76% of all activity - up from 72% in Year 1. Members are going deeper into the areas that build lasting change.</p>
+        <div class="callout-ttl">Six Categories Active - Including Career and Money</div>
+        <p>My Character (38%) and My Mind (27%) account for 65% of activity. Career (9%) and Money (6%) are both live - members are engaging with their futures alongside personal development. All six content areas are in use.</p>
       </div>
     </div>
   </div>
@@ -536,7 +536,7 @@
   </div>
 
   <!-- KAMELION METHOD -->
-  <div id="sec-method" class="slabel">The Kamelion Method - How FFS Members Grow</div>
+  <div id="sec-method" class="slabel">The Kamelion Method - How Members Grow</div>
   <div class="method-grid">
     <div class="method-col">
       <div class="mc-circle mc-1">K</div>
@@ -603,28 +603,40 @@
   <div class="grid g2" style="margin-bottom:4px;">
     <div class="glass pad">
       <div class="clabel">Cohort Status - 2025-26</div>
-      <div class="cs-wrap">
-        <div class="cs-indicator">
-          <div class="cs-dot"></div>
-          <div class="cs-label">All Clear</div>
+      <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:start;margin-bottom:12px;">
+        <div style="height:140px;position:relative;">
+          <canvas id="ragChart"></canvas>
         </div>
         <div>
-          <div class="cs-stats">
-            <div class="cs-stat cs-ro">
-              <div class="cs-num">195</div>
-              <div class="cs-desc">members active</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.18);border-radius:9px;padding:8px 12px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#dc2626;flex-shrink:0;"></div>
+                <span style="font-size:0.72rem;font-weight:600;color:var(--t2);">Red - Kamelion reviewing</span>
+              </div>
+              <span style="font-size:1.1rem;font-weight:900;color:#dc2626;">5</span>
             </div>
-            <div class="cs-stat cs-em">
-              <div class="cs-num">0</div>
-              <div class="cs-desc">flags raised</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.18);border-radius:9px;padding:8px 12px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#d97706;flex-shrink:0;"></div>
+                <span style="font-size:0.72rem;font-weight:600;color:var(--t2);">Amber - Normal ups and downs</span>
+              </div>
+              <span style="font-size:1.1rem;font-weight:900;color:#d97706;">12</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(4,120,87,0.06);border:1px solid rgba(4,120,87,0.15);border-radius:9px;padding:8px 12px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#16a34a;flex-shrink:0;"></div>
+                <span style="font-size:0.72rem;font-weight:600;color:var(--t2);">Clear - No concerns</span>
+              </div>
+              <span style="font-size:1.1rem;font-weight:900;color:#16a34a;">178</span>
             </div>
           </div>
-          <p style="font-size:0.74rem;color:var(--t2);line-height:1.5;">No members have been flagged this programme year. Kamelion monitors patterns in the background and updates in real time. If anything changes, Kamelion reviews before anything is shared with your organisation.</p>
+          <p style="font-size:0.72rem;color:var(--t2);line-height:1.5;">Kamelion monitors all 195 members in the background. Red means Kamelion is reviewing - your organisation does not need to act unless contacted. Amber reflects normal life and is being monitored - no action needed.</p>
         </div>
       </div>
       <div class="review-box">
         <strong>How the data review process works</strong>
-        Kamelion reviews each case before anything is passed on. We only make contact when there is genuine reason to. Individual member files are never shared directly with your organisation without our review first.
+        Kamelion reviews each Red case before anything is passed on. We only make contact when there is genuine reason to. Individual member files are never shared directly with your organisation without our review first.
       </div>
     </div>
     <div class="glass pad">
@@ -718,12 +730,12 @@
 
   <!-- NEXT STEPS -->
   <div id="sec-next" class="slabel">Next Steps · Building on Two Strong Years</div>
-  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where FFS stands in each - and the one move that extends what is already working.</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where the programme stands in each - and the one move that extends what is already working.</div>
   <div class="grid g3">
     <div class="glass acard">
       <span class="a-badge a-ro">Skills & Knowledge</span>
-      <div class="a-nums">1,080 journals and personality tests. 76% of all activity in My Character and My Mind.</div>
-      <div class="a-why">Members are doing the deep self-awareness work - 800 journals, 280 personality tests and three quarters of all activity in the areas that build lasting change. This is the content that translates directly into your programme outcomes. Share the Year 2 themes with your funders - the depth of engagement is evidence of impact, not just participation.</div>
+      <div class="a-nums">1,080 journals and personality tests. 65% of activity in My Character and My Mind. Career and Money both showing up in the data.</div>
+      <div class="a-why">Members are doing the deep self-awareness work - 800 journals, 280 personality tests and two thirds of all activity in personal development. Career (9%) and Money (6%) add real-world relevance to the evidence trail. All six content areas are active. This is the content that translates directly into your programme outcomes - share the Year 2 themes with your funders.</div>
       <div class="a-q">How are you using the insight from what members are engaging with to shape your programme design for Year 3?</div>
     </div>
     <div class="glass acard">
@@ -746,7 +758,7 @@
       <span style="font-size:0.65rem;font-weight:800;color:var(--rose);">KAMELION</span>
       <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
     </div>
-    <div>FFS · Programme Years 2024-25 & 2025-26 · 1,000 challenges · 5,000 moods · 255 goals · 200 members</div>
+    <div>Kamelion Demo Data Dashboard · Programme Years 2024-25 & 2025-26 · 1,000 challenges · 5,000 moods · 255 goals · 200 members</div>
     <div style="margin-top:6px;font-size:0.54rem;color:var(--t4);">Illustrative data for demonstration purposes</div>
   </div>
 
@@ -829,19 +841,32 @@
     }}
   });
 
-  // CONTENT BAR - 2025-26
+  // CONTENT BAR - 2025-26 (all 6 categories)
   new Chart(document.getElementById('contentChart'),{
     type:'bar',
     data:{
-      labels:['My Character','My Mind','Social Life','Health & Fitness'],
-      datasets:[{data:[44,32,14,10],backgroundColor:['#9d174d','#b45309','#6d28d9','#047857'],borderRadius:6,borderSkipped:false}]
+      labels:['My Character','My Mind','Social Life','Health & Fitness','Career','Money'],
+      datasets:[{data:[38,27,11,9,9,6],backgroundColor:['#9d174d','#b45309','#6d28d9','#047857','#2563eb','#d97706'],borderRadius:6,borderSkipped:false}]
     },
     options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{
       legend:{display:false},
       tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed.x}% of activity`}}
     },scales:{
-      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:55},
+      x:{grid:{color:G},ticks:{font:{size:10},color:'rgba(15,23,42,0.50)',callback:v=>v+'%'},border:{display:false},max:45},
       y:{grid:{display:false},ticks:{font:{size:10,weight:'600'},color:'rgba(15,23,42,0.65)'}}
+    }}
+  });
+
+  // RAG DONUT
+  new Chart(document.getElementById('ragChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Red','Amber','Clear'],
+      datasets:[{data:[5,12,178],backgroundColor:['#dc2626','#d97706','#16a34a'],borderColor:'rgba(238,241,248,0.9)',borderWidth:2}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{
+      legend:{display:false},
+      tooltip:{backgroundColor:'rgba(255,255,255,0.98)',borderColor:'rgba(15,23,42,0.12)',borderWidth:1,callbacks:{label:i=>` ${i.parsed} member${i.parsed!==1?'s':''}`}}
     }}
   });
 </script>
