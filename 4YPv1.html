@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4YP - Kamelion Impact Report · May 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.04);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --indigo:#4338ca;--indigo-soft:rgba(67,56,202,0.10);--indigo-glow:rgba(67,56,202,0.22);
+      --sky:#0284c7;--sky-soft:rgba(2,132,199,0.10);--sky-glow:rgba(2,132,199,0.22);
+      --violet:#7c3aed;--violet-soft:rgba(124,58,237,0.10);--violet-glow:rgba(124,58,237,0.22);
+      --teal:#0f766e;--teal-soft:rgba(15,118,110,0.10);--teal-glow:rgba(15,118,110,0.22);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(67,56,202,0.11)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(124,58,237,0.09)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(2,132,199,0.07)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(15,118,110,0.07)0%,transparent 70%);top:20%;left:50%;}
+
+    /* NAV */
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
+    .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
+    .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--indigo),var(--sky));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#ffffff;}
+    .snav-brand{font-size:0.7rem;font-weight:800;color:var(--indigo);white-space:nowrap;}
+    .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
+    .snav-links{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;}
+    .snav-links::-webkit-scrollbar{display:none;}
+    .snav-link{font-size:0.68rem;font-weight:600;color:var(--t3);text-decoration:none;padding:5px 12px;border-radius:8px;white-space:nowrap;transition:color .2s,background .2s;border:1px solid transparent;}
+    .snav-link:hover{color:var(--t2);background:rgba(15,23,42,0.04);}
+    .snav-link.active{color:var(--indigo);background:rgba(67,56,202,0.08);border-color:rgba(67,56,202,0.18);}
+
+    .wrap{position:relative;z-index:1;padding:72px 32px 56px;max-width:1200px;margin:0 auto;}
+    .glass{background:var(--glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-hi);border-radius:18px;box-shadow:0 2px 14px rgba(15,23,42,0.08),0 1px 4px rgba(15,23,42,0.04);}
+    .pad{padding:22px;}
+
+    /* HEADER */
+    .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:26px;margin-bottom:4px;border-bottom:1px solid var(--border);}
+    @media(max-width:700px){.header{grid-template-columns:1fr;}}
+    .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--indigo),var(--sky));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#ffffff;flex-shrink:0;}
+    .h-brand{font-size:0.75rem;font-weight:800;color:var(--indigo);letter-spacing:1px;}
+    .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
+    .h-title{font-size:2.1rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
+    .h-title span{background:linear-gradient(120deg,var(--indigo)0%,var(--sky)55%,var(--violet)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .h-sub{margin-top:7px;font-size:0.8rem;color:var(--t2);line-height:1.5;max-width:480px;}
+    .h-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .badge{font-size:0.61rem;font-weight:700;color:var(--t2);background:var(--glass-md);border:1px solid var(--border-hi);padding:5px 13px;border-radius:99px;}
+
+    /* LABELS */
+    .slabel{font-size:0.54rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin:24px 0 10px;}
+    .clabel{font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:11px;}
+
+    /* GRID */
+    .grid{display:grid;gap:12px;}
+    .g4{grid-template-columns:repeat(4,1fr);}
+    .g3{grid-template-columns:repeat(3,1fr);}
+    .g2{grid-template-columns:1fr 1fr;}
+    @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+    @media(max-width:620px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+    /* KPI */
+    .kpi-wrap{padding:18px;}
+    .kpi-num{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:4px;}
+    .kpi-lbl{font-size:0.7rem;font-weight:500;color:var(--t2);margin-bottom:7px;}
+    .kpi-tag{font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block;}
+    .kpi-in{background:linear-gradient(135deg,var(--indigo-glow),rgba(255,255,255,0.01));}
+    .kpi-sk{background:linear-gradient(135deg,var(--sky-glow),rgba(255,255,255,0.01));}
+    .kpi-vt{background:linear-gradient(135deg,var(--violet-glow),rgba(255,255,255,0.01));}
+    .kpi-tl{background:linear-gradient(135deg,var(--teal-glow),rgba(255,255,255,0.01));}
+    .kpi-in .kpi-num{color:var(--indigo);}
+    .kpi-sk .kpi-num{color:var(--sky);}
+    .kpi-vt .kpi-num{color:var(--violet);}
+    .kpi-tl .kpi-num{color:var(--teal);}
+    .kpi-in .kpi-tag{background:var(--indigo-soft);color:var(--indigo);border:1px solid rgba(67,56,202,0.22);}
+    .kpi-sk .kpi-tag{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(2,132,199,0.22);}
+    .kpi-vt .kpi-tag{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(124,58,237,0.22);}
+    .kpi-tl .kpi-tag{background:var(--teal-soft);color:var(--teal);border:1px solid rgba(15,118,110,0.22);}
+
+    /* CALLOUT */
+    .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
+    .c-indigo{background:var(--indigo-soft);border-left-color:var(--indigo);}
+    .c-sky{background:var(--sky-soft);border-left-color:var(--sky);}
+    .c-violet{background:var(--violet-soft);border-left-color:var(--violet);}
+    .c-teal{background:var(--teal-soft);border-left-color:var(--teal);}
+    .callout-ttl{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .c-indigo .callout-ttl{color:var(--indigo);}
+    .c-sky .callout-ttl{color:var(--sky);}
+    .c-violet .callout-ttl{color:var(--violet);}
+    .c-teal .callout-ttl{color:var(--teal);}
+    .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
+
+    /* METHOD IN ACTION */
+    .method-grid{display:flex;align-items:flex-start;gap:0;padding:20px;background:rgba(15,23,42,0.02);border:1px solid var(--border);border-radius:16px;margin-bottom:12px;}
+    .method-col{flex:1;min-width:110px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;padding:10px 6px;}
+    .method-col + .method-col{border-left:1px solid var(--border);}
+    .mc-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:900;margin-bottom:3px;flex-shrink:0;}
+    .mc-1{background:rgba(67,56,202,0.12);border:1px solid rgba(67,56,202,0.28);color:var(--indigo);}
+    .mc-2{background:rgba(2,132,199,0.12);border:1px solid rgba(2,132,199,0.28);color:var(--sky);}
+    .mc-3{background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.28);color:var(--violet);}
+    .mc-4{background:rgba(15,118,110,0.12);border:1px solid rgba(15,118,110,0.28);color:var(--teal);}
+    .mc-5{background:rgba(67,56,202,0.08);border:1px solid rgba(67,56,202,0.20);color:var(--indigo);}
+    .mc-stage{font-size:0.63rem;font-weight:800;color:var(--t1);letter-spacing:0.5px;}
+    .mc-focus{font-size:0.54rem;color:var(--t3);font-weight:600;margin-bottom:8px;}
+    .mc-num{font-size:1.7rem;font-weight:900;line-height:1;letter-spacing:-1px;}
+    .mc-desc{font-size:0.6rem;color:var(--t3);line-height:1.4;max-width:120px;}
+    @media(max-width:700px){.method-grid{flex-wrap:wrap;}.method-col{min-width:45%;}.method-col + .method-col{border-left:none;border-top:1px solid var(--border);}}
+
+    /* WHAT IT MEANS */
+    .means-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px;}
+    @media(max-width:700px){.means-strip{grid-template-columns:1fr;}}
+    .ms-tile{padding:14px 16px;border-radius:12px;display:flex;align-items:flex-start;gap:10px;}
+    .ms-t1{background:rgba(67,56,202,0.05);border:1px solid rgba(67,56,202,0.13);}
+    .ms-t2{background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.13);}
+    .ms-t3{background:rgba(2,132,199,0.05);border:1px solid rgba(2,132,199,0.13);}
+    .ms-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .ms-lbl{font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
+    .ms-t1 .ms-lbl{color:var(--indigo);}
+    .ms-t2 .ms-lbl{color:var(--violet);}
+    .ms-t3 .ms-lbl{color:var(--sky);}
+    .ms-text{font-size:0.73rem;color:var(--t2);line-height:1.45;}
+    .ms-text strong{color:var(--t1);}
+
+    /* COHORT STATUS - ALL CLEAR */
+    .cs-wrap{display:grid;grid-template-columns:80px 1fr;gap:18px;align-items:start;}
+    @media(max-width:500px){.cs-wrap{grid-template-columns:1fr;}}
+    .cs-indicator{width:80px;height:80px;border-radius:16px;background:var(--teal-soft);border:2px solid rgba(15,118,110,0.22);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;flex-shrink:0;}
+    .cs-dot{width:14px;height:14px;border-radius:50%;background:#16a34a;box-shadow:0 0 7px rgba(22,163,74,0.45);animation:pulse 2s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{box-shadow:0 0 7px rgba(22,163,74,0.45);}50%{box-shadow:0 0 14px rgba(22,163,74,0.70);}}
+    .cs-label{font-size:0.48rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);}
+    .cs-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px;}
+    .cs-stat{display:flex;flex-direction:column;gap:1px;}
+    .cs-num{font-size:1.7rem;font-weight:900;letter-spacing:-1px;line-height:1;}
+    .cs-in .cs-num{color:var(--indigo);}
+    .cs-tl .cs-num{color:var(--teal);}
+    .cs-desc{font-size:0.62rem;color:var(--t3);font-weight:600;}
+
+    /* ACTIVITY STAT ROWS */
+    .act-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;margin-bottom:6px;}
+    .act-in{background:rgba(67,56,202,0.05);border:1px solid rgba(67,56,202,0.13);}
+    .act-sk{background:rgba(2,132,199,0.05);border:1px solid rgba(2,132,199,0.13);}
+    .act-vt{background:rgba(124,58,237,0.05);border:1px solid rgba(124,58,237,0.13);}
+    .act-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .act-in .act-dot{background:var(--indigo);}
+    .act-sk .act-dot{background:var(--sky);}
+    .act-vt .act-dot{background:var(--violet);}
+    .act-label{font-size:0.72rem;font-weight:600;color:var(--t2);flex:1;}
+    .act-count{font-size:1.3rem;font-weight:900;}
+    .act-in .act-count{color:var(--indigo);}
+    .act-sk .act-count{color:var(--sky);}
+    .act-vt .act-count{color:var(--violet);}
+
+    /* GOAL ACHIEVEMENT DISPLAY */
+    .goal-hero{display:flex;align-items:center;gap:16px;padding:18px;border-radius:14px;background:linear-gradient(135deg,rgba(2,132,199,0.07)0%,rgba(67,56,202,0.05)100%);border:1px solid rgba(67,56,202,0.15);margin-bottom:12px;}
+    .goal-num{font-size:3.2rem;font-weight:900;color:var(--indigo);letter-spacing:-2px;line-height:1;flex-shrink:0;}
+    .goal-detail-title{font-size:0.72rem;font-weight:700;color:var(--t1);margin-bottom:3px;}
+    .goal-detail-sub{font-size:0.65rem;color:var(--t3);line-height:1.4;}
+
+    /* SUPPORT AREAS */
+    .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
+    .sa-hi{background:rgba(67,56,202,0.07);border:1px solid rgba(67,56,202,0.15);}
+    .sa-lo{background:rgba(15,23,42,0.02);border:1px solid var(--border);}
+    .sa-icon{font-size:0.85rem;flex-shrink:0;}
+    .sa-name{font-size:0.75rem;font-weight:600;color:var(--t2);flex:1;}
+    .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 7px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+    .sa-new{background:var(--indigo-soft);color:var(--indigo);border:1px solid rgba(67,56,202,0.22);}
+    .sa-cont{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(2,132,199,0.22);}
+    .sau-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .sau-row:last-child{border-bottom:none;padding-bottom:0;}
+    .sau-icon{font-size:1rem;flex-shrink:0;margin-top:1px;}
+    .sau-text{font-size:0.74rem;color:var(--t2);line-height:1.45;}
+    .sau-text strong{color:var(--t1);display:block;font-size:0.6rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px;}
+
+    /* REVIEW BOX */
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
+
+    /* REACH */
+    .reach-wrap{padding:22px;background:linear-gradient(135deg,rgba(67,56,202,0.07)0%,rgba(124,58,237,0.05)100%);border:1px solid rgba(67,56,202,0.18);border-radius:18px;margin-bottom:4px;}
+    .reach-title{font-size:1.05rem;font-weight:900;letter-spacing:-0.3px;line-height:1.2;margin-bottom:6px;}
+    .reach-title em{font-style:normal;color:var(--indigo);}
+    .reach-body{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;}
+    @media(max-width:700px){.reach-body{grid-template-columns:1fr;}}
+    .reach-sub{font-size:0.76rem;color:var(--t2);line-height:1.5;margin-bottom:14px;}
+    .reach-bullets{display:flex;flex-direction:column;gap:7px;min-width:210px;}
+    .rb-row{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:10px;background:var(--glass-md);border:1px solid var(--border-hi);}
+    .rb-icon{font-size:0.85rem;flex-shrink:0;}
+    .rb-text{font-size:0.68rem;color:var(--t2);line-height:1.4;}
+    .rb-text strong{color:var(--t1);display:block;font-size:0.56rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1px;}
+
+    /* ACTION CARDS */
+    .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
+    .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
+    .a-in{background:var(--indigo-soft);color:var(--indigo);border:1px solid rgba(67,56,202,0.22);}
+    .a-vt{background:var(--violet-soft);color:var(--violet);border:1px solid rgba(124,58,237,0.22);}
+    .a-sk{background:var(--sky-soft);color:var(--sky);border:1px solid rgba(2,132,199,0.22);}
+    .a-nums{font-size:1.05rem;font-weight:800;color:var(--t1);line-height:1.3;letter-spacing:-0.3px;margin-bottom:4px;}
+    .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
+    .a-q{font-size:0.74rem;font-style:italic;color:var(--t2);border-top:1px solid var(--border);padding-top:9px;margin-top:4px;line-height:1.55;}
+
+    .chart-wrap{position:relative;width:100%;}
+    .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+  </style>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-logo">
+      <div class="snav-k">K</div>
+      <div class="snav-brand">KAMELION <span>· For Young People · May 2026</span></div>
+    </div>
+    <div class="snav-links">
+      <a class="snav-link" href="#sec-activity">Activity</a>
+      <a class="snav-link" href="#sec-engage">Engagement</a>
+      <a class="snav-link" href="#sec-method">Method</a>
+      <a class="snav-link" href="#sec-members">Members</a>
+      <a class="snav-link" href="#sec-support">Support Areas</a>
+      <a class="snav-link" href="#sec-next">Next Steps</a>
+    </div>
+  </div>
+</nav>
+
+<div class="bg">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="h-logo">
+        <div class="h-k">K</div>
+        <div>
+          <div class="h-brand">KAMELION</div>
+          <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
+        </div>
+      </div>
+      <h1 class="h-title"><span>For Young People</span></h1>
+      <div class="h-sub">Young people investing in themselves - building knowledge, skills and self-awareness. Here is what the early data looks like.</div>
+    </div>
+    <div class="h-right">
+      <span class="badge">May 2026 Report</span>
+      <span class="badge" style="color:var(--indigo);">3 Members Active</span>
+      <span class="badge" style="color:var(--teal);">100% Goal Completion</span>
+    </div>
+  </header>
+
+  <!-- ACTIVITY -->
+  <div id="sec-activity" class="slabel">Activity - All Time</div>
+  <div class="grid g4" style="margin-bottom:4px;">
+    <div class="glass-md kpi-in"><div class="kpi-wrap"><div class="kpi-num">5</div><div class="kpi-lbl">Mood Check-ins</div><span class="kpi-tag">members tracking how they feel</span></div></div>
+    <div class="glass-md kpi-sk"><div class="kpi-wrap"><div class="kpi-num">3/3</div><div class="kpi-lbl">Goals Achieved</div><span class="kpi-tag">100% · every one</span></div></div>
+    <div class="glass-md kpi-vt"><div class="kpi-wrap"><div class="kpi-num">3</div><div class="kpi-lbl">Journal Entries</div><span class="kpi-tag">members reflecting on their lives</span></div></div>
+    <div class="glass-md kpi-tl"><div class="kpi-wrap"><div class="kpi-num">3</div><div class="kpi-lbl">Members Active</div><span class="kpi-tag">out of 5 licences</span></div></div>
+  </div>
+
+  <!-- ENGAGEMENT -->
+  <div id="sec-engage" class="slabel">Engagement - What the Data Shows</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">What Members Have Done - All Time</div>
+      <div class="act-row act-in">
+        <div class="act-dot"></div>
+        <div class="act-label">Mood Check-ins</div>
+        <div class="act-count">5</div>
+      </div>
+      <div class="act-row act-vt">
+        <div class="act-dot"></div>
+        <div class="act-label">Journal Entries</div>
+        <div class="act-count">3</div>
+      </div>
+      <div class="act-row act-sk">
+        <div class="act-dot"></div>
+        <div class="act-label">Goals Completed</div>
+        <div class="act-count">3</div>
+      </div>
+      <div class="callout c-indigo">
+        <div class="callout-ttl">The Foundation Is Being Laid</div>
+        <p>Three members have started building the habits that compound over time. Check-ins, journals and goals are the early indicators of engagement - and all three are active.</p>
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">Goals Achievement</div>
+      <div class="goal-hero">
+        <div class="goal-num">100%</div>
+        <div>
+          <div class="goal-detail-title">Every goal set has been met</div>
+          <div class="goal-detail-sub">3 goals created · 3 goals completed · nothing left behind</div>
+        </div>
+      </div>
+      <div class="callout c-sky">
+        <div class="callout-ttl">100% Is Not a Small Number</div>
+        <p>Every single goal set by a 4YP member on Kamelion has been completed. That is the kind of evidence that belongs in your next funder conversation - before the dataset gets any bigger.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- THE KAMELION METHOD IN ACTION -->
+  <div id="sec-method" class="slabel">The Kamelion Method - In Action at 4YP</div>
+  <div class="method-grid">
+    <div class="method-col">
+      <div class="mc-circle mc-1">1</div>
+      <div class="mc-stage">KNOW</div>
+      <div class="mc-focus">Self-Awareness</div>
+      <div class="mc-num" style="color:var(--indigo);">5</div>
+      <div class="mc-desc">mood check-ins - young people learning how they feel</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-2">2</div>
+      <div class="mc-stage">ACCEPT</div>
+      <div class="mc-focus">Compassion</div>
+      <div class="mc-num" style="color:var(--sky);">3</div>
+      <div class="mc-desc">journal entries - building a kinder relationship with self</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-3">3</div>
+      <div class="mc-stage">ACT</div>
+      <div class="mc-focus">Responsibility</div>
+      <div class="mc-num" style="color:var(--violet);">3</div>
+      <div class="mc-desc">goals completed - taking ownership and following through</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-4">4</div>
+      <div class="mc-stage">CONNECT</div>
+      <div class="mc-focus">Belonging</div>
+      <div class="mc-num" style="color:var(--teal);">—</div>
+      <div class="mc-desc">community layer ready - peer connection is next to unlock</div>
+    </div>
+    <div class="method-col">
+      <div class="mc-circle mc-5">5</div>
+      <div class="mc-stage">GROW</div>
+      <div class="mc-focus">Reflection</div>
+      <div class="mc-num" style="color:var(--indigo);">100%</div>
+      <div class="mc-desc">goal completion rate - every target set, every target met</div>
+    </div>
+  </div>
+
+  <!-- WHAT THIS MEANS -->
+  <div class="means-strip">
+    <div class="ms-tile ms-t1">
+      <div class="ms-icon">📊</div>
+      <div>
+        <div class="ms-lbl">Impact Evidence</div>
+        <div class="ms-text">5 check-ins, 3 journals, 3/3 goals in the opening phase. <strong>Documented, attributed proof that 4YP members are investing in themselves.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t2">
+      <div class="ms-icon">🛡️</div>
+      <div>
+        <div class="ms-lbl">Always-On Support</div>
+        <div class="ms-text">Kamelion extends 4YP's reach into the spaces you can't physically be. <strong>Members have access between sessions - not just when they're with you.</strong></div>
+      </div>
+    </div>
+    <div class="ms-tile ms-t3">
+      <div class="ms-icon">📋</div>
+      <div>
+        <div class="ms-lbl">Grant-Ready Data</div>
+        <div class="ms-text">Every interaction logged and attributable from day one. <strong>A measurable record of engagement for funders, trustees and commissioners.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW MEMBERS ARE DOING -->
+  <div id="sec-members" class="slabel">Cohort Overview - May 2026</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">A live picture of how your members are engaging with Kamelion. This data builds your evidence base - and gives funders and trustees a measurable view of what 4YP members are experiencing outside of sessions.</div>
+  <div class="grid g2" style="margin-bottom:4px;">
+
+    <div class="glass pad">
+      <div class="clabel">Cohort Status</div>
+      <div class="cs-wrap">
+        <div class="cs-indicator">
+          <div class="cs-dot"></div>
+          <div class="cs-label">All Clear</div>
+        </div>
+        <div>
+          <div class="cs-stats">
+            <div class="cs-stat cs-in">
+              <div class="cs-num">3</div>
+              <div class="cs-desc">members active</div>
+            </div>
+            <div class="cs-stat cs-tl">
+              <div class="cs-num">0</div>
+              <div class="cs-desc">flags raised</div>
+            </div>
+          </div>
+          <p style="font-size:0.74rem;color:var(--t2);line-height:1.5;">No members have been flagged. Kamelion monitors patterns in the background and updates in real time. If anything shifts, Kamelion reviews before anything is shared with your organisation.</p>
+        </div>
+      </div>
+      <div class="review-box">
+        <strong>How the data review process works</strong>
+        Kamelion reviews all flagged data before anything is passed on. Individual member details are never shared directly with your organisation - we only make contact when there is genuine reason to, and only after our internal review.
+      </div>
+    </div>
+
+    <div class="glass pad">
+      <div class="clabel">Mood Check-ins - All Time (5 total)</div>
+      <p style="font-size:0.74rem;color:var(--t2);line-height:1.55;margin-bottom:14px;">5 check-ins have been recorded so far. As members build the habit of pausing and checking in, the full breakdown of how your cohort is feeling will appear here. The data has started forming.</p>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;border-radius:12px;background:rgba(67,56,202,0.05);border:1px solid rgba(67,56,202,0.13);margin-bottom:12px;">
+        <div style="font-size:2.4rem;font-weight:900;color:var(--indigo);letter-spacing:-1.5px;line-height:1;flex-shrink:0;">5</div>
+        <div>
+          <div style="font-size:0.7rem;font-weight:700;color:var(--t1);margin-bottom:2px;">Check-ins recorded</div>
+          <div style="font-size:0.62rem;color:var(--t3);">Mood breakdown activates as the dataset grows</div>
+        </div>
+      </div>
+      <div class="callout c-violet">
+        <div class="callout-ttl">The Habit of Reflection Builds Over Time</div>
+        <p>Each check-in is a moment of pause. That habit - whatever the mood - is one of the most valuable things Kamelion builds. Five check-ins from three members is the start of something meaningful.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUPPORT AREAS -->
+  <div id="sec-support" class="slabel">Support Areas - What's on Members' Minds</div>
+  <div class="glass-md" style="padding:20px;margin-bottom:4px;">
+    <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:660px;">When members use Kamelion's relaxation features, they can tag what is on their mind. Over time, this gives you a picture of what themes are present in your cohort - so you can understand unmet needs, shape your programmes around real evidence, and <strong style="color:var(--t1);">ensure no one goes unseen.</strong></div>
+    <div class="grid g2">
+      <div>
+        <div class="clabel">Themes So Far</div>
+        <div class="sa-row sa-lo">
+          <div class="sa-icon">✅</div>
+          <div class="sa-name" style="color:var(--t3);">No support area themes flagged yet. This section will populate as members use Kamelion's relaxation features.</div>
+        </div>
+        <div class="callout c-teal" style="margin-top:10px;">
+          <div class="callout-ttl">This Section Grows With Your Cohort</div>
+          <p>As more members engage, the themes that surface between sessions become your most powerful programme-planning tool. Right now, the channel is open and ready.</p>
+        </div>
+      </div>
+      <div>
+        <div class="clabel">How to Use This Data</div>
+        <div class="sau-row">
+          <div class="sau-icon">🔍</div>
+          <div class="sau-text"><strong>Understand Unmet Needs</strong>Build a fuller picture of what members are carrying between sessions - before it becomes a bigger issue.</div>
+        </div>
+        <div class="sau-row">
+          <div class="sau-icon">🎯</div>
+          <div class="sau-text"><strong>Shape Your Programmes</strong>Real data from your own members - not national statistics - tells you where to focus your energy and resource.</div>
+        </div>
+        <div class="sau-row">
+          <div class="sau-icon">⏱️</div>
+          <div class="sau-text"><strong>Right Support, Right Time</strong>When themes appear consistently, you have the chance to respond early. So no one goes unseen.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YOUR BIGGEST OPPORTUNITY -->
+  <div class="slabel">Your Biggest Opportunity</div>
+  <div class="reach-wrap">
+    <div class="reach-title">2 licences not yet activated.<br><em>Every member who joins adds to what you can evidence.</em></div>
+    <div class="reach-body">
+      <div>
+        <div class="reach-sub">Three members have started the journey and already generated a 100% goal completion rate. As more 4YP members use Kamelion, the picture becomes richer, your impact evidence becomes stronger, and the case you make to funders, trustees and commissioners becomes undeniable.</div>
+      </div>
+      <div class="reach-bullets">
+        <div style="font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:3px;">More members means...</div>
+        <div class="rb-row"><div class="rb-icon">📊</div><div class="rb-text"><strong>Richer Impact Evidence</strong>A fuller picture of what your members need and what is working</div></div>
+        <div class="rb-row"><div class="rb-icon">🗂️</div><div class="rb-text"><strong>Stronger Grant Applications</strong>Quantifiable engagement data that funders can see and trust</div></div>
+        <div class="rb-row"><div class="rb-icon">🧭</div><div class="rb-text"><strong>Better Programme Design</strong>Support area themes become more meaningful as more members contribute</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT STEPS -->
+  <div id="sec-next" class="slabel">Next Steps - June &amp; July 2026</div>
+  <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where 4YP stands in each - and the one move that extends what is already working.</div>
+  <div class="grid g3">
+    <div class="glass acard">
+      <span class="a-badge a-in">Skills &amp; Knowledge</span>
+      <div class="a-nums">5 mood check-ins. 3 journal entries. The reflection habit is forming.</div>
+      <div class="a-why">Three members are already pausing, tuning in and reflecting - between sessions, on their own. That is self-knowledge building in real time. Share this early data with your programme lead. The themes your members work on are already in here.</div>
+      <div class="a-q">What would your programme look like if it was shaped around what members are actually working on between sessions?</div>
+    </div>
+    <div class="glass acard">
+      <span class="a-badge a-vt">Peer &amp; Community Connection</span>
+      <div class="a-nums">Community layer is live and ready. Peer connection is the next thing to unlock.</div>
+      <div class="a-why">Members are building individually right now. The community feature is there and waiting. One prompt in a session - asking members to post something in Kamelion - is all it takes to start. When it does, peer connection data becomes part of your impact story.</div>
+      <div class="a-q">What does connection between your members look like when 4YP is not in the room with them?</div>
+    </div>
+    <div class="glass acard" style="border-color:rgba(67,56,202,0.28);box-shadow:0 0 18px rgba(67,56,202,0.06),0 2px 12px rgba(15,23,42,0.07);">
+      <span class="a-badge a-sk">Participation &amp; Readiness</span>
+      <div class="a-nums">3/3 goals completed. 100%. This is the number to lead with.</div>
+      <div class="a-why">Every goal set by a 4YP member has been met. That is not early-stage noise - it is a 100% completion rate, and it is already funder-ready. Take it into your next grant application, trustee pack or commissioner meeting. The evidence base is live.</div>
+      <div class="a-q">How are you connecting what members are building here to the outcomes 4YP is promising its funders?</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="snav-logo" style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="snav-k">K</div>
+      <span style="font-size:0.65rem;font-weight:800;color:var(--indigo);">KAMELION</span>
+      <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
+    </div>
+    <div>For Young People (4YP) · May 2026 Impact Report &nbsp;·&nbsp; 3 members active · 5 mood check-ins · 3 journal entries · 3/3 goals · 100% completion</div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    const links=document.querySelectorAll('.snav-link');
+    const ids=['sec-activity','sec-engage','sec-method','sec-members','sec-support','sec-next'];
+    function setActive(id){links.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+id));}
+    links.forEach(link=>{link.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(link.getAttribute('href'));if(t)window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-56,behavior:'smooth'});});});
+    const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setActive(e.target.id);});},{rootMargin:'-52px 0px -70% 0px',threshold:0});
+    ids.forEach(id=>{const el=document.getElementById(id);if(el)obs.observe(el);});
+    setActive('sec-activity');
+  })();
+</script>
+</body>
+</html>
