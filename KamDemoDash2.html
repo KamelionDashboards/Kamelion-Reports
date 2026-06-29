@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kamelion Demo Dashboard · 2024-26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --a:#0369a1;--a-s:rgba(3,105,161,0.10);--a-g:rgba(3,105,161,0.22);
+      --b:#7e22ce;--b-s:rgba(126,34,206,0.10);--b-g:rgba(126,34,206,0.22);
+      --c:#e11d48;--c-s:rgba(225,29,72,0.10);--c-g:rgba(225,29,72,0.22);
+      --d:#15803d;--d-s:rgba(21,128,61,0.10);--d-g:rgba(21,128,61,0.22);
+      --glass:#ffffff;--glass-md:rgba(15,23,42,0.03);
+      --border:rgba(15,23,42,0.09);--border-hi:rgba(15,23,42,0.15);
+      --t1:rgba(15,23,42,0.90);--t2:rgba(15,23,42,0.62);--t3:rgba(15,23,42,0.42);--t4:rgba(15,23,42,0.26);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;color:var(--t1);-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;}
+    .bg{position:fixed;inset:0;z-index:0;background:#eef1f8;overflow:hidden;}
+    .blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;}
+    .b1{width:700px;height:700px;background:radial-gradient(circle,rgba(3,105,161,0.08)0%,transparent 70%);top:-220px;left:-160px;}
+    .b2{width:580px;height:580px;background:radial-gradient(circle,rgba(126,34,206,0.06)0%,transparent 70%);bottom:-120px;right:-120px;}
+    .b3{width:440px;height:440px;background:radial-gradient(circle,rgba(225,29,72,0.05)0%,transparent 70%);top:40%;right:8%;}
+    .b4{width:300px;height:300px;background:radial-gradient(circle,rgba(21,128,61,0.05)0%,transparent 70%);top:20%;left:50%;}
+
+    /* NAV */
+    .snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(238,241,248,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(15,23,42,0.09);}
+    .snav-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;height:50px;gap:20px;}
+    .snav-logo{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+    .snav-k{width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--a),var(--b));display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;color:#ffffff;}
+    .snav-brand{font-size:0.7rem;font-weight:800;color:var(--a);white-space:nowrap;}
+    .snav-brand span{color:var(--t3);font-weight:500;margin-left:5px;}
+
+    .wrap{position:relative;z-index:1;padding:68px 32px 56px;max-width:1200px;margin:0 auto;}
+    .glass{background:var(--glass);border:1px solid var(--border);border-radius:18px;box-shadow:0 2px 12px rgba(15,23,42,0.07),0 1px 3px rgba(15,23,42,0.04);}
+    .glass-md{background:var(--glass-md);border:1px solid var(--border-hi);border-radius:18px;}
+    .pad{padding:22px;}
+
+    /* HEADER */
+    .header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding-bottom:22px;margin-bottom:4px;border-bottom:1px solid var(--border);}
+    @media(max-width:700px){.header{grid-template-columns:1fr;}}
+    .h-logo{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+    .h-k{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--a),var(--b));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#ffffff;flex-shrink:0;}
+    .h-brand{font-size:0.75rem;font-weight:800;color:var(--a);letter-spacing:1px;}
+    .h-brand-sub{font-size:0.62rem;color:var(--t3);font-weight:500;}
+    .h-title{font-size:2rem;font-weight:900;letter-spacing:-1px;line-height:1.05;}
+    .h-title span{background:linear-gradient(120deg,var(--a)0%,var(--b)60%,var(--c)100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .h-sub{margin-top:7px;font-size:0.8rem;color:var(--t2);line-height:1.5;max-width:520px;}
+    .h-right{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}
+    .badge{font-size:0.61rem;font-weight:700;color:var(--t2);background:var(--glass-md);border:1px solid var(--border-hi);padding:5px 13px;border-radius:99px;}
+
+    /* DEMO BANNER */
+    .demo-banner{background:linear-gradient(90deg,var(--a-s),var(--b-s));border:1px solid rgba(3,105,161,0.18);border-radius:10px;padding:9px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;font-size:0.7rem;color:var(--t2);}
+    .demo-banner strong{color:var(--a);font-size:0.62rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
+
+    /* TAB BAR */
+    .tab-bar{display:flex;gap:4px;margin-bottom:20px;background:rgba(15,23,42,0.04);border:1px solid var(--border);border-radius:14px;padding:4px;}
+    .tab-btn{flex:1;padding:9px 14px;border:none;border-radius:10px;background:transparent;font-size:0.72rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .18s;white-space:nowrap;}
+    .tab-btn:hover{color:var(--t2);background:rgba(15,23,42,0.04);}
+    .tab-btn.active{background:var(--glass);color:var(--a);font-weight:700;box-shadow:0 1px 6px rgba(15,23,42,0.10);}
+    .tab-panel{display:none;}
+    .tab-panel.active{display:block;}
+
+    /* LABELS */
+    .slabel{font-size:0.54rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t3);margin:20px 0 10px;}
+    .clabel{font-size:0.54rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:11px;}
+
+    /* GRID */
+    .grid{display:grid;gap:12px;}
+    .g4{grid-template-columns:repeat(4,1fr);}
+    .g3{grid-template-columns:repeat(3,1fr);}
+    .g2{grid-template-columns:1fr 1fr;}
+    @media(max-width:1000px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr 1fr;}}
+    @media(max-width:620px){.g4,.g3,.g2{grid-template-columns:1fr;}}
+
+    /* KPI */
+    .kpi-wrap{padding:18px;}
+    .kpi-num{font-size:2.2rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:4px;}
+    .kpi-lbl{font-size:0.7rem;font-weight:500;color:var(--t2);margin-bottom:7px;}
+    .kpi-tag{font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block;}
+    .kpi-a{background:linear-gradient(135deg,var(--a-g),rgba(255,255,255,0.01));}
+    .kpi-b{background:linear-gradient(135deg,var(--b-g),rgba(255,255,255,0.01));}
+    .kpi-c{background:linear-gradient(135deg,var(--c-g),rgba(255,255,255,0.01));}
+    .kpi-d{background:linear-gradient(135deg,var(--d-g),rgba(255,255,255,0.01));}
+    .kpi-a .kpi-num{color:var(--a);}
+    .kpi-b .kpi-num{color:var(--b);}
+    .kpi-c .kpi-num{color:var(--c);}
+    .kpi-d .kpi-num{color:var(--d);}
+    .kpi-a .kpi-tag{background:var(--a-s);color:var(--a);border:1px solid rgba(3,105,161,0.22);}
+    .kpi-b .kpi-tag{background:var(--b-s);color:var(--b);border:1px solid rgba(126,34,206,0.22);}
+    .kpi-c .kpi-tag{background:var(--c-s);color:var(--c);border:1px solid rgba(225,29,72,0.22);}
+    .kpi-d .kpi-tag{background:var(--d-s);color:var(--d);border:1px solid rgba(21,128,61,0.22);}
+
+    /* GROWTH PILLS */
+    .gp-up{background:rgba(21,128,61,0.12);color:#15803d;border:1px solid rgba(21,128,61,0.28);}
+    .gp-dn{background:rgba(225,29,72,0.10);color:#e11d48;border:1px solid rgba(225,29,72,0.22);}
+    .gp-neu{background:rgba(15,23,42,0.06);color:var(--t3);border:1px solid var(--border);}
+
+    /* CALLOUT */
+    .callout{border-radius:10px;padding:11px 13px;border-left:2px solid transparent;margin-top:11px;}
+    .c-a{background:var(--a-s);border-left-color:var(--a);}
+    .c-b{background:var(--b-s);border-left-color:var(--b);}
+    .c-c{background:var(--c-s);border-left-color:var(--c);}
+    .c-d{background:var(--d-s);border-left-color:var(--d);}
+    .callout-ttl{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+    .c-a .callout-ttl{color:var(--a);}
+    .c-b .callout-ttl{color:var(--b);}
+    .c-c .callout-ttl{color:var(--c);}
+    .c-d .callout-ttl{color:var(--d);}
+    .callout p{font-size:0.74rem;color:var(--t2);line-height:1.5;}
+
+    /* MOOD PILLS */
+    .mood-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+    .mood-pill{display:flex;align-items:center;gap:5px;background:var(--glass-md);border:1px solid var(--border-hi);border-radius:99px;padding:5px 11px;font-size:0.7rem;font-weight:600;color:var(--t2);}
+    .mood-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .mood-count{font-weight:800;color:var(--t1);margin-left:2px;}
+
+    /* FEATURE CARDS */
+    .feat-card{padding:16px;}
+    .feat-icon{font-size:1.1rem;margin-bottom:8px;}
+    .feat-num{font-size:1.8rem;font-weight:900;line-height:1;letter-spacing:-1px;margin-bottom:3px;}
+    .feat-lbl{font-size:0.65rem;font-weight:600;color:var(--t2);margin-bottom:5px;}
+    .feat-sub{font-size:0.62rem;color:var(--t3);line-height:1.4;}
+
+    /* RAG ROWS */
+    .rag-row{display:flex;align-items:center;justify-content:space-between;border-radius:9px;padding:9px 12px;margin-bottom:8px;}
+    .rag-row-red{background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.18);}
+    .rag-row-amber{background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.18);}
+    .rag-row-green{background:rgba(21,128,61,0.06);border:1px solid rgba(21,128,61,0.15);}
+    .rag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .rag-label{font-size:0.72rem;font-weight:600;color:var(--t2);}
+    .rag-count{font-size:1.1rem;font-weight:900;}
+
+    /* WELLBEING STRIPS */
+    .wb-strip{display:flex;gap:8px;margin-bottom:10px;}
+    .wb-tile{flex:1;padding:12px 10px;border-radius:10px;text-align:center;}
+    .wb-up{background:rgba(21,128,61,0.08);border:1px solid rgba(21,128,61,0.18);}
+    .wb-same{background:rgba(15,23,42,0.04);border:1px solid rgba(15,23,42,0.09);}
+    .wb-dn{background:rgba(225,29,72,0.08);border:1px solid rgba(225,29,72,0.18);}
+    .wb-num{font-size:1.8rem;font-weight:900;line-height:1;letter-spacing:-0.8px;}
+    .wb-up .wb-num{color:#15803d;}
+    .wb-same .wb-num{color:var(--t2);}
+    .wb-dn .wb-num{color:#e11d48;}
+    .wb-lbl{font-size:0.57rem;font-weight:700;margin-top:3px;}
+    .wb-up .wb-lbl{color:#15803d;}
+    .wb-same .wb-lbl{color:var(--t3);}
+    .wb-dn .wb-lbl{color:#e11d48;}
+
+    /* SOS ROWS */
+    .sa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;margin-bottom:6px;}
+    .sa-hi{background:rgba(225,29,72,0.07);border:1px solid rgba(225,29,72,0.15);}
+    .sa-mid{background:rgba(126,34,206,0.05);border:1px solid rgba(126,34,206,0.12);}
+    .sa-lo{background:rgba(15,23,42,0.02);border:1px solid var(--border);}
+    .sa-name{font-size:0.74rem;font-weight:600;color:var(--t2);flex:1;}
+    .sa-count{font-size:0.65rem;font-weight:800;color:var(--t1);flex-shrink:0;padding-right:4px;}
+    .sa-tag{font-size:0.57rem;font-weight:700;padding:2px 8px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+    .sa-hi-tag{background:var(--c-s);color:var(--c);border:1px solid rgba(225,29,72,0.22);}
+    .sa-mid-tag{background:var(--b-s);color:var(--b);border:1px solid rgba(126,34,206,0.22);}
+
+    /* CONTENT RECS */
+    .rec-card{border-radius:14px;padding:16px;border:1px solid var(--border);background:var(--glass);}
+    .rec-rank{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:6px;}
+    .rec-theme{font-size:0.85rem;font-weight:800;color:var(--t1);margin-bottom:4px;line-height:1.2;}
+    .rec-stat{font-size:0.65rem;color:var(--t2);margin-bottom:10px;}
+    .rec-cats{display:flex;flex-direction:column;gap:6px;}
+    .rec-cat{border-radius:8px;padding:8px 10px;}
+    .rec-cat-a{background:var(--a-s);border:1px solid var(--a-g);}
+    .rec-cat-b{background:var(--b-s);border:1px solid var(--b-g);}
+    .rec-cat-c{background:var(--c-s);border:1px solid var(--c-g);}
+    .rec-cat-name{font-size:0.62rem;font-weight:800;margin-bottom:2px;}
+    .rec-cat-a .rec-cat-name{color:var(--a);}
+    .rec-cat-b .rec-cat-name{color:var(--b);}
+    .rec-cat-c .rec-cat-name{color:var(--c);}
+    .rec-cat-desc{font-size:0.62rem;color:var(--t2);line-height:1.4;}
+
+    /* MOM TABLE */
+    .mom-table{width:100%;border-collapse:collapse;}
+    .mom-table th{font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--t3);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+    .mom-table th.r{text-align:right;}
+    .mom-table td{padding:9px 12px;border-bottom:1px solid rgba(15,23,42,0.05);font-size:0.76rem;color:var(--t2);font-weight:500;}
+    .mom-table td.metric{color:var(--t1);font-weight:700;}
+    .mom-table td.num{text-align:right;font-weight:800;font-size:0.82rem;color:var(--t1);}
+    .mom-table td.growth{text-align:right;}
+    .mom-table tr.group-hd td{background:rgba(15,23,42,0.03);font-size:0.55rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--t3);padding:7px 12px;}
+    .mom-table tr:last-child td{border-bottom:none;}
+    .mom-table tr:hover td{background:rgba(15,23,42,0.02);}
+    .growth-pill{font-size:0.62rem;font-weight:800;padding:3px 9px;border-radius:99px;white-space:nowrap;display:inline-block;}
+
+    /* HERO MOVERS */
+    .hero-card{padding:20px;}
+    .hero-label{font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;display:block;}
+    .hero-num{font-size:2.6rem;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:3px;}
+    .hero-sub{font-size:0.7rem;color:var(--t2);margin-bottom:8px;}
+    .hero-desc{font-size:0.72rem;color:var(--t2);line-height:1.5;}
+
+    /* YOY TABLE */
+    .yoy-table{width:100%;border-collapse:collapse;}
+    .yoy-table th{font-size:0.58rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--t3);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+    .yoy-table th.yr{text-align:right;}
+    .yoy-table td{padding:10px 12px;border-bottom:1px solid rgba(15,23,42,0.05);font-size:0.76rem;color:var(--t2);font-weight:500;}
+    .yoy-table td.metric{color:var(--t1);font-weight:700;}
+    .yoy-table td.num{text-align:right;font-weight:800;font-size:0.82rem;color:var(--t1);}
+    .yoy-table td.growth{text-align:right;}
+    .yoy-table tr:last-child td{border-bottom:none;}
+    .yoy-table tr:hover td{background:rgba(15,23,42,0.02);}
+
+    /* NEXT STEPS */
+    .acard{padding:18px;display:flex;flex-direction:column;gap:8px;}
+    .a-badge{font-size:0.52rem;font-weight:800;letter-spacing:1.8px;text-transform:uppercase;padding:3px 10px;border-radius:99px;width:fit-content;}
+    .a-a{background:var(--a-s);color:var(--a);border:1px solid rgba(3,105,161,0.22);}
+    .a-b{background:var(--b-s);color:var(--b);border:1px solid rgba(126,34,206,0.22);}
+    .a-d{background:var(--d-s);color:var(--d);border:1px solid rgba(21,128,61,0.22);}
+    .a-nums{font-size:1.05rem;font-weight:800;color:var(--t1);line-height:1.3;letter-spacing:-0.3px;margin-bottom:4px;}
+    .a-why{font-size:0.73rem;color:var(--t2);line-height:1.5;}
+    .a-q{font-size:0.74rem;font-style:italic;color:var(--t2);border-top:1px solid var(--border);padding-top:9px;margin-top:4px;line-height:1.55;}
+
+    /* WEEKLY BARS */
+    .week-bar-wrap{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:10px;}
+    .week-bar-col{display:flex;flex-direction:column;align-items:center;gap:5px;}
+    .week-bar-day{font-size:0.52rem;font-weight:700;color:var(--t3);}
+    .week-bar-track{width:100%;height:60px;display:flex;align-items:flex-end;justify-content:center;}
+    .week-bar{width:22px;border-radius:4px 4px 0 0;}
+    .week-bar-val{font-size:0.72rem;font-weight:900;color:var(--t1);}
+
+    /* REVIEW BOX */
+    .review-box{margin-top:10px;padding:10px 13px;border-radius:10px;background:rgba(15,23,42,0.03);border:1px solid var(--border);font-size:0.7rem;color:var(--t3);line-height:1.5;}
+    .review-box strong{color:var(--t2);display:block;margin-bottom:2px;}
+
+    /* YOY PLACEHOLDER */
+    .yoy-placeholder{display:none;}
+
+    .chart-wrap{position:relative;width:100%;}
+    .footer{text-align:center;margin-top:32px;font-size:0.58rem;color:var(--t4);letter-spacing:0.8px;border-top:1px solid var(--border);padding-top:16px;}
+  </style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+
+<nav class="snav">
+  <div class="snav-inner">
+    <div class="snav-logo">
+      <div class="snav-k">K</div>
+      <div class="snav-brand">KAMELION <span>· Demo Dashboard · 2024-26</span></div>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- DEMO BANNER -->
+  <div class="demo-banner">
+    <strong>Sample Data</strong>
+    This report uses illustrative data to show what your Kamelion dashboard would look like. All figures are representative - your live dashboard reflects your actual programme.
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="h-logo">
+        <div class="h-k">K</div>
+        <div>
+          <div class="h-brand">KAMELION</div>
+          <div class="h-brand-sub">Prevention-First Digital Youth Club · ORCHA Certified</div>
+        </div>
+      </div>
+      <div class="h-title"><span>Kamelion Demo Dashboard</span></div>
+      <div class="h-sub">200 young people. Two programme years. Consistent, measurable growth in every area - engagement, wellbeing, challenge completion and community. Here is what that looks like in data, and what it means for the work you do.</div>
+    </div>
+    <div class="h-right">
+      <span class="badge">Programme Years 2024-25 · 2025-26</span>
+      <span class="badge">200 Members · Two Years Combined</span>
+      <span class="badge">255/265 Goals Completed · 96.2%</span>
+      <span class="badge">1,000 Challenges · All-Time</span>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar" style="margin-top:18px;">
+    <button class="tab-btn active" data-tab="this-month">This Month</button>
+    <button class="tab-btn" data-tab="mom">Month vs Month</button>
+    <button class="tab-btn" data-tab="yoy">Year vs Year</button>
+    <button class="tab-btn" data-tab="weekly">This Week</button>
+  </div>
+
+  <!-- ====================================================
+       TAB 1: THIS MONTH (May 2026)
+  ===================================================== -->
+  <div id="tab-this-month" class="tab-panel active">
+
+    <div class="slabel">Key Metrics · May 2026</div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass kpi-wrap kpi-a">
+        <div class="kpi-num">195</div>
+        <div class="kpi-lbl">Active Members</div>
+        <span class="kpi-tag">all licences activated</span>
+      </div>
+      <div class="glass kpi-wrap kpi-c">
+        <div class="kpi-num">99</div>
+        <div class="kpi-lbl">Challenges Completed</div>
+        <span class="kpi-tag">highest month of the programme</span>
+      </div>
+      <div class="glass kpi-wrap kpi-b">
+        <div class="kpi-num">88.4%</div>
+        <div class="kpi-lbl">Completion Rate</div>
+        <span class="kpi-tag">112 started this month</span>
+      </div>
+      <div class="glass kpi-wrap kpi-d">
+        <div class="kpi-num">~360</div>
+        <div class="kpi-lbl">Mood Check-ins</div>
+        <span class="kpi-tag">on pace with year average</span>
+      </div>
+    </div>
+
+    <div class="slabel">Engagement · May 2026</div>
+    <div class="grid g2" style="margin-bottom:12px;">
+      <div class="glass pad">
+        <div class="clabel">How Members Are Feeling</div>
+        <div class="chart-wrap" style="height:180px;">
+          <canvas id="moodTM"></canvas>
+        </div>
+        <div class="mood-row" style="margin-top:10px;">
+          <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">65</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">100</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">136</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">40</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#f87171;"></div>Sad <span class="mood-count">18</span></div>
+        </div>
+        <div class="callout c-d">
+          <div class="callout-ttl">46% Positive Check-ins This Month</div>
+          <p>Members are arriving positively to the majority of their check-ins. The proportion of difficult check-ins remains below 17% - consistent with the Year 2 trend of improving mood across the cohort.</p>
+        </div>
+      </div>
+      <div class="glass pad">
+        <div class="clabel">What Members Are Engaging With</div>
+        <div class="chart-wrap" style="height:210px;">
+          <canvas id="contentTM"></canvas>
+        </div>
+        <div class="callout c-a">
+          <div class="callout-ttl">Six Categories Active - Including Career and Money</div>
+          <p>My Character (38%) and My Mind (27%) account for 65% of content activity. Career (9%) and Money (6%) are both live - members are engaging with their futures alongside personal development.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">Feature Highlights · This Month</div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass feat-card">
+        <div class="feat-icon">📓</div>
+        <div class="feat-num" style="color:var(--b);">~58</div>
+        <div class="feat-lbl">Journal Entries</div>
+        <div class="feat-sub">Consistent with year average. Members using journals to process and reflect.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon">🧠</div>
+        <div class="feat-num" style="color:var(--a);">~37</div>
+        <div class="feat-lbl">Mental Gym Workouts</div>
+        <div class="feat-sub">Active use of mental fitness tools across 163 unique members this year.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon">🤝</div>
+        <div class="feat-num" style="color:var(--d);">~46</div>
+        <div class="feat-lbl">Community Interactions</div>
+        <div class="feat-sub">Posts and comments. The fastest-growing area of the programme year on year.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon">🎯</div>
+        <div class="feat-num" style="color:var(--c);">97%</div>
+        <div class="feat-lbl">Goal Achievement Rate</div>
+        <div class="feat-sub">160/165 goals completed in Year 2. Up from 95% in Year 1.</div>
+      </div>
+    </div>
+
+    <div class="slabel">Cohort Health · May 2026</div>
+    <div class="grid g2" style="margin-bottom:12px;">
+      <div class="glass pad">
+        <div class="clabel">Member Status Overview</div>
+        <div style="display:grid;grid-template-columns:140px 1fr;gap:18px;align-items:start;margin-bottom:12px;">
+          <div style="height:140px;position:relative;">
+            <canvas id="ragTM"></canvas>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;">
+              <div style="font-size:1.4rem;font-weight:900;color:var(--t1);line-height:1;">195</div>
+              <div style="font-size:0.52rem;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;">tracked</div>
+            </div>
+          </div>
+          <div>
+            <div class="rag-row rag-row-red" style="margin-bottom:8px;">
+              <div style="display:flex;align-items:center;gap:8px;flex:1;">
+                <div class="rag-dot" style="background:#dc2626;"></div>
+                <span class="rag-label">Red - Kamelion reviewing</span>
+              </div>
+              <span class="rag-count" style="color:#dc2626;">5</span>
+            </div>
+            <div class="rag-row rag-row-amber" style="margin-bottom:8px;">
+              <div style="display:flex;align-items:center;gap:8px;flex:1;">
+                <div class="rag-dot" style="background:#d97706;"></div>
+                <span class="rag-label">Amber - Normal ups and downs</span>
+              </div>
+              <span class="rag-count" style="color:#d97706;">12</span>
+            </div>
+            <div class="rag-row rag-row-green">
+              <div style="display:flex;align-items:center;gap:8px;flex:1;">
+                <div class="rag-dot" style="background:#16a34a;"></div>
+                <span class="rag-label">Clear - No concerns</span>
+              </div>
+              <span class="rag-count" style="color:#16a34a;">178</span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:0.72rem;color:var(--t2);line-height:1.5;margin-bottom:10px;">Kamelion monitors all 195 members in the background. Red means Kamelion is reviewing - your organisation does not need to act unless contacted. Amber reflects normal life and is being monitored - no action needed.</p>
+        <div class="review-box">
+          <strong>How the review process works</strong>
+          Kamelion reviews each Red case before anything is passed on. We only make contact when there is genuine reason to. Individual member files are never shared directly with your organisation without our review first.
+        </div>
+      </div>
+      <div class="glass pad">
+        <div class="clabel">Wellbeing Scores · Year on Year</div>
+        <p style="font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">2024-25 (120 tracked)</p>
+        <div class="wb-strip" style="margin-bottom:14px;">
+          <div class="wb-tile wb-up"><div class="wb-num">38</div><div class="wb-lbl">Improved</div></div>
+          <div class="wb-tile wb-same"><div class="wb-num">52</div><div class="wb-lbl">Stable</div></div>
+          <div class="wb-tile wb-dn"><div class="wb-num">30</div><div class="wb-lbl">Decreased</div></div>
+        </div>
+        <p style="font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">2025-26 (195 tracked)</p>
+        <div class="wb-strip">
+          <div class="wb-tile wb-up"><div class="wb-num">72</div><div class="wb-lbl">Improved</div></div>
+          <div class="wb-tile wb-same"><div class="wb-num">88</div><div class="wb-lbl">Stable</div></div>
+          <div class="wb-tile wb-dn"><div class="wb-num">35</div><div class="wb-lbl">Decreased</div></div>
+        </div>
+        <div class="callout c-d" style="margin-top:10px;">
+          <div class="callout-ttl">Improved Wellbeing Up 89.5% Year on Year</div>
+          <p>72 members improved their wellbeing score this year versus 38 last year. As a share of the cohort, members with improved wellbeing rose from 31.7% to 36.9%. That is the outcome your funders and commissioners want to see evidenced.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">Support Themes and Content Focus · May 2026</div>
+    <div class="grid g2" style="margin-bottom:12px;">
+      <div class="glass pad">
+        <div class="clabel">What Members Are Carrying</div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;margin-bottom:14px;">When members use Kamelion's relaxation features, they can tag what is on their mind. This builds a picture of the themes running through your cohort so nothing goes unseen. <strong style="color:var(--t1);">Kamelion reviews all flagged areas before anything is shared with your organisation.</strong></div>
+        <div class="sa-row sa-hi">
+          <div class="sa-name">Family stress or tension at home</div>
+          <div class="sa-count">28</div>
+          <span class="sa-tag sa-hi-tag">12 members</span>
+        </div>
+        <div class="sa-row sa-hi">
+          <div class="sa-name">Anxious, overthinking or panicky</div>
+          <div class="sa-count">22</div>
+          <span class="sa-tag sa-hi-tag">15 members</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-name">Feeling sad, low or numb</div>
+          <div class="sa-count">18</div>
+          <span class="sa-tag sa-mid-tag">13 members</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-name">Stressed about the future</div>
+          <div class="sa-count">16</div>
+          <span class="sa-tag sa-mid-tag">11 members</span>
+        </div>
+        <div class="sa-row sa-mid">
+          <div class="sa-name">Friendship or relationship issues</div>
+          <div class="sa-count">14</div>
+          <span class="sa-tag sa-mid-tag">9 members</span>
+        </div>
+        <div class="sa-row sa-lo">
+          <div class="sa-name">Struggling to sleep or switch off</div>
+          <div class="sa-count">12</div>
+          <span class="sa-tag sa-mid-tag">10 members</span>
+        </div>
+        <div class="sa-row sa-lo">
+          <div class="sa-name">Lonely or isolated</div>
+          <div class="sa-count">10</div>
+          <span class="sa-tag sa-mid-tag">7 members</span>
+        </div>
+        <div class="callout c-c" style="margin-top:10px;">
+          <div class="callout-ttl">Family Stress and Anxiety Are the Two Dominant Themes</div>
+          <p>These are the things your members are living with between sessions. This data gives your team and your funders a picture of need that most programmes never see.</p>
+        </div>
+        <div style="margin-top:10px;padding:9px 12px;border-radius:9px;background:rgba(15,23,42,0.02);border:1px solid var(--border);font-size:0.69rem;color:var(--t3);line-height:1.5;">Support areas reflect member-selected tags when using Kamelion's relaxation tools. They are not diagnoses. Kamelion monitors these and reviews before any contact is made with your organisation.</div>
+      </div>
+      <div>
+        <div class="clabel" style="margin-top:0;padding-left:4px;">Content Focus - Where Kamelion Can Help</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="rec-card">
+            <div class="rec-rank">Top Support Theme #1</div>
+            <div class="rec-theme">Family stress or tension at home</div>
+            <div class="rec-stat">28 mentions from 12 members this year</div>
+            <div class="rec-cats">
+              <div class="rec-cat rec-cat-a">
+                <div class="rec-cat-name">My Character</div>
+                <div class="rec-cat-desc">Identity, values and setting boundaries - tools members can use when home life is difficult.</div>
+              </div>
+              <div class="rec-cat rec-cat-b">
+                <div class="rec-cat-name">Social Life</div>
+                <div class="rec-cat-desc">Family relationships and communication skills - practical content for navigating tension.</div>
+              </div>
+            </div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-rank">Top Support Theme #2</div>
+            <div class="rec-theme">Anxious, overthinking or panicky</div>
+            <div class="rec-stat">22 mentions from 15 members this year</div>
+            <div class="rec-cats">
+              <div class="rec-cat rec-cat-a">
+                <div class="rec-cat-name">My Mind</div>
+                <div class="rec-cat-desc">Breathwork, emotional tools and grounding techniques - directly relevant to anxiety and overthinking.</div>
+              </div>
+              <div class="rec-cat rec-cat-b">
+                <div class="rec-cat-name">Health &amp; Fitness</div>
+                <div class="rec-cat-desc">Movement and energy regulation - a complementary route for managing anxious feelings.</div>
+              </div>
+            </div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-rank">Top Support Theme #3</div>
+            <div class="rec-theme">Feeling sad, low or numb</div>
+            <div class="rec-stat">18 mentions from 13 members this year</div>
+            <div class="rec-cats">
+              <div class="rec-cat rec-cat-a">
+                <div class="rec-cat-name">My Mind</div>
+                <div class="rec-cat-desc">Mood awareness and emotional coping tools - built for members experiencing low periods.</div>
+              </div>
+              <div class="rec-cat rec-cat-c">
+                <div class="rec-cat-name">Health &amp; Fitness</div>
+                <div class="rec-cat-desc">Energy, routine and movement - supports mood and gives members something active to build on.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">Next Steps · Building on Two Strong Years</div>
+    <div style="font-size:0.76rem;color:var(--t2);line-height:1.55;margin-bottom:14px;max-width:700px;">Kamelion builds early intervention across three areas. Here is where the programme stands in each - and the one move that extends what is already working.</div>
+    <div class="grid g3" style="margin-bottom:8px;">
+      <div class="glass acard">
+        <span class="a-badge a-a">Skills &amp; Knowledge</span>
+        <div class="a-nums">65% of content activity in My Character and My Mind. All six categories active. Career and Money both showing up in the data.</div>
+        <div class="a-why">Members are doing serious self-awareness work - 800 journals and 280 personality tests over two years. Career (9%) and Money (6%) add real-world relevance to the evidence trail. All six content areas are engaged. This is the content that translates directly into your programme outcomes.</div>
+        <div class="a-q">How are you using the insight from what members are engaging with to shape your programme design for Year 3?</div>
+      </div>
+      <div class="glass acard">
+        <span class="a-badge a-b">Peer &amp; Organisational Connection</span>
+        <div class="a-nums">590 community interactions over two years. 127.8% growth year on year. The peer layer is activating.</div>
+        <div class="a-why">Your community figures are growing faster than any other area - 180 to 410 interactions in a single year. Social Life is still the least engaged content category at 11%. The members who are connecting are doing so consistently. The next move is bringing more of your cohort into that space.</div>
+        <div class="a-q">What would it look like to make peer connection a structured part of your programme, not just an optional feature?</div>
+      </div>
+      <div class="glass acard">
+        <span class="a-badge a-d">Participation &amp; Readiness</span>
+        <div class="a-nums">1,000 challenges completed. 84.8% completion rate in Year 2 - up from 68.1% in Year 1. 255/265 goals achieved.</div>
+        <div class="a-why">Members are not just showing up - they are finishing what they start, at a rate that has improved by nearly 17 percentage points in two years. 97% goal completion in Year 2. That is the kind of outcome data that wins contract renewals.</div>
+        <div class="a-q">How are you connecting Kamelion's participation data to the outcomes your funders and commissioners have asked you to demonstrate?</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-this-month -->
+
+  <!-- ====================================================
+       TAB 2: MONTH VS MONTH
+  ===================================================== -->
+  <div id="tab-mom" class="tab-panel">
+
+    <div class="slabel">Biggest Movers · May 2026 vs April 2026</div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass hero-card" style="background:linear-gradient(135deg,var(--d-g),rgba(255,255,255,0.01));">
+        <span class="hero-label" style="color:var(--d);">Challenges Completed</span>
+        <div class="hero-num" style="color:var(--d);">+10%</div>
+        <div class="hero-sub">90 Apr → 99 May</div>
+        <div class="hero-desc">May 2026 is the highest single month of the programme. Members closed the year on their best month yet.</div>
+      </div>
+      <div class="glass hero-card" style="background:linear-gradient(135deg,var(--a-g),rgba(255,255,255,0.01));">
+        <span class="hero-label" style="color:var(--a);">Challenges Started</span>
+        <div class="hero-num" style="color:var(--a);">+15.5%</div>
+        <div class="hero-sub">97 Apr → 112 May</div>
+        <div class="hero-desc">More challenges were opened in May than in any month since January. Members are entering summer with momentum.</div>
+      </div>
+      <div class="glass hero-card" style="background:linear-gradient(135deg,var(--b-g),rgba(255,255,255,0.01));">
+        <span class="hero-label" style="color:var(--b);">Journal Entries</span>
+        <div class="hero-num" style="color:var(--b);">+11.5%</div>
+        <div class="hero-sub">~52 Apr → ~58 May</div>
+        <div class="hero-desc">Reflective engagement is up. Members are continuing to use journals consistently across the year.</div>
+      </div>
+      <div class="glass hero-card" style="background:linear-gradient(135deg,var(--c-g),rgba(255,255,255,0.01));">
+        <span class="hero-label" style="color:var(--c);">Community Interactions</span>
+        <div class="hero-num" style="color:var(--c);">+9.5%</div>
+        <div class="hero-sub">~42 Apr → ~46 May</div>
+        <div class="hero-desc">The peer layer continues to grow month on month. Community is the fastest-growing area in the programme.</div>
+      </div>
+    </div>
+
+    <div class="slabel">Month-by-Month Comparison · 2025-26</div>
+    <div class="glass pad" style="margin-bottom:12px;">
+      <div class="clabel">Challenge Completions · Month by Month · 2025-26</div>
+      <div style="display:grid;grid-template-columns:repeat(9,1fr);gap:6px;margin-bottom:12px;" id="monthBarGrid"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--t3);font-weight:600;"><div style="width:8px;height:8px;border-radius:2px;background:var(--d);"></div>Up vs previous month</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--t3);font-weight:600;"><div style="width:8px;height:8px;border-radius:2px;background:var(--c);"></div>Down vs previous month</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--t3);font-weight:600;"><div style="width:8px;height:8px;border-radius:2px;background:rgba(15,23,42,0.18);"></div>Baseline</div>
+      </div>
+    </div>
+
+    <div class="glass pad" style="margin-bottom:12px;">
+      <div class="clabel">Full Metrics Comparison · April 2026 vs May 2026</div>
+      <table class="mom-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="r">April 2026</th>
+            <th class="r">May 2026</th>
+            <th class="r">Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="group-hd"><td colspan="4">Engagement</td></tr>
+          <tr><td class="metric">Active Members</td><td class="num">190</td><td class="num" style="color:var(--d);">195</td><td class="growth"><span class="growth-pill gp-up">+2.6%</span></td></tr>
+          <tr><td class="metric">Mood Check-ins</td><td class="num">~340</td><td class="num" style="color:var(--d);">~360</td><td class="growth"><span class="growth-pill gp-up">+5.9%</span></td></tr>
+          <tr><td class="metric">Avg Session Length</td><td class="num">~9m</td><td class="num" style="color:var(--d);">~10m</td><td class="growth"><span class="growth-pill gp-up">+11%</span></td></tr>
+          <tr class="group-hd"><td colspan="4">Challenges</td></tr>
+          <tr><td class="metric">Challenges Started</td><td class="num">97</td><td class="num" style="color:var(--d);">112</td><td class="growth"><span class="growth-pill gp-up">+15.5%</span></td></tr>
+          <tr><td class="metric">Challenges Completed</td><td class="num">90</td><td class="num" style="color:var(--d);">99</td><td class="growth"><span class="growth-pill gp-up">+10%</span></td></tr>
+          <tr><td class="metric">Completion Rate</td><td class="num">92.8%</td><td class="num" style="color:var(--c);">88.4%</td><td class="growth"><span class="growth-pill gp-dn">-4.4pp</span></td></tr>
+          <tr class="group-hd"><td colspan="4">Reflection and Growth</td></tr>
+          <tr><td class="metric">Journal Entries</td><td class="num">~52</td><td class="num" style="color:var(--d);">~58</td><td class="growth"><span class="growth-pill gp-up">+11.5%</span></td></tr>
+          <tr><td class="metric">Personality Tests</td><td class="num">~26</td><td class="num" style="color:var(--d);">~31</td><td class="growth"><span class="growth-pill gp-up">+19.2%</span></td></tr>
+          <tr><td class="metric">Mental Gym Workouts</td><td class="num">~33</td><td class="num" style="color:var(--d);">~37</td><td class="growth"><span class="growth-pill gp-up">+12.1%</span></td></tr>
+          <tr class="group-hd"><td colspan="4">Community</td></tr>
+          <tr><td class="metric">Community Interactions</td><td class="num">~42</td><td class="num" style="color:var(--d);">~46</td><td class="growth"><span class="growth-pill gp-up">+9.5%</span></td></tr>
+        </tbody>
+      </table>
+      <div class="callout c-b" style="margin-top:14px;">
+        <div class="callout-ttl">May Is the Strongest Month in Two Years</div>
+        <p>99 challenges completed in May makes it the peak month of the entire programme. The slight dip in completion rate from 92.8% to 88.4% is a natural byproduct of higher starts - 15 more challenges were opened this month. Members are engaged and the year is ending on its highest note.</p>
+      </div>
+    </div>
+
+    <div class="slabel">Seasonal Summary · 2025-26</div>
+    <div class="grid g3" style="margin-bottom:8px;">
+      <div class="glass pad" style="background:linear-gradient(135deg,var(--a-g),rgba(255,255,255,0.01));">
+        <div style="font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--a);margin-bottom:8px;">Autumn 2025 · Sep - Dec</div>
+        <div style="font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;color:var(--a);line-height:1;">224</div>
+        <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 8px;">challenges completed</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+          <span style="font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--a-s);color:var(--a);border:1px solid var(--a-g);">270 started</span>
+          <span style="font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--a-s);color:var(--a);border:1px solid var(--a-g);">83.0% rate</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">A strong start - September through December built steadily from 40 to 70 completions per month, with a natural December dip before the new year push.</div>
+      </div>
+      <div class="glass pad" style="background:linear-gradient(135deg,var(--b-g),rgba(255,255,255,0.01));">
+        <div style="font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--b);margin-bottom:8px;">Spring 2026 · Jan - Apr</div>
+        <div style="font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;color:var(--b);line-height:1;">357</div>
+        <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 8px;">challenges completed</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+          <span style="font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--b-s);color:var(--b);border:1px solid var(--b-g);">420 started</span>
+          <span style="font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--b-s);color:var(--b);border:1px solid var(--b-g);">85.0% rate</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">The strongest period of the year - 59.4% more completions than Autumn. A January surge of 82 carried momentum through to 95 in March. Your programme is accelerating.</div>
+      </div>
+      <div class="glass pad" style="background:linear-gradient(135deg,var(--d-g),rgba(255,255,255,0.01));">
+        <div style="font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--d);margin-bottom:8px;">Summer 2026 · May to date</div>
+        <div style="font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;color:var(--d);line-height:1;">99</div>
+        <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 8px;">challenges completed - in progress</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
+          <span style="font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--d-s);color:var(--d);border:1px solid var(--d-g);">112 started</span>
+          <span style="font-size:0.58rem;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--d-s);color:var(--d);border:1px solid var(--d-g);">+10% vs April</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">May 2026 is already the highest single month of the year at 99 completions - up 10% on April. The year ends on its strongest note. Summer is just beginning.</div>
+      </div>
+    </div>
+
+  </div><!-- /tab-mom -->
+
+  <!-- ====================================================
+       TAB 3: YEAR VS YEAR
+  ===================================================== -->
+  <div id="tab-yoy" class="tab-panel">
+
+    <div class="slabel">Headline Growth · 2024-25 vs 2025-26</div>
+    <div class="grid g3" style="margin-bottom:12px;">
+      <div class="glass pad" style="background:linear-gradient(135deg,var(--c-g),rgba(255,255,255,0.01));">
+        <div style="font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--c);margin-bottom:10px;">Biggest Jump</div>
+        <div style="font-size:2.6rem;font-weight:900;letter-spacing:-1.5px;color:var(--c);line-height:1;">+127.8%</div>
+        <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 8px;">Community interactions</div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">180 interactions in 2024-25. 410 in 2025-26. Members are talking to each other - the peer layer is growing faster than any other area.</div>
+      </div>
+      <div class="glass pad" style="background:linear-gradient(135deg,var(--a-g),rgba(255,255,255,0.01));">
+        <div style="font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--a);margin-bottom:10px;">Most Consistent Growth</div>
+        <div style="font-size:2.6rem;font-weight:900;letter-spacing:-1.5px;color:var(--a);line-height:1;">+112.5%</div>
+        <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 8px;">Challenges completed</div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">320 in Year 1. 680 in Year 2. And completion rate rose from 68.1% to 84.8% - members are not just doing more, they are finishing more.</div>
+      </div>
+      <div class="glass pad" style="background:linear-gradient(135deg,var(--d-g),rgba(255,255,255,0.01));">
+        <div style="font-size:0.52rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--d);margin-bottom:10px;">Wellbeing Impact</div>
+        <div style="font-size:2.6rem;font-weight:900;letter-spacing:-1.5px;color:var(--d);line-height:1;">+89.5%</div>
+        <div style="font-size:0.7rem;color:var(--t2);margin:4px 0 8px;">Members with improved wellbeing scores</div>
+        <div style="font-size:0.72rem;color:var(--t2);line-height:1.5;">38 members showed improved wellbeing in Year 1. 72 in Year 2. That is the outcome funders and commissioners want to see evidenced.</div>
+      </div>
+    </div>
+
+    <div class="slabel">Full Comparison · 2024-25 vs 2025-26</div>
+    <div class="grid g2" style="margin-bottom:12px;">
+      <div class="glass pad">
+        <div class="clabel">Key Metrics Compared</div>
+        <table class="yoy-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th class="yr">2024-25</th>
+              <th class="yr">2025-26</th>
+              <th class="yr">Growth</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="metric">Members Active</td><td class="num">120</td><td class="num" style="color:var(--a);">195</td><td class="growth"><span class="growth-pill gp-up">+62.5%</span></td></tr>
+            <tr><td class="metric">Mood Check-ins</td><td class="num">1,800</td><td class="num" style="color:var(--a);">3,200</td><td class="growth"><span class="growth-pill gp-up">+77.8%</span></td></tr>
+            <tr><td class="metric">Challenges Completed</td><td class="num">320</td><td class="num" style="color:var(--a);">680</td><td class="growth"><span class="growth-pill gp-up">+112.5%</span></td></tr>
+            <tr><td class="metric">Completion Rate</td><td class="num">68.1%</td><td class="num" style="color:var(--a);">84.8%</td><td class="growth"><span class="growth-pill gp-up">+16.7pp</span></td></tr>
+            <tr><td class="metric">Journal Entries</td><td class="num">280</td><td class="num" style="color:var(--a);">520</td><td class="growth"><span class="growth-pill gp-up">+85.7%</span></td></tr>
+            <tr><td class="metric">Community Interactions</td><td class="num">180</td><td class="num" style="color:var(--a);">410</td><td class="growth"><span class="growth-pill gp-up">+127.8%</span></td></tr>
+            <tr><td class="metric">Members with Improved Wellbeing</td><td class="num">38</td><td class="num" style="color:var(--a);">72</td><td class="growth"><span class="growth-pill gp-up">+89.5%</span></td></tr>
+            <tr><td class="metric">Goal Completion Rate</td><td class="num">95%</td><td class="num" style="color:var(--a);">97%</td><td class="growth"><span class="growth-pill gp-up">+2pp</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="glass pad">
+        <div class="clabel">Challenge Completions · Month by Month · Both Years</div>
+        <div class="chart-wrap" style="height:250px;">
+          <canvas id="yoyChart"></canvas>
+        </div>
+        <div class="callout c-a" style="margin-top:12px;">
+          <div class="callout-ttl">Every Month in Year 2 Outperforms Year 1</div>
+          <p>The growth is not concentrated in one period - it is consistent across every month of the programme. Year 2 completions are on average 112% higher than the same month in Year 1. That is a sustained shift, not a spike.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">All-Time Foundation · Two Programme Years Combined</div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass kpi-wrap kpi-a">
+        <div class="kpi-num">5,000</div>
+        <div class="kpi-lbl">Mood Check-ins</div>
+        <span class="kpi-tag">25 per member average</span>
+      </div>
+      <div class="glass kpi-wrap kpi-c">
+        <div class="kpi-num">1,000</div>
+        <div class="kpi-lbl">Challenges Completed</div>
+        <span class="kpi-tag">from 1,272 started · 78.6%</span>
+      </div>
+      <div class="glass kpi-wrap kpi-d">
+        <div class="kpi-num">255/265</div>
+        <div class="kpi-lbl">Goals Achieved</div>
+        <span class="kpi-tag">96.2% · across two years</span>
+      </div>
+      <div class="glass kpi-wrap kpi-b">
+        <div class="kpi-num">800</div>
+        <div class="kpi-lbl">Journal Entries</div>
+        <span class="kpi-tag">160 unique members</span>
+      </div>
+    </div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass kpi-wrap" style="padding:18px;">
+        <div class="kpi-num" style="font-size:1.5rem;color:var(--a);">280</div>
+        <div class="kpi-lbl">Personality Tests</div>
+        <span class="kpi-tag" style="background:var(--a-s);color:var(--a);border:1px solid var(--a-g);">180 unique members</span>
+      </div>
+      <div class="glass kpi-wrap" style="padding:18px;">
+        <div class="kpi-num" style="font-size:1.5rem;color:var(--b);">335</div>
+        <div class="kpi-lbl">Mental Gym Workouts</div>
+        <span class="kpi-tag" style="background:var(--b-s);color:var(--b);border:1px solid var(--b-g);">163 unique members</span>
+      </div>
+      <div class="glass kpi-wrap" style="padding:18px;">
+        <div class="kpi-num" style="font-size:1.5rem;color:var(--d);">590</div>
+        <div class="kpi-lbl">Community Interactions</div>
+        <span class="kpi-tag" style="background:var(--d-s);color:var(--d);border:1px solid var(--d-g);">226 posts · 364 comments</span>
+      </div>
+      <div class="glass kpi-wrap" style="padding:18px;">
+        <div class="kpi-num" style="font-size:1.5rem;color:var(--c);">200</div>
+        <div class="kpi-lbl">Members Reached</div>
+        <span class="kpi-tag" style="background:var(--c-s);color:var(--c);border:1px solid var(--c-g);">all licences activated</span>
+      </div>
+    </div>
+
+    <div class="slabel">Mood Shift · Year on Year</div>
+    <div class="glass pad" style="margin-bottom:8px;">
+      <div class="clabel">How Members Feel - Year 1 vs Year 2</div>
+      <div class="grid g2">
+        <div>
+          <p style="font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">2024-25 · 1,800 check-ins</p>
+          <div class="mood-row">
+            <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">200</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">509</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">680</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">275</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#f87171;"></div>Sad <span class="mood-count">136</span></div>
+          </div>
+          <div style="font-size:0.72rem;color:var(--t2);margin-top:8px;">39.4% positive check-ins · 22.8% difficult</div>
+        </div>
+        <div>
+          <p style="font-size:0.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;">2025-26 · 3,200 check-ins</p>
+          <div class="mood-row">
+            <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">590</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">890</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">1,210</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">350</span></div>
+            <div class="mood-pill"><div class="mood-dot" style="background:#f87171;"></div>Sad <span class="mood-count">160</span></div>
+          </div>
+          <div style="font-size:0.72rem;color:var(--t2);margin-top:8px;">46.3% positive check-ins · 15.9% difficult</div>
+        </div>
+      </div>
+      <div class="callout c-d" style="margin-top:12px;">
+        <div class="callout-ttl">Positive Check-ins Up 6.9pp Year on Year</div>
+        <p>Members are arriving more positively to their check-ins than they did last year. The proportion of difficult check-ins has fallen from 22.8% to 15.9%. That is a meaningful shift across 3,200 entries - the programme is having an effect on how members experience their day to day.</p>
+      </div>
+    </div>
+
+  </div><!-- /tab-yoy -->
+
+  <!-- ====================================================
+       TAB 4: THIS WEEK
+  ===================================================== -->
+  <div id="tab-weekly" class="tab-panel">
+
+    <div class="slabel">Key Metrics · Most Recent Week</div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass kpi-wrap kpi-a">
+        <div class="kpi-num">47</div>
+        <div class="kpi-lbl">Active Members</div>
+        <span class="kpi-tag">this week</span>
+      </div>
+      <div class="glass kpi-wrap kpi-d">
+        <div class="kpi-num">23</div>
+        <div class="kpi-lbl">Challenges Completed</div>
+        <span class="kpi-tag">27 started this week</span>
+      </div>
+      <div class="glass kpi-wrap kpi-b">
+        <div class="kpi-num">82</div>
+        <div class="kpi-lbl">Mood Check-ins</div>
+        <span class="kpi-tag">across the week</span>
+      </div>
+      <div class="glass kpi-wrap kpi-c">
+        <div class="kpi-num">14</div>
+        <div class="kpi-lbl">Journal Entries</div>
+        <span class="kpi-tag">10 unique members</span>
+      </div>
+    </div>
+
+    <div class="slabel">Engagement · This Week</div>
+    <div class="grid g2" style="margin-bottom:12px;">
+      <div class="glass pad">
+        <div class="clabel">Daily Challenge Completions</div>
+        <div class="week-bar-wrap" id="weekBars"></div>
+        <div class="callout c-d">
+          <div class="callout-ttl">Mid-Week Peak - Thursday and Friday Are Strongest</div>
+          <p>Challenge activity builds through the week and peaks mid-to-late in the period. Monday and Tuesday show consistent engagement as members start the week with intent. Weekend activity is lower but present.</p>
+        </div>
+      </div>
+      <div class="glass pad">
+        <div class="clabel">How Members Are Feeling This Week</div>
+        <div class="chart-wrap" style="height:180px;">
+          <canvas id="moodW"></canvas>
+        </div>
+        <div class="mood-row" style="margin-top:10px;">
+          <div class="mood-pill"><div class="mood-dot" style="background:#4ade80;"></div>Happy <span class="mood-count">14</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#86efac;"></div>Good <span class="mood-count">28</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#94a3b8;"></div>Normal <span class="mood-count">30</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#ea580c;"></div>Unhappy <span class="mood-count">8</span></div>
+          <div class="mood-pill"><div class="mood-dot" style="background:#f87171;"></div>Sad <span class="mood-count">2</span></div>
+        </div>
+        <div class="callout c-a" style="margin-top:10px;">
+          <div class="callout-ttl">51.2% Positive This Week</div>
+          <p>Happy and Good check-ins make up just over half of this week's entries - above the year average of 46.3%. Difficult check-ins are low at 12.2%. A strong week across the cohort.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">Feature Activity · This Week</div>
+    <div class="grid g4" style="margin-bottom:12px;">
+      <div class="glass feat-card">
+        <div class="feat-icon">🎯</div>
+        <div class="feat-num" style="color:var(--d);">23</div>
+        <div class="feat-lbl">Challenges Completed</div>
+        <div class="feat-sub">85.2% completion rate this week. Consistent with the year trend.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon">📓</div>
+        <div class="feat-num" style="color:var(--b);">14</div>
+        <div class="feat-lbl">Journal Entries</div>
+        <div class="feat-sub">10 unique members journaling this week. Reflective habit building.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon">🤝</div>
+        <div class="feat-num" style="color:var(--a);">11</div>
+        <div class="feat-lbl">Community Interactions</div>
+        <div class="feat-sub">Posts and comments from active members. Peer connection continues to grow.</div>
+      </div>
+      <div class="glass feat-card">
+        <div class="feat-icon">🧠</div>
+        <div class="feat-num" style="color:var(--c);">9</div>
+        <div class="feat-lbl">Mental Gym Workouts</div>
+        <div class="feat-sub">Members using mental fitness tools independently this week.</div>
+      </div>
+    </div>
+
+    <div class="slabel">Support Areas · This Week</div>
+    <div class="glass pad" style="margin-bottom:8px;">
+      <div class="clabel">What Members Are Carrying This Week</div>
+      <div class="grid g2">
+        <div>
+          <div class="sa-row sa-hi">
+            <div class="sa-name">Anxious, overthinking or panicky</div>
+            <div class="sa-count">4</div>
+            <span class="sa-tag sa-hi-tag">3 members</span>
+          </div>
+          <div class="sa-row sa-mid">
+            <div class="sa-name">Family stress or tension at home</div>
+            <div class="sa-count">3</div>
+            <span class="sa-tag sa-mid-tag">3 members</span>
+          </div>
+          <div class="sa-row sa-lo">
+            <div class="sa-name">Feeling sad, low or numb</div>
+            <div class="sa-count">2</div>
+            <span class="sa-tag sa-mid-tag">2 members</span>
+          </div>
+        </div>
+        <div>
+          <div class="sa-row sa-lo">
+            <div class="sa-name">Stressed about the future</div>
+            <div class="sa-count">2</div>
+            <span class="sa-tag sa-mid-tag">2 members</span>
+          </div>
+          <div class="sa-row sa-lo">
+            <div class="sa-name">Struggling to sleep or switch off</div>
+            <div class="sa-count">2</div>
+            <span class="sa-tag sa-mid-tag">2 members</span>
+          </div>
+          <div class="sa-row sa-lo">
+            <div class="sa-name">Lonely or isolated</div>
+            <div class="sa-count">1</div>
+            <span class="sa-tag sa-mid-tag">1 member</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:9px 12px;border-radius:9px;background:rgba(15,23,42,0.02);border:1px solid var(--border);font-size:0.69rem;color:var(--t3);line-height:1.5;">Weekly support area data reflects member-selected tags in Kamelion's relaxation tools during the past 7 days. Kamelion monitors and reviews before any contact is made with your organisation.</div>
+    </div>
+
+  </div><!-- /tab-weekly -->
+
+  <div class="footer">
+    <div style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+      <div class="snav-k">K</div>
+      <span style="font-size:0.65rem;font-weight:800;color:var(--a);">KAMELION</span>
+      <span style="font-size:0.62rem;color:var(--t4);">· Prevention-First Digital Youth Club · ORCHA Certified</span>
+    </div>
+    <div>Kamelion Demo Dashboard · Programme Years 2024-25 & 2025-26 · 1,000 challenges · 5,000 moods · 255 goals · 200 members</div>
+    <div style="margin-top:6px;font-size:0.54rem;color:var(--t4);">Illustrative data for demonstration purposes</div>
+  </div>
+
+</div>
+
+<script>
+  const ORG = {
+    name: 'Kamelion Demo',
+    sub: 'Illustrative Data - Prevention-First Digital Youth Club',
+    type: 'vcse',
+    period: 'May 2026',
+    prevPeriod: 'April 2026',
+  };
+
+  // TAB SYSTEM
+  const inited = {};
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    document.querySelector(`[data-tab="${id}"]`).classList.add('active');
+    if (!inited[id]) { buildCharts(id); inited[id] = true; }
+  }
+  document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+  const G = 'rgba(15,23,42,0.08)';
+  Chart.defaults.color = 'rgba(15,23,42,0.60)';
+  Chart.defaults.borderColor = G;
+  Chart.defaults.font.family = "'Inter',system-ui,sans-serif";
+
+  function buildCharts(tab) {
+    if (tab === 'this-month') {
+      // MOOD DONUT - This Month
+      new Chart(document.getElementById('moodTM'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Happy', 'Good', 'Normal', 'Unhappy', 'Sad'],
+          datasets: [{ data: [65, 100, 136, 40, 18], backgroundColor: ['#4ade80', '#86efac', '#94a3b8', '#ea580c', '#f87171'], borderColor: 'rgba(238,241,248,0.9)', borderWidth: 2 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: {
+          legend: { position: 'right', labels: { font: { size: 11, weight: '600' }, color: 'rgba(15,23,42,0.65)', padding: 10, boxWidth: 11, boxHeight: 11, borderRadius: 3, useBorderRadius: true } },
+          tooltip: { backgroundColor: 'rgba(255,255,255,0.98)', borderColor: 'rgba(15,23,42,0.12)', borderWidth: 1, callbacks: { label: i => ` ${i.parsed} check-in${i.parsed !== 1 ? 's' : ''}` } }
+        }}
+      });
+      // CONTENT BAR - This Month
+      new Chart(document.getElementById('contentTM'), {
+        type: 'bar',
+        data: {
+          labels: ['My Character', 'My Mind', 'Social Life', 'Health & Fitness', 'Career', 'Money'],
+          datasets: [{ data: [38, 27, 11, 9, 9, 6], backgroundColor: ['#0369a1', '#7e22ce', '#e11d48', '#15803d', '#0891b2', '#6d28d9'], borderRadius: 6, borderSkipped: false }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: {
+          legend: { display: false },
+          tooltip: { backgroundColor: 'rgba(255,255,255,0.98)', borderColor: 'rgba(15,23,42,0.12)', borderWidth: 1, callbacks: { label: i => ` ${i.parsed.x}% of activity` } }
+        }, scales: {
+          x: { grid: { color: G }, ticks: { font: { size: 10 }, color: 'rgba(15,23,42,0.50)', callback: v => v + '%' }, border: { display: false }, max: 45 },
+          y: { grid: { display: false }, ticks: { font: { size: 10, weight: '600' }, color: 'rgba(15,23,42,0.65)' } }
+        }}
+      });
+      // RAG DONUT
+      new Chart(document.getElementById('ragTM'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Red', 'Amber', 'Clear'],
+          datasets: [{ data: [5, 12, 178], backgroundColor: ['#dc2626', '#d97706', '#16a34a'], borderColor: 'rgba(238,241,248,0.9)', borderWidth: 2 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '66%', plugins: {
+          legend: { display: false },
+          tooltip: { backgroundColor: 'rgba(255,255,255,0.98)', borderColor: 'rgba(15,23,42,0.12)', borderWidth: 1, callbacks: { label: i => ` ${i.parsed} member${i.parsed !== 1 ? 's' : ''}` } }
+        }}
+      });
+    }
+
+    if (tab === 'mom') {
+      // MONTH BAR GRID
+      const months = [
+        { m: 'Sep 25', v: 40 }, { m: 'Oct 25', v: 62 }, { m: 'Nov 25', v: 70 }, { m: 'Dec 25', v: 52 },
+        { m: 'Jan 26', v: 82 }, { m: 'Feb 26', v: 90 }, { m: 'Mar 26', v: 95 }, { m: 'Apr 26', v: 90 }, { m: 'May 26', v: 99 }
+      ];
+      const max = 99;
+      const grid = document.getElementById('monthBarGrid');
+      months.forEach((d, i) => {
+        const prev = i > 0 ? months[i - 1].v : null;
+        const delta = prev !== null ? d.v - prev : null;
+        const isUp = delta !== null && delta > 0;
+        const isDown = delta !== null && delta < 0;
+        const barPct = Math.max(d.v / max * 100, 3);
+        const barColor = isUp ? 'var(--d)' : isDown ? 'var(--c)' : 'rgba(15,23,42,0.18)';
+        const deltaStr = delta === null ? '-' : delta > 0 ? `+${delta}` : String(delta);
+        const deltaColor = isUp ? 'var(--d)' : isDown ? 'var(--c)' : 'var(--t3)';
+        grid.innerHTML += `<div style="display:flex;flex-direction:column;align-items:center;gap:5px;">
+          <div style="font-size:0.52rem;font-weight:700;color:var(--t3);letter-spacing:0.5px;text-align:center;">${d.m}</div>
+          <div style="width:100%;height:80px;display:flex;align-items:flex-end;justify-content:center;">
+            <div style="width:28px;background:${barColor};border-radius:4px 4px 0 0;height:${barPct}%;"></div>
+          </div>
+          <div style="font-size:0.8rem;font-weight:900;color:var(--t1);letter-spacing:-0.5px;">${d.v}</div>
+          <div style="font-size:0.58rem;font-weight:700;color:${deltaColor};">${deltaStr}</div>
+        </div>`;
+      });
+    }
+
+    if (tab === 'yoy') {
+      // YOY GROUPED BAR
+      new Chart(document.getElementById('yoyChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May'],
+          datasets: [
+            { label: '2024-25', data: [18, 28, 32, 22, 38, 42, 45, 48, 47], backgroundColor: 'rgba(3,105,161,0.22)', borderRadius: 3, borderSkipped: false },
+            { label: '2025-26', data: [40, 62, 70, 52, 82, 90, 95, 90, 99], backgroundColor: '#0369a1', borderRadius: 3, borderSkipped: false }
+          ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: {
+          legend: { position: 'top', align: 'end', labels: { font: { size: 10, weight: '600' }, color: 'rgba(15,23,42,0.65)', boxWidth: 10, boxHeight: 10, borderRadius: 3, useBorderRadius: true, padding: 12 } },
+          tooltip: { backgroundColor: 'rgba(255,255,255,0.98)', borderColor: 'rgba(15,23,42,0.12)', borderWidth: 1, titleColor: 'rgba(15,23,42,0.85)', bodyColor: 'rgba(15,23,42,0.70)' }
+        }, scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10, weight: '600' }, color: 'rgba(15,23,42,0.65)' } },
+          y: { grid: { color: G }, ticks: { font: { size: 10 }, color: 'rgba(15,23,42,0.50)' }, border: { display: false } }
+        }}
+      });
+    }
+
+    if (tab === 'weekly') {
+      // WEEKLY MOOD DONUT
+      new Chart(document.getElementById('moodW'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Happy', 'Good', 'Normal', 'Unhappy', 'Sad'],
+          datasets: [{ data: [14, 28, 30, 8, 2], backgroundColor: ['#4ade80', '#86efac', '#94a3b8', '#ea580c', '#f87171'], borderColor: 'rgba(238,241,248,0.9)', borderWidth: 2 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: {
+          legend: { position: 'right', labels: { font: { size: 11, weight: '600' }, color: 'rgba(15,23,42,0.65)', padding: 10, boxWidth: 11, boxHeight: 11, borderRadius: 3, useBorderRadius: true } },
+          tooltip: { backgroundColor: 'rgba(255,255,255,0.98)', borderColor: 'rgba(15,23,42,0.12)', borderWidth: 1, callbacks: { label: i => ` ${i.parsed} check-in${i.parsed !== 1 ? 's' : ''}` } }
+        }}
+      });
+
+      // WEEKLY BARS
+      const days = [
+        { d: 'Mon', v: 4 }, { d: 'Tue', v: 3 }, { d: 'Wed', v: 5 }, { d: 'Thu', v: 6 }, { d: 'Fri', v: 5 }, { d: 'Sat', v: 2 }, { d: 'Sun', v: 1 }
+      ];
+      const wmax = 6;
+      const wgrid = document.getElementById('weekBars');
+      days.forEach(d => {
+        const pct = Math.max(d.v / wmax * 100, 4);
+        wgrid.innerHTML += `<div class="week-bar-col">
+          <div class="week-bar-day">${d.d}</div>
+          <div class="week-bar-track"><div class="week-bar" style="height:${pct}%;background:var(--d);"></div></div>
+          <div class="week-bar-val">${d.v}</div>
+        </div>`;
+      });
+    }
+  }
+
+  // Initialise default tab
+  buildCharts('this-month');
+  inited['this-month'] = true;
+</script>
+</body>
+</html>
